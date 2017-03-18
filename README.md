@@ -2,7 +2,7 @@
 Ein Projekt des Info Leistungskurses 11 der Evangelischen Schule Neuruppin.
 
 # License
-Copyright Evangelische Schule Neuruppin 2017 - All Rights reserved. See LICENSE for more details.
+Copyright Evangelische Schule Neuruppin 2017 - All rights reserved. See LICENSE for more details.
 
 # Disclaimer
 this project is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
