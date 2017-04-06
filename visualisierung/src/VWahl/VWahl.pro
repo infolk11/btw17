@@ -12,6 +12,7 @@ TARGET = VWahl
 TEMPLATE = app
 
 
+<<<<<<< Updated upstream
 SOURCES += main.cpp\
         mainwindow.cpp \
     partei.cpp \
@@ -22,3 +23,9 @@ HEADERS  += mainwindow.h \
     partei.h \
     kandidat.h \
     wahllokal.h
+=======
+SOURCES += main.cpp
+
+HEADERS  += \
+    main.h
+>>>>>>> Stashed changes
