@@ -5,7 +5,11 @@ log4cpp::Appender *Logger::appender;
 log4cpp::Appender *Logger::consoleAppender;
 log4cpp::Category& Logger::log = log4cpp::Category::getRoot();
 
-//Init logger
+/**
+ * Initializing the logger
+ *
+ * @brief Logger::init
+ */
 void Logger::init() {
     appender = new log4cpp::FileAppender("default","program.log");
     consoleAppender = new log4cpp::OstreamAppender("console",&std::cout);

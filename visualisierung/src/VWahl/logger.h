@@ -15,11 +15,15 @@
 #define L_DEBUG log4cpp::Priority::DEBUG
 
 
-
+/**
+ * Logger based on log4cpp
+ *
+ * @brief The Logger class
+ */
 class Logger
 {
 public:
-    Logger() = delete;
+    Logger() = delete; //only static methods
     static void init();
     static log4cpp::Category& log;
 private:
