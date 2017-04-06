@@ -1,0 +1,1 @@
+Visualisierungsbereich der Wahlergebnisse 
