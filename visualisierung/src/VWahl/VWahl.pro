@@ -21,14 +21,15 @@ SOURCES += main.cpp\
     partei.cpp \
     kandidat.cpp \
     wahllokal.cpp \
-    logger.cpp
+    logger.cpp \
+    database.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
     wahllokal.h \
     main.h \
-    logger.h
-
+    logger.h \
+    database.h
 
 
 unix:!macx: LIBS += -llog4cpp
