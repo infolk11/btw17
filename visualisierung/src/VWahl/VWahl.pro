@@ -20,11 +20,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
     partei.cpp \
     kandidat.cpp \
-    wahllokal.cpp
+    wahllokal.cpp \
+    logger.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
     wahllokal.h \
-    main.h
+    main.h \
+    logger.h
 
 
+
+unix:!macx: LIBS += -llog4cpp

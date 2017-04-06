@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
     run();
-    return app.exec();
+    return EXIT_SUCCESS;
+    //app.exec();
 }
 
 /**
@@ -29,9 +30,11 @@ int main(int argc, char *argv[])
  */
 void run()
 {
-    std::cout << "Starting the application." << std::endl;
+    init();
+    Logger::log << L_INFO << "Starting the application.";
 
-    std::cout << "Stopping the application." << std::endl;
+    Logger::log << L_INFO << "Stopping the application.";
+    shutdown();
 }
 
 /**
@@ -42,6 +45,8 @@ void run()
  */
 int init()
 {
+    Logger::init();
+    Logger::log << L_INFO << "Initialized the program.";
     return EXIT_SUCCESS;
 }
 
@@ -53,5 +58,6 @@ int init()
  */
 int shutdown()
 {
+    Logger::log << L_INFO << "Shutting down the program.";
     return EXIT_SUCCESS;
 }
