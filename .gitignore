@@ -1,5 +1,5 @@
 #folders
-visualisierung/libs/*
+visualisierung/library_sources/*
 
 # Compiled Object files
 *.slo
