@@ -14,15 +14,15 @@ TEMPLATE = app
 
 <<<<<<< Updated upstream
 SOURCES += main.cpp\
-        mainwindow.cpp \
     partei.cpp \
     kandidat.cpp \
     wahllokal.cpp
 
-HEADERS  += mainwindow.h \
-    partei.h \
+HEADERS  += partei.h \
     kandidat.h \
-    wahllokal.h
+    wahllokal.h \
+    main.h
+
 =======
 SOURCES += main.cpp
 
