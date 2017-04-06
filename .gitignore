@@ -1,3 +1,6 @@
+#folders
+visualisierung/libs/*
+
 # Compiled Object files
 *.slo
 *.lo
