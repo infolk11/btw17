@@ -21,13 +21,17 @@ SOURCES += main.cpp\
     partei.cpp \
     kandidat.cpp \
     wahllokal.cpp \
-    logger.cpp
+    logger.cpp \
+    settingswindow.cpp \
+    presentationwindow.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
     wahllokal.h \
     main.h \
-    logger.h
+    logger.h \
+    settingswindow.h \
+    presentationwindow.h
 
 
 
