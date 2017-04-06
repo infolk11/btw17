@@ -13,6 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    partei.cpp \
+    kandidat.cpp \
+    wahllokal.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    partei.h \
+    kandidat.h \
+    wahllokal.h
