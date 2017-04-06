@@ -4,7 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
+
+QMAKE_RPATHDIR += /usr/lib
+QMAKE_RPATHDIR += /usr/local/lib
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
