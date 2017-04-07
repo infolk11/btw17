@@ -9,12 +9,14 @@
 #include <QString>
 #include <iostream>
 
+#include "logger.h"
+
 class Database
 {
 public:
     Database(QString name);
     Database() = default;
-    auto connect() -> bool;
+    auto connect() -> int;
     auto close() -> void;
 
 private:
@@ -29,8 +31,7 @@ private:
 
     QSqlDatabase db;
     QString dbcon_name;
-    //QSqlError err;
-    //bool connected = false;
+    bool connected = false;
 };
 
 #endif // DATABASE_H
