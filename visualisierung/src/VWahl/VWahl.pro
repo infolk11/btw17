@@ -23,6 +23,8 @@ SOURCES += main.cpp\
     wahllokal.cpp \
     logger.cpp \
     database.cpp
+    settingswindow.cpp \
+    presentationwindow.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -30,6 +32,8 @@ HEADERS  += partei.h \
     main.h \
     logger.h \
     database.h
+    settingswindow.h \
+    presentationwindow.h
 
 
 unix:!macx: LIBS += -llog4cpp
