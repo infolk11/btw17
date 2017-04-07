@@ -18,7 +18,7 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc,argv);
-    run();
+    VWahl::run(app);
     return EXIT_SUCCESS;
     //app.exec();
 }
@@ -28,13 +28,35 @@ int main(int argc, char *argv[])
  *
  * @brief run
  */
-void run()
+void VWahl::run(QApplication& app)
 {
-    init();
-    Logger::log << L_INFO << "Starting the application.";
+    try
+    {
+        VWahl::init();
+        Logger::log << L_INFO << "Running the application.";
+        VWahl::showGui();
+        Logger::log << L_INFO << "Initalized guis.";
+        app.exec();
+        Logger::log << L_INFO << "Stopping the application.";
+    }catch(...)
+    {
+        //TO-DO: Advanced exception handling...
+        Logger::log << L_ERROR << "A fatal error has occured!";
+    }
+    VWahl::shutdown();
+}
 
-    Logger::log << L_INFO << "Stopping the application.";
-    shutdown();
+/**
+ * Will initialize the gui
+ *
+ * @brief showGuis
+ */
+void VWahl::showGui()
+{
+    PresentationWindow *presentationWindow = new PresentationWindow();
+    SettingsWindow *settingsWindow = new SettingsWindow(presentationWindow);
+
+    settingsWindow->showMaximized();
 }
 
 /**
@@ -43,7 +65,7 @@ void run()
  * @brief init
  * @return
  */
-int init()
+int VWahl::init()
 {
     Logger::init();
     Logger::log << L_INFO << "Initialized the program.";
@@ -56,8 +78,12 @@ int init()
  * @brief shutdown
  * @return
  */
-int shutdown()
+int VWahl::shutdown()
 {
     Logger::log << L_INFO << "Shutting down the program.";
+
+    delete settingsWindow;
+    delete presentationWindow;
+
     return EXIT_SUCCESS;
 }

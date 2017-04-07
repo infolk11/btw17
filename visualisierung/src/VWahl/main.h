@@ -3,9 +3,20 @@
 
 #include "logger.h"
 
-void run();
-int init();
-int shutdown();
+#include "presentationwindow.h"
+#include "settingswindow.h"
+namespace VWahl
+{
+    void run(QApplication &app);
+    int init();
+    int shutdown();
+    void showGui();
+
+    //Guis
+    PresentationWindow *presentationWindow;
+    SettingsWindow *settingsWindow;
+
+}
 
 #endif // MAIN_H
 

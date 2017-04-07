@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     logger.cpp \
     database.cpp \
     settingswindow.cpp \
-    presentationwindow.cpp
+    presentationwindow.cpp \
+    welcomewidget.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -33,7 +34,8 @@ HEADERS  += partei.h \
     logger.h \
     database.h \
     presentationwindow.h \
-    settingswindow.h
+    settingswindow.h \
+    welcomewidget.h
 
 
 unix:!macx: LIBS += -llog4cpp
