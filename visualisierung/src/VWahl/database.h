@@ -20,8 +20,8 @@ public:
     auto close() -> void;
 
 private:
-    auto getSize(QSqlQuery &quey) -> int;
-    auto exec(QString &) -> QSqlQuery;
+    //auto getSize(QSqlQuery &quey) -> int;
+    auto exec(QString &queryString) -> QSqlQuery;
 
     QString type = "QMYSQL";
     QString db_host;
