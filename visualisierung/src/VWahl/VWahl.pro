@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     database.cpp \
     settingswindow.cpp \
     presentationwindow.cpp \
-    welcomewidget.cpp
+    welcomewidget.cpp \
+    plots.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -35,7 +36,15 @@ HEADERS  += partei.h \
     database.h \
     presentationwindow.h \
     settingswindow.h \
-    welcomewidget.h
+    welcomewidget.h \
+    plots.h
 
 
 unix:!macx: LIBS += -llog4cpp
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/release/ -lqcustomplot
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/debug/ -lqcustomplot
+else:unix: LIBS += -L$$PWD/../../lib/ -lqcustomplot
+
+INCLUDEPATH += $$PWD/../../lib
+DEPENDPATH += $$PWD/../../lib
