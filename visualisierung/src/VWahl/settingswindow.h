@@ -4,10 +4,12 @@
 #include "presentationwindow.h"
 #include "logger.h"
 #include "welcomewidget.h"
+#include "database.h"
 
 #include <QMainWindow>
 #include <QGridLayout>
 #include <qtabwidget.h>
+#include <QComboBox>
 
 /**
  * Window to create the plots for PresentationWindow
@@ -30,7 +32,12 @@ private:
     //Gui-elements
     QGridLayout *mainLayout;
     QTabWidget *mainWidget;
+    QComboBox *parteien;
+    QComboBox *kandidaten;
     WelcomeWidget *welcomeWidget;
+
+    //database
+    Database db;
 };
 
 #endif // SETTINGSWINDOW_H
