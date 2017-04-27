@@ -50,3 +50,7 @@ else:unix: LIBS += -L$$PWD/../../lib/ -lqcustomplot
 
 INCLUDEPATH += $$PWD/../../lib
 DEPENDPATH += $$PWD/../../lib
+
+STATECHARTS +=
+
+FORMS +=

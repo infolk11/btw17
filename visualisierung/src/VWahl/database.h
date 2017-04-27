@@ -4,7 +4,7 @@
 #include <QSqlDatabase>
 #include <QtSql/QtSql>
 #include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
+//#include <QtSql/QSqlQueryModel>
 #include <QtSql/QSqlError>
 #include <QString>
 #include <iostream>
@@ -18,10 +18,24 @@ public:
     Database() = default;
     auto connect() -> int;
     auto close() -> void;
+    auto exec(QString queryString) -> QSqlQuery;
+
+    //get functions
+    auto getDbType() -> QString;
+    auto getDbHost() -> QString;
+    auto getDbName() -> QString;
+    auto getDbUser() -> QString;
+
+    //set functions
+    auto setDbType(QString x) -> void;
+    auto setDbHost(QString x) -> void;
+    auto setDbName(QString x) -> void;
+    auto setDbUser(QString x) -> void;
+    auto setDbPassword(QString x) -> void;
 
 private:
     //auto getSize(QSqlQuery &quey) -> int;
-    auto exec(QString &queryString) -> QSqlQuery;
+
 
     QString type = "QMYSQL";
     QString db_host;
