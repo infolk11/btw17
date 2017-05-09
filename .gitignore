@@ -115,5 +115,7 @@ Makefile*
 
 # QtCtreator CMake
 CMakeLists.txt.user*
-# ignore qcustomplot.h
-visualisierung/lib/qcustomplot.h
+
+# others
+.directory
+
