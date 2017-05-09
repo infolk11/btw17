@@ -1,4 +1,5 @@
-
+#folders
+visualisierung/library_sources/*
 
 # Compiled Object files
 *.slo
@@ -115,7 +116,4 @@ Makefile*
 
 # QtCtreator CMake
 CMakeLists.txt.user*
-
-# others
-.directory
 
