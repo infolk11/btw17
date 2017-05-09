@@ -36,6 +36,7 @@ private:
     QComboBox *kandidaten;
     WelcomeWidget *welcomeWidget;
 
+
     //database
     Database db;
 };

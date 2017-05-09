@@ -1,6 +1,8 @@
 #ifndef RECORD_H
 #define RECORD_H
 
+#include <QColor>
+
 /**
  * Stores one record either for parties or candidates. Can be visualized with the help of plots.
  *
@@ -23,8 +25,8 @@ class RecordObject
 
 private:
     QString description;
-        int votes;
-        QColor color;
+    int votes;
+    QColor color;
 };
 
 #endif // RECORD_H

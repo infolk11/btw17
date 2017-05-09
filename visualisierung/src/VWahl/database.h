@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "logger.h"
+#include "record.h"
 
 class Database
 {
@@ -19,6 +20,7 @@ public:
     auto connect() -> int;
     auto close() -> void;
     auto exec(QString queryString) -> QSqlQuery;
+    auto getData(QString wahl ) -> Record;
 
     //get functions
     auto getDbType() -> QString;

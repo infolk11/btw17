@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include <qcustomplot.h>
+#include <plots.h>
+
 /**
  * Will be displaying the plots in fullscreen on a second screen
  *
@@ -12,6 +15,9 @@ class PresentationWindow : public QMainWindow
 {
 public:
     PresentationWindow();
+
+private:
+    QCustomPlot *plot;
 };
 
 #endif // PRESENTATIONWINDOW_H
