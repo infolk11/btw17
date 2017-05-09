@@ -16,10 +16,20 @@ class Database
 {
 public:
     Database(QString name);
+    ~Database();
     Database() = default;
     auto connect() -> int;
     auto close() -> void;
     auto exec(QString queryString) -> QSqlQuery;
+
+    /**
+     * Reads the dates for a record out of the database.
+     * Criterias for the dates are: Type and year of election, the radius and the participants like candidates or parties.
+     *
+     * @brief getData
+     * @param wahl
+     * @return
+     */
     auto getData(QString wahl ) -> Record;
 
     //get functions

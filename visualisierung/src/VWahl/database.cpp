@@ -6,6 +6,11 @@ Database::Database(QString name)
     db = QSqlDatabase::addDatabase(type, name);
 }
 
+Database::~Database()
+{
+    close();
+}
+
 auto Database::connect() -> int
 {
     db.setHostName(db_host);
@@ -40,6 +45,11 @@ auto Database::close() -> void
     db.close();
     connected = false;
     Logger::log << L_INFO << "connection closed!";
+}
+
+auto Database::getData(QString wahl) -> Record
+{
+    //Content will be delivered by other group.
 }
 
 //get methods

@@ -10,7 +10,7 @@ QMAKE_RPATHDIR += /usr/lib
 QMAKE_RPATHDIR += /usr/local/lib
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = VWahl
 TEMPLATE = app
@@ -27,7 +27,9 @@ SOURCES += main.cpp\
     presentationwindow.cpp \
     welcomewidget.cpp \
     plots.cpp \
-    record.cpp
+    record.cpp \
+    qcustomplot.cpp \
+    plottest.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -39,18 +41,17 @@ HEADERS  += partei.h \
     settingswindow.h \
     welcomewidget.h \
     plots.h \
-    record.h
+    record.h \
+    qcustomplot.h \
+    plottest.h
 
 
 unix:!macx: LIBS += -llog4cpp
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../lib/release/ -lqcustomplot
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../lib/debug/ -lqcustomplot
-else:unix: LIBS += -L$$PWD/../../lib/ -lqcustomplot
 
 INCLUDEPATH += $$PWD/../../lib
 DEPENDPATH += $$PWD/../../lib
 
 STATECHARTS +=
 
-FORMS +=
+FORMS += \
+    plottest.ui

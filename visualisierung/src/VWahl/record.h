@@ -6,14 +6,7 @@
 /**
  * Stores one record either for parties or candidates. Can be visualized with the help of plots.
  *
- * @brief The Record class
  */
-class Record
-{
-public:
-    Record();
-};
-
 class RecordObject
 {
    public:
@@ -27,6 +20,28 @@ private:
     QString description;
     int votes;
     QColor color;
+};
+
+
+
+class Record
+{
+public:
+    Record(QString s, unsigned short y, QList<RecordObject> o) : election(s),year(y), objects(o) {}
+    Record() = default;
+    unsigned short getYear() const;
+    void setYear(unsigned short value);
+
+    QString getElection() const;
+    void setElection(const QString &value);
+
+    QList<RecordObject> getObjects() const;
+    void setObjects(const QList<RecordObject> &value);
+
+private:
+    QList<RecordObject> objects;
+    QString election;
+    unsigned short year;
 };
 
 #endif // RECORD_H

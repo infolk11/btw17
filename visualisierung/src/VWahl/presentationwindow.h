@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include <qcustomplot.h>
+#include "qcustomplot.h"
 #include <plots.h>
 
 /**
