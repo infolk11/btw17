@@ -1,3 +1,4 @@
+
 #folders
 visualisierung/library_sources/*
 
@@ -117,7 +118,6 @@ Makefile*
 # QtCtreator CMake
 CMakeLists.txt.user*
 
-
 # Python
 
 
@@ -179,3 +179,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# others
+.directory
+~*

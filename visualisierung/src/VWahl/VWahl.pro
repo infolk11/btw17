@@ -4,15 +4,52 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QMAKE_RPATHDIR += /usr/lib
+QMAKE_RPATHDIR += /usr/local/lib
+
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = VWahl
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
-        mainwindow.cpp
+    partei.cpp \
+    kandidat.cpp \
+    wahllokal.cpp \
+    logger.cpp \
+    database.cpp \
+    plots.cpp \
+    record.cpp \
+    qcustomplot.cpp \
+    plottest.cpp \
+    settingswindow.cpp \
+    presentationwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += partei.h \
+    kandidat.h \
+    wahllokal.h \
+    main.h \
+    logger.h \
+    database.h \
+    plots.h \
+    record.h \
+    qcustomplot.h \
+    plottest.h \
+    settingswindow.h \
+    presentationwindow.h
+
+
+unix:!macx: LIBS += -llog4cpp
+
+INCLUDEPATH += $$PWD/../../lib
+DEPENDPATH += $$PWD/../../lib
+
+STATECHARTS +=
+
+FORMS += \
+    plottest.ui \
+    settingswindow.ui \
+    presentationwindow.ui
