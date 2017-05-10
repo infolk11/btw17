@@ -26,7 +26,7 @@ public:
 
 private:
     /**
-     *Things we want to store about a candidate:
+     *Things we want to know about a candidate:
      * Name,
      * LName,
      * ID,
