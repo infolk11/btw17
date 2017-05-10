@@ -1,23 +1,22 @@
 #ifndef PRESENTATIONWINDOW_H
 #define PRESENTATIONWINDOW_H
 
-#include <QMainWindow>
+#include <QFrame>
 
-#include "qcustomplot.h"
-#include <plots.h>
+namespace Ui {
+class PresentationWindow;
+}
 
-/**
- * Will be displaying the plots in fullscreen on a second screen
- *
- * @brief The PresentationWindow class
- */
-class PresentationWindow : public QMainWindow
+class PresentationWindow : public QFrame
 {
+    Q_OBJECT
+
 public:
-    PresentationWindow();
+    explicit PresentationWindow(QWidget *parent = 0);
+    ~PresentationWindow();
 
 private:
-    QCustomPlot *plot;
+    Ui::PresentationWindow *ui;
 };
 
 #endif // PRESENTATIONWINDOW_H

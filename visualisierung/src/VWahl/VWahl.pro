@@ -23,13 +23,12 @@ SOURCES += main.cpp\
     wahllokal.cpp \
     logger.cpp \
     database.cpp \
-    settingswindow.cpp \
-    presentationwindow.cpp \
-    welcomewidget.cpp \
     plots.cpp \
     record.cpp \
     qcustomplot.cpp \
-    plottest.cpp
+    plottest.cpp \
+    settingswindow.cpp \
+    presentationwindow.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -37,13 +36,12 @@ HEADERS  += partei.h \
     main.h \
     logger.h \
     database.h \
-    presentationwindow.h \
-    settingswindow.h \
-    welcomewidget.h \
     plots.h \
     record.h \
     qcustomplot.h \
-    plottest.h
+    plottest.h \
+    settingswindow.h \
+    presentationwindow.h
 
 
 unix:!macx: LIBS += -llog4cpp
@@ -54,4 +52,6 @@ DEPENDPATH += $$PWD/../../lib
 STATECHARTS +=
 
 FORMS += \
-    plottest.ui
+    plottest.ui \
+    settingswindow.ui \
+    presentationwindow.ui

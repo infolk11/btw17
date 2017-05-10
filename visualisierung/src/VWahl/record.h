@@ -2,6 +2,7 @@
 #define RECORD_H
 
 #include <QColor>
+#include <QList>
 
 /**
  * Stores one record either for parties or candidates. Can be visualized with the help of plots.
@@ -23,7 +24,11 @@ private:
 };
 
 
-
+/**
+ * Stores the recordobjects and some general information about the record
+ *
+ * @brief The Record class
+ */
 class Record
 {
 public:
