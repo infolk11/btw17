@@ -50,6 +50,7 @@ auto Database::close() -> void
 auto Database::getData(QString wahl) -> Record
 {
     //Content will be delivered by other group.
+    return Record();
 }
 
 //get methods

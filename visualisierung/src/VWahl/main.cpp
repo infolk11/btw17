@@ -57,10 +57,6 @@ void VWahl::showGui()
 {
     PresentationWindow* window = new PresentationWindow();
     window->showMaximized();
-//    PresentationWindow *presentationWindow = new PresentationWindow();
-//    SettingsWindow *settingsWindow = new SettingsWindow(presentationWindow);
-
-//    settingsWindow->showMaximized();
 }
 
 /**
