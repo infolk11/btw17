@@ -10,7 +10,7 @@
 class Kandidat : public RecordObject
 {
 public:
-    Kandidat(int i, QString n, QString ln, int v, QColor col) : RecordObject(n + " " + ln,v,col), name(n), LName(ln), id(i) {}
+    Kandidat(int i, QString n, QString ln, int v, QColor col) : RecordObject(n + " " + ln,v,col), id(i), name(n), LName(ln) {}
 
     int getId() const;
     void setId(int value);

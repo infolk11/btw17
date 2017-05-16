@@ -32,7 +32,7 @@ private:
 class Record
 {
 public:
-    Record(QString s, unsigned short y, QList<RecordObject> o) : election(s),year(y), objects(o) {}
+    Record(QString s, unsigned short y, QList<RecordObject> o) : objects(o), election(s), year(y) {}
     Record() = default;
     unsigned short getYear() const;
     void setYear(unsigned short value);

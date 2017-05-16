@@ -55,7 +55,7 @@ void VWahl::run(QApplication& app)
 void VWahl::showGui()
 {
     PlotTest* test = new PlotTest();
-    test->showFullScreen();
+    test->showMaximized();
 //    PresentationWindow *presentationWindow = new PresentationWindow();
 //    SettingsWindow *settingsWindow = new SettingsWindow(presentationWindow);
 
