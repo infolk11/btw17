@@ -7,6 +7,7 @@
 
 #include "main.h"
 #include "plottest.h"
+#include "presentationwindow.h"
 
 /**
  * Main
@@ -54,8 +55,8 @@ void VWahl::run(QApplication& app)
  */
 void VWahl::showGui()
 {
-    PlotTest* test = new PlotTest();
-    test->showFullScreen();
+    PresentationWindow* window = new PresentationWindow();
+    window->showMaximized();
 //    PresentationWindow *presentationWindow = new PresentationWindow();
 //    SettingsWindow *settingsWindow = new SettingsWindow(presentationWindow);
 

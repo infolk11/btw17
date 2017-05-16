@@ -1,23 +1,38 @@
-<?xml version='1.0'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PresentationWindow</class>
- <widget name="PresentationWindow" class="QFrame">
-  <property name="frameShadow">
-   <enum>QFrame::Raised</enum>
-  </property>
+ <widget class="QFrame" name="PresentationWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>1237</width>
+    <height>643</height>
    </rect>
-  </property>
-  <property name="frameShape">
-   <enum>QFrame::StyledPanel</enum>
   </property>
   <property name="windowTitle">
    <string>Frame</string>
   </property>
+  <property name="frameShape">
+   <enum>QFrame::StyledPanel</enum>
+  </property>
+  <property name="frameShadow">
+   <enum>QFrame::Raised</enum>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QCustomPlot" name="customPlot" native="true"/>
+   </item>
+  </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
 </ui>
