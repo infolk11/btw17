@@ -12,4 +12,5 @@ SettingsWindow::SettingsWindow(PresentationWindow* p, QWidget *parent) :
 SettingsWindow::~SettingsWindow()
 {
     delete ui;
+    delete presentation;
 }
