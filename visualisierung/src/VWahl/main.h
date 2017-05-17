@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <QSettings>
+#include <QCoreApplication>
 
 #include "logger.h"
 
@@ -21,10 +22,6 @@ namespace VWahl
     //Guis
     PresentationWindow *presentationWindow;
     SettingsWindow *settingsWindow;
-
-    //setting object, to store settings, i.e. login details for the database
-    //company: Evangelische Schule Neuruppin, name: btw17
-    QSettings *settings;
 
 }
 

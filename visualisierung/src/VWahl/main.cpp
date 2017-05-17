@@ -36,10 +36,6 @@ void VWahl::run(QApplication& app)
     {
         VWahl::init();
         Logger::log << L_INFO << "Running the application.";
-
-        if (VWahl::doBasicSettingsExist() == false)
-            VWahl::writeBasicSettings("localhost", "btw17", "user", "12345678");
-
         VWahl::showGui();
         Logger::log << L_INFO << "Initalized guis.";
         app.exec();
@@ -72,8 +68,10 @@ void VWahl::showGui()
 int VWahl::init()
 {
     Logger::init();
+    if (VWahl::doBasicSettingsExist() == false)
+        VWahl::writeBasicSettings("localhost", "btw17", "user", "12345678");
+
     Logger::log << L_INFO << "Initialized the program.";
-    settings = new QSettings("Evangelische_Schule_Neuruppin", "btw17");
     return EXIT_SUCCESS;
 }
 
@@ -95,26 +93,34 @@ int VWahl::shutdown()
 
 void VWahl::writeBasicSettings(QString h, QString n, QString u, QString p)
 {
-    //set basic values for the database connection in database-group
-    VWahl::settings->beginGroup("database");
-    VWahl::settings->value("hostname", h);
-    VWahl::settings->value("name", n);
-    VWahl::settings->value("user", u);
-    VWahl::settings->value("password", p);
-    VWahl::settings->endGroup();
-    VWahl::settings->sync();
+    //setting object, to store settings, i.e. login details for the database
+    //company: Evangelische Schule Neuruppin, name: btw17
+    QSettings settings("Evangelische_Schule_Neuruppin", "btw17");
 
-    if (VWahl::settings->status() != 0){
+    //set basic values for the database connection in database-group
+    settings.beginGroup("database");
+    settings.setValue("hostname", h);
+    settings.setValue("name", n);
+    settings.setValue("user", u);
+    settings.setValue("password", p);
+    settings.endGroup();
+    settings.sync();
+    if (settings.status() != 0){
         Logger::log << L_ERROR << "failed to write settings";
     }
     else
-        Logger::log << L_INFO << "successful wrote the basic settings to" << VWahl::settings->fileName().toStdString();
+        Logger::log << L_INFO << "wrote the basic settings to" << settings.fileName().toStdString();
 }
 
 bool VWahl::doBasicSettingsExist()
 {
-    return (VWahl::settings->contains("database/hostname") and
-            VWahl::settings->contains("database/name") and
-            VWahl::settings->contains("database/user") and
-            VWahl::settings->contains("database/databasepassword"));
+    //setting object, to store settings, i.e. login details for the database
+    //company: Evangelische Schule Neuruppin, name: btw17
+    QSettings settings("Evangelische_Schule_Neuruppin", "btw17");
+    settings.beginGroup("database");
+
+    return !(settings.contains("hostname") and
+            settings.contains("name") and
+            settings.contains("user") and
+            settings.contains("databasepassword"));
 }
