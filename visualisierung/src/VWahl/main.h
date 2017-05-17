@@ -24,7 +24,7 @@ namespace VWahl
 
     //setting object, to store settings, i.e. login details for the database
     //company: Evangelische Schule Neuruppin, name: btw17
-    QSettings settings("Evangelische_Schule_Neuruppin", "btw17");
+    QSettings *settings;
 
 }
 
