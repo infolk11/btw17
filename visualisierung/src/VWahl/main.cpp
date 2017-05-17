@@ -36,6 +36,10 @@ void VWahl::run(QApplication& app)
     {
         VWahl::init();
         Logger::log << L_INFO << "Running the application.";
+
+        if (VWahl::doBasicSettingsExist() == false)
+            VWahl::writeBasicSettings("localhost", "btw17", "user", "12345678");
+
         VWahl::showGui();
         Logger::log << L_INFO << "Initalized guis.";
         app.exec();
@@ -86,4 +90,30 @@ int VWahl::shutdown()
     delete presentationWindow;
 
     return EXIT_SUCCESS;
+}
+
+void VWahl::writeBasicSettings(QString h, QString n, QString u, QString p)
+{
+    //set basic values for the database connection in database-group
+    settings.beginGroup("database");
+    settings.value("hostname", h);
+    settings.value("name", n);
+    settings.value("user", u);
+    settings.value("password", p);
+    settings.endGroup();
+    settings.sync();
+
+    if (settings.status() != 0){
+        Logger::log << L_ERROR << "failed to write settings";
+    }
+    else
+        Logger::log << L_INFO << "successful wrote the basic settings to" << settings.fileName().toStdString();
+}
+
+bool VWahl::doBasicSettingsExist()
+{
+    return (settings.contains("database/hostname") and
+            settings.contains("database/name") and
+            settings.contains("database/user") and
+            settings.contains("database/databasepassword"));
 }
