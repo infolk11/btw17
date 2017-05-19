@@ -8,10 +8,13 @@
 
 #include "presentationwindow.h"
 #include "settingswindow.h"
+#include "database.h"
+
 namespace VWahl
 {
     void run(QApplication &app);
     int init();
+    int initSettings();
     int shutdown();
     void showGui();
 
@@ -20,8 +23,12 @@ namespace VWahl
     bool doBasicSettingsExist();
 
     //Guis
-    PresentationWindow *presentationWindow;
-    SettingsWindow *settingsWindow;
+    extern PresentationWindow *presentationWindow;
+    extern SettingsWindow *settingsWindow;
+
+    //setting object, to store settings, i.e. login details for the database
+    //company: Evangelische Schule Neuruppin, name: btw17
+    extern QSettings *settings;
 
 }
 

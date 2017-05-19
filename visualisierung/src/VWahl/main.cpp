@@ -7,7 +7,6 @@
 
 #include "main.h"
 #include "plottest.h"
-#include "presentationwindow.h"
 
 /**
  * Main
@@ -25,16 +24,30 @@ int main(int argc, char *argv[])
     //app.exec();
 }
 
+namespace VWahl {
+
+
+//Variables
+QSettings *settings;
+PresentationWindow *presentationWindow;
+SettingsWindow *settingsWindow;
+
+//Methods
 /**
  * Run method of the program
  *
  * @brief run
  */
-void VWahl::run(QApplication& app)
+void run(QApplication& app)
 {
     try
     {
-        VWahl::init();
+        if(VWahl::init() != EXIT_SUCCESS)
+        {
+            Logger::log << L_ERROR << "Failed to initialize the program. This is an fatal error which will cause a shutdown.";
+            return;
+        }
+
         Logger::log << L_INFO << "Running the application.";
         VWahl::showGui();
         Logger::log << L_INFO << "Initalized guis.";
@@ -53,7 +66,7 @@ void VWahl::run(QApplication& app)
  *
  * @brief showGuis
  */
-void VWahl::showGui()
+void showGui()
 {
     PresentationWindow* window = new PresentationWindow();
     SettingsWindow *settingswindow = new SettingsWindow(window);
@@ -66,11 +79,17 @@ void VWahl::showGui()
  * @brief init
  * @return
  */
-int VWahl::init()
+int init()
 {
+    //Initializing the logger
     Logger::init();
-    if (VWahl::doBasicSettingsExist() == false)
-        VWahl::writeBasicSettings("localhost", "btw17", "user", "12345678");
+
+    //Initializing the settings
+    if(initSettings()!= EXIT_SUCCESS)
+    {
+        Logger::log << L_ERROR << "Failed to initalize settings!";
+        return EXIT_FAILURE;
+    }
 
     Logger::log << L_INFO << "Initialized the program.";
     return EXIT_SUCCESS;
@@ -82,7 +101,7 @@ int VWahl::init()
  * @brief shutdown
  * @return
  */
-int VWahl::shutdown()
+int shutdown()
 {
     Logger::log << L_INFO << "Shutting down the program.";
 
@@ -92,43 +111,17 @@ int VWahl::shutdown()
     return EXIT_SUCCESS;
 }
 
-void VWahl::writeBasicSettings(QString h, QString n, QString u, QString p)
+int initSettings()
 {
-    //setting object, to store settings, i.e. login details for the database
-    //company: Evangelische Schule Neuruppin, name: btw17
-    QSettings settings("Evangelische_Schule_Neuruppin", "btw17");
-
-    //set basic values for the database connection in database-group
-    settings.beginGroup("database");
-    settings.setValue("hostname", h);
-    settings.setValue("name", n);
-    settings.setValue("user", u);
-    settings.setValue("password", p);
-    settings.endGroup();
-
-    //settings for sql commands
-    settings.beginGroup("sql");
-    settings.setValue("partei", "SELECT ... FROM ...");
-    settings.setValue("kandidat", "SELECT ... FROM ...");
-    settings.endGroup();
-
-    settings.sync();
-    if (settings.status() != 0){
-        Logger::log << L_ERROR << "failed to write settings";
+    settings = new QSettings("Evangelische_Schule_Neuruppin", "btw17");
+    settings->sync();
+    if(Database::initDatabaseSettings() != EXIT_SUCCESS)
+    {
+        Logger::log << L_ERROR << "Failed to initalize database settings.";
+        return EXIT_FAILURE;
     }
-    else
-        Logger::log << L_INFO << "wrote the basic settings to" << settings.fileName().toStdString();
+
+    return EXIT_SUCCESS;
 }
 
-bool VWahl::doBasicSettingsExist()
-{
-    //setting object, to store settings, i.e. login details for the database
-    //company: Evangelische Schule Neuruppin, name: btw17
-    QSettings settings("Evangelische_Schule_Neuruppin", "btw17");
-    settings.beginGroup("database");
-
-    return !(settings.contains("hostname") and
-            settings.contains("name") and
-            settings.contains("user") and
-            settings.contains("databasepassword"));
 }

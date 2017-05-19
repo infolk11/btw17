@@ -66,6 +66,13 @@ auto Database::getData(QString wahl) -> Record
     return Record();
 }
 
+int Database::initDatabaseSettings()
+{
+    if(!doBasicSettingsExist())
+        return writeBasicDatabaseSettings("localhost","btw17","vwahl","pass");
+    return EXIT_SUCCESS;
+}
+
 //get methods
 auto Database::getDbType() -> QString
 {
@@ -111,4 +118,43 @@ auto Database::setDbUser(QString x) -> void
 auto Database::setDbPassword(QString x) -> void
 {
     db_password = x;
+}
+
+
+int Database::writeBasicDatabaseSettings(QString h, QString n, QString u, QString p)
+{
+
+    //set basic values for the database connection in database-group
+    VWahl::settings->beginGroup("database");
+    VWahl::settings->setValue("hostname", h);
+    VWahl::settings->setValue("name", n);
+    VWahl::settings->setValue("user", u);
+    VWahl::settings->setValue("password", p);
+    VWahl::settings->endGroup();
+
+    //settings for sql commands
+    VWahl::settings->beginGroup("sql");
+    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
+    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
+    VWahl::settings->endGroup();
+
+    VWahl::settings->sync();
+    if (VWahl::settings->status() != 0){
+        Logger::log << L_ERROR << "failed to write settings to" << VWahl::settings->fileName().toStdString();
+        return EXIT_FAILURE;
+    }
+    else
+        Logger::log << L_INFO << "wrote the basic settings to" << VWahl::settings->fileName().toStdString();
+    return EXIT_SUCCESS;
+}
+
+bool Database::doBasicSettingsExist()
+{
+    VWahl::settings->beginGroup("database");
+
+    return (VWahl::settings->contains("hostname") &
+            VWahl::settings->contains("name") &
+            VWahl::settings->contains("user") &
+            VWahl::settings->contains("databasepassword"));
+
 }

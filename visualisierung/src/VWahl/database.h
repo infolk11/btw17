@@ -13,6 +13,7 @@
 
 #include "logger.h"
 #include "record.h"
+#include "main.h"
 
 class Database
 {
@@ -35,7 +36,9 @@ public:
      * @param wahl
      * @return
      */
-    auto getData(QString wahl ) -> Record;
+    static auto getData(QString wahl ) -> Record;
+
+    static auto initDatabaseSettings() -> int;
 
     //get functions
     auto getDbType() -> QString;
@@ -53,6 +56,18 @@ public:
 private:
     //auto getSize(QSqlQuery &quey) -> int;
 
+    /**
+     * will be deleted laterwards. Just here to ease programming
+     *
+     * @brief writeBasicDatabaseSettings
+     * @param h
+     * @param n
+     * @param u
+     * @param p
+     * @return
+     */
+    static auto writeBasicDatabaseSettings(QString h, QString n, QString u, QString p) -> int;
+    static auto doBasicSettingsExist() -> bool;
 
     QString type = "QMYSQL";
     QString db_host;
