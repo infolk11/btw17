@@ -11,6 +11,7 @@ Database::~Database()
     close();
 }
 
+//connects class-object to database
 auto Database::connect() -> int
 {
     db.setHostName(db_host);
@@ -30,14 +31,26 @@ auto Database::connect() -> int
     }
 }
 
-auto Database::exec(QString queryString) -> QSqlQuery
+auto Database::exec(QString queryString, int column) -> QVariant
 {
     QSqlQuery query;
     query = db.exec(queryString);
     if (query.exec(queryString)) {
-        //
+        return query.value(column);
     }
-    return query;
+
+    else{
+        Logger::log << L_INFO << db.lastError().text().toStdString();
+        //return may be done better
+        return 0;
+    }
+}
+
+//returns a recordobject related to given sql commands
+RecordObject Database::getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn)
+{
+    //columns are related to index in the current query record
+    return RecordObject(exec(getDescription, descriptionColumn).toString(), exec(getVotes, votesColumn).toInt(), exec(getColor, colorColumn).value<QColor>());
 }
 
 auto Database::close() -> void

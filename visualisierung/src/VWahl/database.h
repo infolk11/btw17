@@ -7,6 +7,8 @@
 //#include <QtSql/QSqlQueryModel>
 #include <QtSql/QSqlError>
 #include <QString>
+#include <QColor>
+#include <QList>
 #include <iostream>
 
 #include "logger.h"
@@ -20,7 +22,10 @@ public:
     Database() = default;
     auto connect() -> int;
     auto close() -> void;
-    auto exec(QString queryString) -> QSqlQuery;
+    auto exec(QString queryString, int column) -> QVariant;
+
+    //get a single recordObject
+    RecordObject getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn);
 
     /**
      * Reads the dates for a record out of the database.

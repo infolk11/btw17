@@ -56,7 +56,8 @@ void VWahl::run(QApplication& app)
 void VWahl::showGui()
 {
     PresentationWindow* window = new PresentationWindow();
-    window->showMaximized();
+    SettingsWindow *settingswindow = new SettingsWindow(window);
+    settingswindow->showMaximized();
 }
 
 /**
@@ -104,6 +105,13 @@ void VWahl::writeBasicSettings(QString h, QString n, QString u, QString p)
     settings.setValue("user", u);
     settings.setValue("password", p);
     settings.endGroup();
+
+    //settings for sql commands
+    settings.beginGroup("sql");
+    settings.setValue("partei", "SELECT ... FROM ...");
+    settings.setValue("kandidat", "SELECT ... FROM ...");
+    settings.endGroup();
+
     settings.sync();
     if (settings.status() != 0){
         Logger::log << L_ERROR << "failed to write settings";
