@@ -24,16 +24,30 @@ int main(int argc, char *argv[])
     //app.exec();
 }
 
+namespace VWahl {
+
+
+//Variables
+QSettings *settings;
+PresentationWindow *presentationWindow;
+SettingsWindow *settingsWindow;
+
+//Methods
 /**
  * Run method of the program
  *
  * @brief run
  */
-void VWahl::run(QApplication& app)
+void run(QApplication& app)
 {
     try
     {
-        VWahl::init();
+        if(VWahl::init() != EXIT_SUCCESS)
+        {
+            Logger::log << L_ERROR << "Failed to initialize the program. This is an fatal error which will cause a shutdown.";
+            return;
+        }
+
         Logger::log << L_INFO << "Running the application.";
         VWahl::showGui();
         Logger::log << L_INFO << "Initalized guis.";
@@ -52,14 +66,11 @@ void VWahl::run(QApplication& app)
  *
  * @brief showGuis
  */
-void VWahl::showGui()
+void showGui()
 {
-    PlotTest* test = new PlotTest();
-    test->showFullScreen();
-//    PresentationWindow *presentationWindow = new PresentationWindow();
-//    SettingsWindow *settingsWindow = new SettingsWindow(presentationWindow);
-
-//    settingsWindow->showMaximized();
+    PresentationWindow* window = new PresentationWindow();
+    SettingsWindow *settingswindow = new SettingsWindow(window);
+    settingswindow->showMaximized();
 }
 
 /**
@@ -68,9 +79,18 @@ void VWahl::showGui()
  * @brief init
  * @return
  */
-int VWahl::init()
+int init()
 {
+    //Initializing the logger
     Logger::init();
+
+    //Initializing the settings
+    if(initSettings()!= EXIT_SUCCESS)
+    {
+        Logger::log << L_ERROR << "Failed to initalize settings!";
+        return EXIT_FAILURE;
+    }
+
     Logger::log << L_INFO << "Initialized the program.";
     return EXIT_SUCCESS;
 }
@@ -81,12 +101,28 @@ int VWahl::init()
  * @brief shutdown
  * @return
  */
-int VWahl::shutdown()
+int shutdown()
 {
     Logger::log << L_INFO << "Shutting down the program.";
 
     delete settingsWindow;
     delete presentationWindow;
+    delete settings;
 
     return EXIT_SUCCESS;
+}
+
+int initSettings()
+{
+    settings = new QSettings("Evangelische_Schule_Neuruppin", "btw17");
+    settings->sync();
+    if(Database::initDatabaseSettings() != EXIT_SUCCESS)
+    {
+        Logger::log << L_ERROR << "Failed to initalize database settings.";
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 }

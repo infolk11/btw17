@@ -7,8 +7,3 @@ PresentationWindow::PresentationWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 }
-
-PresentationWindow::~PresentationWindow()
-{
-    delete ui;
-}

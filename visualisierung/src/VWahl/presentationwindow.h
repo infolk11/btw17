@@ -15,6 +15,8 @@ public:
     explicit PresentationWindow(QWidget *parent = 0);
     ~PresentationWindow();
 
+public slots:
+    void makePlot(Plots p);
 private:
     Ui::PresentationWindow *ui;
 };

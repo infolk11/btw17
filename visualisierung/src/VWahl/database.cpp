@@ -11,6 +11,7 @@ Database::~Database()
     close();
 }
 
+//connects class-object to database
 auto Database::connect() -> int
 {
     db.setHostName(db_host);
@@ -30,14 +31,26 @@ auto Database::connect() -> int
     }
 }
 
-auto Database::exec(QString queryString) -> QSqlQuery
+auto Database::exec(QString queryString, int column) -> QVariant
 {
     QSqlQuery query;
     query = db.exec(queryString);
     if (query.exec(queryString)) {
-        //
+        return query.value(column);
     }
-    return query;
+
+    else{
+        Logger::log << L_INFO << db.lastError().text().toStdString();
+        //return may be done better
+        return 0;
+    }
+}
+
+//returns a recordobject related to given sql commands
+RecordObject Database::getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn)
+{
+    //columns are related to index in the current query record
+    return RecordObject(exec(getDescription, descriptionColumn).toString(), exec(getVotes, votesColumn).toInt(), exec(getColor, colorColumn).value<QColor>());
 }
 
 auto Database::close() -> void
@@ -50,6 +63,14 @@ auto Database::close() -> void
 auto Database::getData(QString wahl) -> Record
 {
     //Content will be delivered by other group.
+    return Record();
+}
+
+int Database::initDatabaseSettings()
+{
+    if(!doBasicSettingsExist())
+        return writeBasicDatabaseSettings("localhost","btw17","vwahl","pass");
+    return EXIT_SUCCESS;
 }
 
 //get methods
@@ -97,4 +118,43 @@ auto Database::setDbUser(QString x) -> void
 auto Database::setDbPassword(QString x) -> void
 {
     db_password = x;
+}
+
+
+int Database::writeBasicDatabaseSettings(QString h, QString n, QString u, QString p)
+{
+
+    //set basic values for the database connection in database-group
+    VWahl::settings->beginGroup("database");
+    VWahl::settings->setValue("hostname", h);
+    VWahl::settings->setValue("name", n);
+    VWahl::settings->setValue("user", u);
+    VWahl::settings->setValue("password", p);
+    VWahl::settings->endGroup();
+
+    //settings for sql commands
+    VWahl::settings->beginGroup("sql");
+    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
+    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
+    VWahl::settings->endGroup();
+
+    VWahl::settings->sync();
+    if (VWahl::settings->status() != 0){
+        Logger::log << L_ERROR << "failed to write settings to" << VWahl::settings->fileName().toStdString();
+        return EXIT_FAILURE;
+    }
+    else
+        Logger::log << L_INFO << "wrote the basic settings to" << VWahl::settings->fileName().toStdString();
+    return EXIT_SUCCESS;
+}
+
+bool Database::doBasicSettingsExist()
+{
+    VWahl::settings->beginGroup("database");
+
+    return (VWahl::settings->contains("hostname") &
+            VWahl::settings->contains("name") &
+            VWahl::settings->contains("user") &
+            VWahl::settings->contains("databasepassword"));
+
 }
