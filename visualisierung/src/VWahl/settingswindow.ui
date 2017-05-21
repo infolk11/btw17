@@ -1,24 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>SettingsWindow</class>
- <widget name="SettingsWindow" class="QMainWindow">
+ <widget class="QMainWindow" name="SettingsWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1126</width>
+    <height>647</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget name="menubar" class="QMenuBar"/>
-  <widget name="centralwidget" class="QWidget"/>
-  <widget name="statusbar" class="QStatusBar"/>
+  <widget class="QWidget" name="centralwidget">
+   <property name="focusPolicy">
+    <enum>Qt::WheelFocus</enum>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2"/>
+  </widget>
+  <widget class="QDockWidget" name="lastPlots">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>&amp;last plots</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_10"/>
+  </widget>
+  <widget class="QDockWidget" name="createPlot">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>&amp;Create Plot</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_11">
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>871</width>
+       <height>581</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMaximumSize</enum>
+      </property>
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="compareParties">
+         <attribute name="title">
+          <string>Gegenüberstellung Parteien</string>
+         </attribute>
+         <widget class="QWidget" name="formLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>861</width>
+            <height>176</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMaximumSize</enum>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="allPartiesLabel">
+             <property name="text">
+              <string>Alle Parteien verwenden</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="alleParteienGegenBerstellenCheckBox"/>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="zuVerwendendeParteienAuswHlenLabel">
+             <property name="text">
+              <string>Zu verwendende Parteien auswählen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="zuVerwendendeParteienAuswHlenComboBox"/>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="diagrammtypAuswHlenLabel">
+             <property name="text">
+              <string>Diagrammtyp auswählen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QTabWidget" name="diagrammtypAuswHlenTabWidget">
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="pieChart" native="true">
+              <attribute name="title">
+               <string>Kreisdiagramm</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="barchart">
+              <attribute name="title">
+               <string>Säulendiagramm</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="bargraph">
+              <attribute name="title">
+               <string>Balkendiagramm</string>
+              </attribute>
+             </widget>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel">
+             <property name="text">
+              <string>Anzuzeigende Daten auswählen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="anzuzeigendeDatenAuswHlenComboBox"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QPushButton" name="pushButton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>170</y>
+            <width>88</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Anzeigen</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="compareCandidates">
+         <attribute name="title">
+          <string>Gegenüberstellung Kandidaten</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="compareElections">
+         <attribute name="title">
+          <string>Vergleich Wahlen</string>
+         </attribute>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>0</y>
+       <width>861</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wählen Sie eine Vorlag aus.</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1126</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuDatei">
+    <property name="title">
+     <string>Da&amp;tei</string>
+    </property>
+    <addaction name="actionBeenden"/>
+   </widget>
+   <addaction name="menuDatei"/>
+  </widget>
+  <action name="actionBeenden">
+   <property name="text">
+    <string>Beenden</string>
+   </property>
+  </action>
  </widget>
- <pixmapfunction/>
+ <resources/>
  <connections/>
 </ui>

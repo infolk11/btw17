@@ -27,8 +27,8 @@ SOURCES += main.cpp\
     record.cpp \
     qcustomplot.cpp \
     plottest.cpp \
-    settingswindow.cpp \
-    presentationwindow.cpp
+    presentationwindow.cpp \
+    settingswindow.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -40,8 +40,8 @@ HEADERS  += partei.h \
     record.h \
     qcustomplot.h \
     plottest.h \
-    settingswindow.h \
-    presentationwindow.h
+    presentationwindow.h \
+    settingswindow.h
 
 
 unix:!macx: LIBS += -llog4cpp
@@ -53,5 +53,5 @@ STATECHARTS +=
 
 FORMS += \
     plottest.ui \
-    settingswindow.ui \
-    presentationwindow.ui
+    presentationwindow.ui \
+    settingswindow.ui
