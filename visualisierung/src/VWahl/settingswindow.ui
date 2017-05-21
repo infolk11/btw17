@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>SettingsWindow</class>
@@ -7,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1126</width>
-    <height>647</height>
+    <width>1203</width>
+    <height>728</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -209,8 +208,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1126</width>
-     <height>30</height>
+     <width>1203</width>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">
