@@ -15,8 +15,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = VWahl
 TEMPLATE = app
 
-
-
 SOURCES += main.cpp\
     partei.cpp \
     kandidat.cpp \

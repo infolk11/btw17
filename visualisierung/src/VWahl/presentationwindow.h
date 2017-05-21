@@ -3,8 +3,6 @@
 
 #include <QFrame>
 
-#include "plots.h"
-
 namespace Ui {
 class PresentationWindow;
 }
