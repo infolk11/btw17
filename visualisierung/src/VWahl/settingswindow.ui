@@ -91,7 +91,7 @@
             <x>0</x>
             <y>0</y>
             <width>991</width>
-            <height>176</height>
+            <height>180</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -170,7 +170,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>170</y>
+            <y>200</y>
             <width>88</width>
             <height>34</height>
            </rect>
@@ -223,12 +223,18 @@
      <string>Da&amp;tei</string>
     </property>
     <addaction name="actionBeenden"/>
+    <addaction name="actionDatabase_Settings"/>
    </widget>
    <addaction name="menuDatei"/>
   </widget>
   <action name="actionBeenden">
    <property name="text">
     <string>&amp;Beenden</string>
+   </property>
+  </action>
+  <action name="actionDatabase_Settings">
+   <property name="text">
+    <string>Database Settings</string>
    </property>
   </action>
  </widget>
