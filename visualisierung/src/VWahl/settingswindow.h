@@ -28,11 +28,11 @@ public:
 
 private slots:
 
-    //void on_actionDatabase_Settings_triggered();
+    /*//void on_actionDatabase_Settings_triggered();
 
-    void on_actionDatabase_Settings_triggered();
+    void on_actionDatabase_Settings_triggered();*/
 
-    void on_actionBeenden_triggered();
+//    void on_actionBeenden_triggered();
 
 private:
     Ui::SettingsWindow *ui;

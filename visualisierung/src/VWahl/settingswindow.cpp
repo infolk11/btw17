@@ -23,7 +23,7 @@ SettingsWindow::~SettingsWindow()
     delete ui;
 }
 
-void SettingsWindow::on_actionDatabase_Settings_triggered()
-{
-    //dbDialog->show();
-}
+//void SettingsWindow::on_actionDatabase_Settings_triggered()
+//{
+//    //dbDialog->show();
+//}
