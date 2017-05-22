@@ -1,74 +1,43 @@
 #include "database.h"
 
-Database::Database(QString name)
+Database::Database()
 {
-    dbcon_name = name;
-    db = QSqlDatabase::addDatabase(type, name);
-    db.setDatabaseName(name);
+    db = QSqlDatabase::addDatabase(VWahl::settings->value("type").toString());
 }
 
 Database::~Database()
 {
-    close();
+    db.close();
+    Logger::log << L_INFO << "closed Database";
 }
 
 //connects class-object to database
 auto Database::connect() -> int
 {
-    Database::writeDBSettings();
-    db.setHostName(db_host);
-    db.setDatabaseName(db_name);
-    db.setUserName(db_user);
-    db.setPassword(db_password);
-    if (db.open(db_user, db_password)) {
+    initDatabaseSettings();
+    if (db.open()) {
         Logger::log << L_INFO<< "successfull connected to database!";
-        connected = true;
         return EXIT_SUCCESS;
     }
     else {
         //Konvertiert QSqlError zu QString und dann zu Std::String.
         Logger::log << L_ERROR << db.lastError().text().toStdString();
-        connected = false;
         return EXIT_FAILURE;
     }
 }
 
-auto Database::writeDBSettings() -> void
+auto Database::exec(QString queryString) -> QSqlQuery
 {
-    db.setHostName(VWahl::settings->value("hostname").toString());
-    db.setDatabaseName(VWahl::settings->value("name").toString());
-    db.setUserName(VWahl::settings->value("user").toString());
-    db.setPassword(VWahl::settings->value("password").toString());
-
-}
-
-auto Database::exec(QString queryString, int column) -> QVariant
-{
-    QSqlQuery query;
     query = db.exec(queryString);
-    if (query.exec(queryString)) {
-        return query.value(column);
-    }
-
-    else{
-        Logger::log << L_INFO << db.lastError().text().toStdString();
-        //return may be done better
-        return 0;
-    }
+    query.exec(queryString);
+    return query;
 }
 
 //returns a recordobject related to given sql commands
 RecordObject Database::getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn)
 {
     //columns are related to index in the current query record
-    return RecordObject(exec(getDescription, descriptionColumn).toString(), exec(getVotes, votesColumn).toInt(), exec(getColor, colorColumn).value<QColor>());
-}
-
-auto Database::close() -> void
-{
-    db.close();
-    connected = false;
-    Logger::log << L_INFO << "connection closed!";
+    return RecordObject(exec(getDescription).value(descriptionColumn).toString(), exec(getVotes).value(votesColumn).toInt(), exec(getColor).value(colorColumn).value<QColor>());
 }
 
 auto Database::getData(QString wahl) -> Record
@@ -79,65 +48,21 @@ auto Database::getData(QString wahl) -> Record
 
 int Database::initDatabaseSettings()
 {
+    db.close();
     if(!doBasicSettingsExist())
-        return writeBasicDatabaseSettings("localhost","wahl17","vwahl","pass");
+        writeBasicDatabaseSettings();
+
+    db.setDatabaseName(VWahl::settings->value("name").toString());
+    db.setHostName(VWahl::settings->value("hostname").toString());
+    db.setUserName(VWahl::settings->value("user").toString());
+    db.setPassword(VWahl::settings->value("password").toString());
+
     return EXIT_SUCCESS;
 }
 
-//get methods
-auto Database::getDbType() -> QString
-{
-    return type;
-}
-
-auto Database::getDbHost() -> QString
-{
-    return db_host;
-}
-
-auto Database::getDbName() -> QString
-{
-    return db_name;
-}
-
-auto Database::getDbUser() -> QString
-{
-    return db_user;
-}
-
-auto Database::isConnected() -> bool
-{
-    return connected;
-}
-
-//set methods
-auto Database::setDbType(QString x) -> void
-{
-    type = x;
-}
-
-auto Database::setDbHost(QString x) -> void
-{
-    db_host = x;
-}
-
-auto Database::setDbName(QString x) -> void
-{
-    db_name = x;
-}
-
-auto Database::setDbUser(QString x) -> void
-{
-    db_user = x;
-}
-
-auto Database::setDbPassword(QString x) -> void
-{
-    db_password = x;
-}
 
 
-int Database::writeBasicDatabaseSettings(QString h, QString n, QString u, QString p)
+auto Database::writeBasicDatabaseSettings(QString h/* = "localhost"*/, QString n/* = "wahl17"*/, QString u/* = "vwahl"*/, QString p/* = "pass"*/, QString t/* = "QMYSQL"*/) -> int
 {
 
     //set basic values for the database connection in database-group
@@ -146,13 +71,14 @@ int Database::writeBasicDatabaseSettings(QString h, QString n, QString u, QStrin
     VWahl::settings->setValue("name", n);
     VWahl::settings->setValue("user", u);
     VWahl::settings->setValue("password", p);
+    VWahl::settings->setValue("type", t);
     VWahl::settings->endGroup();
 
-    //settings for sql commands
-    VWahl::settings->beginGroup("sql");
-    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
-    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
-    VWahl::settings->endGroup();
+//    //settings for sql commands
+//    VWahl::settings->beginGroup("sql");
+//    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
+//    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
+//    VWahl::settings->endGroup();
 
     VWahl::settings->sync();
     if (VWahl::settings->status() != 0){
@@ -164,18 +90,49 @@ int Database::writeBasicDatabaseSettings(QString h, QString n, QString u, QStrin
     return EXIT_SUCCESS;
 }
 
-bool Database::doBasicSettingsExist()
+auto Database::doBasicSettingsExist() -> bool
 {
     VWahl::settings->beginGroup("database");
 
-    return (VWahl::settings->contains("hostname") &
-            VWahl::settings->contains("name") &
-            VWahl::settings->contains("user") &
-            VWahl::settings->contains("databasepassword"));
+    return (VWahl::settings->contains("hostname") &&
+            VWahl::settings->contains("name") &&
+            VWahl::settings->contains("user") &&
+            VWahl::settings->contains("databasepassword") &&
+            VWahl::settings->contains("type"));
 
 }
 
-auto Database::status() -> QString
+auto Database::isOpen() -> bool
 {
-    db.lastError().text();
+    return db.isOpen();
+}
+
+auto Database::lastError() -> QSqlError
+{
+    return db.lastError();
+}
+
+auto Database::hostName() -> QString
+{
+    return db.hostName();
+}
+
+auto Database::userName() -> QString
+{
+    return db.userName();
+}
+
+auto Database::password() -> QString
+{
+    return db.password();
+}
+
+auto Database::databaseName() -> QString
+{
+    return db.databaseName();
+}
+
+auto Database::driverName() -> QString
+{
+    return db.driverName();
 }

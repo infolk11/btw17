@@ -31,7 +31,6 @@ namespace VWahl {
 QSettings *settings;
 PresentationWindow *presentationWindow;
 SettingsWindow *settingsWindow;
-Database *databaseForUse;
 
 //Methods
 /**
@@ -92,13 +91,6 @@ int init()
         return EXIT_FAILURE;
     }
 
-    //Database *databaseForUse = new Database("databaseForUse");
-
-
-    /*if (databaseForUse->connect() == EXIT_FAILURE)
-        return EXIT_FAILURE;*/
-    //databaseForUse->connect();
-
     Logger::log << L_INFO << "Initialized the program.";
     return EXIT_SUCCESS;
 }
@@ -116,12 +108,10 @@ int shutdown()
     delete settingsWindow;
     delete presentationWindow;
     delete settings;
-    delete databaseForUse;
 
     settingsWindow = NULL;
     presentationWindow = NULL;
     settings = NULL;
-    databaseForUse = NULL;
 
     return EXIT_SUCCESS;
 }
@@ -130,12 +120,6 @@ int initSettings()
 {
     settings = new QSettings("Evangelische_Schule_Neuruppin", "btw17");
     settings->sync();
-    if(Database::initDatabaseSettings() != EXIT_SUCCESS)
-    {
-        Logger::log << L_ERROR << "Failed to initalize database settings.";
-        return EXIT_FAILURE;
-    }
-
     return EXIT_SUCCESS;
 }
 

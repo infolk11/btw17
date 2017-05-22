@@ -27,7 +27,7 @@ SOURCES += main.cpp\
     plottest.cpp \
     presentationwindow.cpp \
     settingswindow.cpp \
-    databaseDialog.cpp
+    databasedialog.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -41,7 +41,8 @@ HEADERS  += partei.h \
     plottest.h \
     presentationwindow.h \
     settingswindow.h \
-    databaseDialog.h
+    databaseDialog.h \
+    databasedialog.h
 
 
 unix:!macx: LIBS += -llog4cpp
@@ -55,4 +56,4 @@ FORMS += \
     plottest.ui \
     presentationwindow.ui \
     settingswindow.ui \
-    databaseDialog.ui
+    databasedialog.ui

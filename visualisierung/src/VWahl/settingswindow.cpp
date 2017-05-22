@@ -7,13 +7,23 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    if(VWahl::databaseForUse->isConnected() == true)
-//        ui->zuVerwendendeParteienAuswHlenComboBox->addItems(VWahl::databaseForUse->exec("SELECT P_Bezeichnung FORM partei ORDER BY P_Bezeichnung;", 0).toStringList());
+    Database *db = new Database();
+    db->initDatabaseSettings();
 
-    //Logger::log << L_INFO << VWahl::databaseForUse->status().toStdString();
+    DatabaseDialog *dbDialog = new DatabaseDialog();
+
+    Logger::log << L_INFO << db->lastError().text().toStdString();
+    if(db->isOpen())
+        ui->zuVerwendendeParteienAuswHlenComboBox->addItems(db->exec("SELECT P_Bezeichnung FROM partei ORDER BY P_Bezeichnung;").value(0).toStringList());
 }
 
 SettingsWindow::~SettingsWindow()
 {
+    //delete db;
     delete ui;
+}
+
+void SettingsWindow::on_actionDatabase_Settings_triggered()
+{
+    dbDialog->show();
 }
