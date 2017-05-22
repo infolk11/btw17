@@ -25,5 +25,5 @@ SettingsWindow::~SettingsWindow()
 
 void SettingsWindow::on_actionDatabase_Settings_triggered()
 {
-    dbDialog->show();
+    //dbDialog->show();
 }
