@@ -1,14 +1,23 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "presentationwindow.h"
+#include "settingswindow.h"
+#include "database.h"
+
 #include <QSettings>
 #include <QCoreApplication>
 
 #include "logger.h"
 
-#include "presentationwindow.h"
-#include "settingswindow.h"
-#include "database.h"
+
+
+//forward declare Database in order to use it in main
+//I have no idea how to do this in a "better" way, nevertheless it does work
+class Database;
+
+//same for SettingsWindow
+class SettingsWindow;
 
 namespace VWahl
 {
@@ -17,6 +26,9 @@ namespace VWahl
     int initSettings();
     int shutdown();
     void showGui();
+
+    //database
+    extern Database *databaseForUse;
 
     //functions for setting-file
     void writeBasicSettings(QString h, QString n, QString u, QString p);

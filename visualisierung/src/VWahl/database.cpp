@@ -4,6 +4,7 @@ Database::Database(QString name)
 {
     dbcon_name = name;
     db = QSqlDatabase::addDatabase(type, name);
+    db.setDatabaseName(name);
 }
 
 Database::~Database()
@@ -14,11 +15,12 @@ Database::~Database()
 //connects class-object to database
 auto Database::connect() -> int
 {
+    Database::writeDBSettings();
     db.setHostName(db_host);
     db.setDatabaseName(db_name);
     db.setUserName(db_user);
     db.setPassword(db_password);
-    if (db.open()) {
+    if (db.open(db_user, db_password)) {
         Logger::log << L_INFO<< "successfull connected to database!";
         connected = true;
         return EXIT_SUCCESS;
@@ -29,6 +31,15 @@ auto Database::connect() -> int
         connected = false;
         return EXIT_FAILURE;
     }
+}
+
+auto Database::writeDBSettings() -> void
+{
+    db.setHostName(VWahl::settings->value("hostname").toString());
+    db.setDatabaseName(VWahl::settings->value("name").toString());
+    db.setUserName(VWahl::settings->value("user").toString());
+    db.setPassword(VWahl::settings->value("password").toString());
+
 }
 
 auto Database::exec(QString queryString, int column) -> QVariant
@@ -69,7 +80,7 @@ auto Database::getData(QString wahl) -> Record
 int Database::initDatabaseSettings()
 {
     if(!doBasicSettingsExist())
-        return writeBasicDatabaseSettings("localhost","btw17","vwahl","pass");
+        return writeBasicDatabaseSettings("localhost","wahl17","vwahl","pass");
     return EXIT_SUCCESS;
 }
 
@@ -92,6 +103,11 @@ auto Database::getDbName() -> QString
 auto Database::getDbUser() -> QString
 {
     return db_user;
+}
+
+auto Database::isConnected() -> bool
+{
+    return connected;
 }
 
 //set methods
@@ -157,4 +173,9 @@ bool Database::doBasicSettingsExist()
             VWahl::settings->contains("user") &
             VWahl::settings->contains("databasepassword"));
 
+}
+
+auto Database::status() -> QString
+{
+    db.lastError().text();
 }

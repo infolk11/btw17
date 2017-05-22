@@ -24,6 +24,8 @@ public:
     auto connect() -> int;
     auto close() -> void;
     auto exec(QString queryString, int column) -> QVariant;
+    auto writeDBSettings() -> void;
+    auto status() -> QString;
 
     //get a single recordObject
     RecordObject getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn);
@@ -45,6 +47,7 @@ public:
     auto getDbHost() -> QString;
     auto getDbName() -> QString;
     auto getDbUser() -> QString;
+    auto isConnected() -> bool;
 
     //set functions
     auto setDbType(QString x) -> void;
