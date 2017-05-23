@@ -2,6 +2,8 @@
 
 Database::Database()
 {
+    rec = query.record();
+
     //db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     db = QSqlDatabase::addDatabase("QMYSQL");
     //initDatabaseSettings();
@@ -22,8 +24,7 @@ auto Database::connect() -> int
         return EXIT_SUCCESS;
     }
     else {
-        //Konvertiert QSqlError zu QString und dann zu Std::String.
-        Logger::log << L_ERROR << db.lastError().text().toStdString();
+        Logger::log << L_DEBUG << db.lastError().text().toStdString();
         return EXIT_FAILURE;
     }
 }
@@ -53,8 +54,8 @@ int Database::checkDatabaseSettings()
 
     if(!doBasicSettingsExist())
         return writeBasicDatabaseSettings();
-
-    return EXIT_SUCCESS;
+    else
+        return EXIT_SUCCESS;
 }
 
 int Database::reloadSettings()
@@ -115,13 +116,11 @@ auto Database::writeBasicDatabaseSettings(QString h/* = "localhost"*/, QString n
 
 auto Database::doBasicSettingsExist() -> bool
 {
-    VWahl::settings->beginGroup("database");
-
-    return (VWahl::settings->contains("hostname") &&
-            VWahl::settings->contains("name") &&
-            VWahl::settings->contains("user") &&
-            VWahl::settings->contains("databasepassword") &&
-            VWahl::settings->contains("type"));
+    return (VWahl::settings->contains("database/hostname") &&
+            VWahl::settings->contains("database/name") &&
+            VWahl::settings->contains("database/user") &&
+            VWahl::settings->contains("database/password") &&
+            VWahl::settings->contains("database/type"));
 
 }
 

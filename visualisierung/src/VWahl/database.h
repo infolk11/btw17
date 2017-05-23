@@ -61,6 +61,7 @@ private:
     static auto doBasicSettingsExist() -> bool;
     QSqlDatabase db;
     QSqlQuery query;
+    QSqlRecord rec;
 };
 
 #endif // DATABASE_H

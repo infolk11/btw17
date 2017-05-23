@@ -18,3 +18,20 @@ DatabaseDialog::~DatabaseDialog()
 {
     delete ui;
 }
+
+void DatabaseDialog::on_acceptButton_clicked()
+{
+    VWahl::settings->setValue("database/type", ui->typeEdit->text());
+    VWahl::settings->setValue("database/hostname", ui->hostnameEdit->text());
+    VWahl::settings->setValue("database/user", ui->userEdit->text());
+    VWahl::settings->setValue("database/password", ui->passwordEdit->text());
+    VWahl::settings->setValue("database/name", ui->nameEdit->text());
+
+//for testing purpose
+//    Logger::log << L_INFO << "type aus object: " << ui->typeEdit->text().toStdString();
+//    Logger::log << L_INFO << "type aus file:   " << VWahl::settings->value("database/type").toString().toStdString();
+
+    //I don't know how to do this...
+    //SettingsWindow::db->reloadSettings();
+    this->hide();
+}

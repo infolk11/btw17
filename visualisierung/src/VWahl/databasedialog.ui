@@ -108,6 +108,15 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>cancelButton</tabstop>
+  <tabstop>acceptButton</tabstop>
+  <tabstop>typeEdit</tabstop>
+  <tabstop>hostnameEdit</tabstop>
+  <tabstop>nameEdit</tabstop>
+  <tabstop>userEdit</tabstop>
+  <tabstop>passwordEdit</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

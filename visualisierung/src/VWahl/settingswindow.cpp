@@ -9,12 +9,20 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     db = new Database();
     db->initDatabaseSettings();
+    db->connect();
 
     dbDialog = new DatabaseDialog(this);
 
     Logger::log << L_INFO << db->lastError().text().toStdString();
-    if(db->isOpen())
-        ui->zuVerwendendeParteienAuswHlenComboBox->addItems(db->exec("SELECT P_Bezeichnung FROM partei ORDER BY P_Bezeichnung;").value(0).toStringList());
+    if(db->isOpen()){
+        Logger::log << L_INFO << "opened Database!";
+
+        QSqlQuery q =db->exec("SELECT P_Bezeichnung FROM partei ORDER BY P_Bezeichnung;");
+        q.first();
+        while(q.next()){
+            ui->zuVerwendendeParteienAuswHlenComboBox->addItem(q.value(0).toString());
+        }
+    }
 }
 
 SettingsWindow::~SettingsWindow()
