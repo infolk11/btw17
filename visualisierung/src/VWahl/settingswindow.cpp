@@ -10,7 +10,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     db = new Database();
     db->initDatabaseSettings();
 
-    dbDialog = new DatabaseDialog();
+    dbDialog = new DatabaseDialog(this);
 
     Logger::log << L_INFO << db->lastError().text().toStdString();
     if(db->isOpen())
