@@ -24,15 +24,12 @@ public:
     explicit SettingsWindow(QWidget *parent = 0);
     ~SettingsWindow();
 
-    static Database *db;
+    Database *db;
 
-private slots:
 
-    /*//void on_actionDatabase_Settings_triggered();
 
-    void on_actionDatabase_Settings_triggered();*/
-
-//    void on_actionBeenden_triggered();
+public slots:
+    void on_actionDatabase_Settings_triggered();
 
 private:
     Ui::SettingsWindow *ui;

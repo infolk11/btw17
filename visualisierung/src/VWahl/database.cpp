@@ -3,6 +3,7 @@
 Database::Database()
 {
     db = QSqlDatabase::addDatabase(VWahl::settings->value("type").toString());
+    //initDatabaseSettings();
 }
 
 Database::~Database()
@@ -46,11 +47,18 @@ auto Database::getData(QString wahl) -> Record
     return Record();
 }
 
+int Database::checkDatabaseSettings()
+{
+
+    if(!doBasicSettingsExist())
+        return writeBasicDatabaseSettings();
+
+    return EXIT_SUCCESS;
+}
+
 int Database::initDatabaseSettings()
 {
     db.close();
-    if(!doBasicSettingsExist())
-        writeBasicDatabaseSettings();
 
     db.setDatabaseName(VWahl::settings->value("name").toString());
     db.setHostName(VWahl::settings->value("hostname").toString());

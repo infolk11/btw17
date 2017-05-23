@@ -34,7 +34,7 @@ public:
      * @return
      */
     static auto getData(QString wahl ) -> Record;
-
+    static auto checkDatabaseSettings() -> int;
     auto initDatabaseSettings() -> int;
     auto isOpen() -> bool;
     auto lastError() -> QSqlError;

@@ -7,10 +7,10 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    Database *db = new Database();
+    db = new Database();
     db->initDatabaseSettings();
 
-    DatabaseDialog *dbDialog = new DatabaseDialog();
+    dbDialog = new DatabaseDialog();
 
     Logger::log << L_INFO << db->lastError().text().toStdString();
     if(db->isOpen())
@@ -19,11 +19,13 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
 SettingsWindow::~SettingsWindow()
 {
-    //delete db;
+    delete db;
     delete ui;
-}
 
-//void SettingsWindow::on_actionDatabase_Settings_triggered()
-//{
-//    //dbDialog->show();
-//}
+    ui = NULL;
+    db = NULL;
+}
+void SettingsWindow::on_actionDatabase_Settings_triggered()
+{
+    dbDialog->show();
+}

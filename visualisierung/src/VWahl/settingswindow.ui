@@ -234,7 +234,7 @@
   </action>
   <action name="actionDatabase_Settings">
    <property name="text">
-    <string>Database Settings</string>
+    <string>&amp;Database Settings</string>
    </property>
   </action>
  </widget>

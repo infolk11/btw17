@@ -5,13 +5,15 @@ DatabaseDialog::DatabaseDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DatabaseDialog)
 {
-//    ui->typeEdit->insert(SettingsWindow::db->driverName());
-//    ui->hostnameEdit->insert(SettingsWindow::db->hostName());
-//    ui->userEdit->insert(SettingsWindow::db->userName());
-//    ui->passwordEdit->insert(SettingsWindow::db->password());
-//    ui->nameEdit->insert(SettingsWindow::db->databaseName());
-
     ui->setupUi(this);
+
+    ui->typeEdit->insert(VWahl::settings->value("database/type").toString());
+    ui->hostnameEdit->insert(VWahl::settings->value("database/hostname").toString());
+    ui->userEdit->insert(VWahl::settings->value("database/user").toString());
+    ui->passwordEdit->insert(VWahl::settings->value("database/password").toString());
+    ui->nameEdit->insert(VWahl::settings->value("database/name").toString());
+
+
 
 }
 
