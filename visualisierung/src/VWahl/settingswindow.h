@@ -31,6 +31,9 @@ public:
 public slots:
     void on_actionDatabase_Settings_triggered();
 
+private slots:
+    void on_actionBeenden_triggered();
+
 private:
     Ui::SettingsWindow *ui;
     DatabaseDialog *dbDialog;

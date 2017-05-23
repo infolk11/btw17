@@ -2,7 +2,8 @@
 
 Database::Database()
 {
-    db = QSqlDatabase::addDatabase(VWahl::settings->value("type").toString());
+    //db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
+    db = QSqlDatabase::addDatabase("QMYSQL");
     //initDatabaseSettings();
 }
 
@@ -56,14 +57,28 @@ int Database::checkDatabaseSettings()
     return EXIT_SUCCESS;
 }
 
+int Database::reloadSettings()
+{
+    db.close();
+    initDatabaseSettings();
+    if(connect() == EXIT_FAILURE){
+        Logger::log << L_ERROR << db.lastError().text().toStdString();
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
+
+}
+
 int Database::initDatabaseSettings()
 {
     db.close();
 
-    db.setDatabaseName(VWahl::settings->value("name").toString());
-    db.setHostName(VWahl::settings->value("hostname").toString());
-    db.setUserName(VWahl::settings->value("user").toString());
-    db.setPassword(VWahl::settings->value("password").toString());
+    checkDatabaseSettings();
+
+    db.setDatabaseName(VWahl::settings->value("database/name").toString());
+    db.setHostName(VWahl::settings->value("database/hostname").toString());
+    db.setUserName(VWahl::settings->value("database/user").toString());
+    db.setPassword(VWahl::settings->value("database/password").toString());
 
     return EXIT_SUCCESS;
 }
