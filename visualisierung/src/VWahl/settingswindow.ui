@@ -108,27 +108,27 @@
            <item row="0" column="1">
             <widget class="QCheckBox" name="alleParteienGegenBerstellenCheckBox"/>
            </item>
-           <item row="2" column="0">
+           <item row="1" column="0">
             <widget class="QLabel" name="zuVerwendendeParteienAuswHlenLabel">
              <property name="text">
               <string>Zu verwendende Parteien auswählen</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="1" column="1">
             <widget class="QComboBox" name="zuVerwendendeParteienAuswHlenComboBox"/>
            </item>
-           <item row="3" column="0">
+           <item row="2" column="0">
             <widget class="QLabel" name="diagrammtypAuswHlenLabel">
              <property name="text">
               <string>Diagrammtyp auswählen</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
+           <item row="2" column="1">
             <widget class="QTabWidget" name="diagrammtypAuswHlenTabWidget">
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <widget class="QWidget" name="pieChart">
               <attribute name="title">
@@ -147,22 +147,15 @@
              </widget>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel">
              <property name="text">
               <string>Anzuzeigende Daten auswählen</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="3" column="1">
             <widget class="QComboBox" name="anzuzeigendeDatenAuswHlenComboBox"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
            </item>
           </layout>
          </widget>
@@ -204,7 +197,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Wählen Sie eine Vorlag aus.</string>
+      <string>Wählen Sie eine Vorlage aus.</string>
      </property>
     </widget>
    </widget>

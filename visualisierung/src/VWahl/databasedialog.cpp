@@ -12,9 +12,6 @@ DatabaseDialog::DatabaseDialog(QWidget *parent) :
     ui->userEdit->insert(VWahl::settings->value("database/user").toString());
     ui->passwordEdit->insert(VWahl::settings->value("database/password").toString());
     ui->nameEdit->insert(VWahl::settings->value("database/name").toString());
-
-
-
 }
 
 DatabaseDialog::~DatabaseDialog()

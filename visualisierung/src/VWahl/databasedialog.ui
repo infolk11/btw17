@@ -114,7 +114,7 @@
    <sender>cancelButton</sender>
    <signal>clicked()</signal>
    <receiver>DatabaseDialog</receiver>
-   <slot>close()</slot>
+   <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>443</x>
