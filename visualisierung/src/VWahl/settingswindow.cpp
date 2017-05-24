@@ -9,11 +9,13 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     db = new Database();
     db->initDatabaseSettings();
-    db->connect();
+    if(db->connect() != EXIT_SUCCESS)
+        error.showMessage(db->lastError().text());
 
     dbDialog = new DatabaseDialog(this);
 
-    Logger::log << L_INFO << db->lastError().text().toStdString();
+
+    //Logger::log << L_INFO << db->lastError().text().toStdString();
     if(db->isOpen()){
         Logger::log << L_INFO << "opened Database!";
 
@@ -22,6 +24,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         while(q.next()){
             ui->zuVerwendendeParteienAuswHlenComboBox->addItem(q.value(0).toString());
         }
+    }
+    else{
+        error.showMessage(db->lastError().text());
     }
 }
 

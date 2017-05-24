@@ -2,7 +2,7 @@
 #include "ui_databasedialog.h"
 
 DatabaseDialog::DatabaseDialog(QWidget *parent) :
-    QDialog(parent),
+    QDialog(VWahl::settingsWindow),
     ui(new Ui::DatabaseDialog)
 {
     ui->setupUi(this);
@@ -32,6 +32,9 @@ void DatabaseDialog::on_acceptButton_clicked()
 //    Logger::log << L_INFO << "type aus file:   " << VWahl::settings->value("database/type").toString().toStdString();
 
     //I don't know how to do this...
-    //SettingsWindow::db->reloadSettings();
+    //VWahl::settingsWindow->db->reloadSettings();
+    Logger::log << L_INFO << "in accept: ";
+    Logger::log << L_INFO << "in accept: " << *(VWahl::settingsWindow->db);
+
     this->hide();
 }

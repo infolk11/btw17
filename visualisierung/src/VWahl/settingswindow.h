@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <QComboBox>
+#include <QErrorMessage>
 
 class Database;
 class DatabaseDialog;
@@ -37,6 +38,7 @@ private slots:
 private:
     Ui::SettingsWindow *ui;
     DatabaseDialog *dbDialog;
+    QErrorMessage error;
 };
 
 #endif // SETTINGSWINDOW_H
