@@ -6,8 +6,12 @@
 #include "databasedialog.h"
 
 #include <QMainWindow>
-#include <QComboBox>
 #include <QErrorMessage>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QCheckBox>
+#include <QSignalMapper>
+#include <QAction>
 
 class Database;
 class DatabaseDialog;
@@ -27,18 +31,12 @@ public:
 
     Database *db;
 
-
-
-public slots:
-    void on_actionDatabase_Settings_triggered();
-
-private slots:
-    void on_actionBeenden_triggered();
-
 private:
     Ui::SettingsWindow *ui;
     DatabaseDialog *dbDialog;
     QErrorMessage error;
+    QSignalMapper *signalMapper;
+
 };
 
 #endif // SETTINGSWINDOW_H

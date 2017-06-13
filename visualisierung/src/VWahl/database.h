@@ -17,10 +17,10 @@
 class Database
 {
 public:
-    Database();
+    Database(const QString name);
     ~Database();
     auto connect() -> int;
-    auto exec(QString queryString) -> QSqlQuery;
+    auto exec(const QString queryString) -> QSqlQuery;
 
     //get a single recordObject
     RecordObject getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn);
@@ -62,6 +62,7 @@ private:
     QSqlDatabase db;
     QSqlQuery query;
     QSqlRecord rec;
+    QString db_name;
 };
 
 #endif // DATABASE_H

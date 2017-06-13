@@ -68,8 +68,8 @@
       <rect>
        <x>0</x>
        <y>30</y>
-       <width>1001</width>
-       <height>581</height>
+       <width>611</width>
+       <height>631</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -79,7 +79,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="compareParties">
          <attribute name="title">
@@ -90,8 +90,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>991</width>
-            <height>180</height>
+            <width>591</width>
+            <height>541</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -106,7 +106,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QCheckBox" name="alleParteienGegenBerstellenCheckBox"/>
+            <widget class="QCheckBox" name="selectAllPartysCheckBox"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="zuVerwendendeParteienAuswHlenLabel">
@@ -114,9 +114,6 @@
               <string>Zu verwendende Parteien auswählen</string>
              </property>
             </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="zuVerwendendeParteienAuswHlenComboBox"/>
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="diagrammtypAuswHlenLabel">
@@ -128,7 +125,7 @@
            <item row="2" column="1">
             <widget class="QTabWidget" name="diagrammtypAuswHlenTabWidget">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="pieChart">
               <attribute name="title">
@@ -157,13 +154,16 @@
            <item row="3" column="1">
             <widget class="QComboBox" name="anzuzeigendeDatenAuswHlenComboBox"/>
            </item>
+           <item row="1" column="1">
+            <widget class="QListWidget" name="partyList"/>
+           </item>
           </layout>
          </widget>
          <widget class="QPushButton" name="pushButton">
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>200</y>
+            <y>550</y>
             <width>88</width>
             <height>34</height>
            </rect>
@@ -177,6 +177,107 @@
          <attribute name="title">
           <string>Gegenüberstellung Kandidaten</string>
          </attribute>
+         <widget class="QWidget" name="formLayoutWidget_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>590</width>
+            <height>491</height>
+           </rect>
+          </property>
+          <layout class="QFormLayout" name="formLayout_2">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMaximumSize</enum>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="allCandidatesLabel">
+             <property name="text">
+              <string>Alle Kandidaten verwenden</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="selectAllCandidatesCheckBox"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>zugehörige Partei anzeigen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="showAssociatedParty">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="zuVerwendendeKandidatenAuswHlenLabel">
+             <property name="text">
+              <string>Zu verwendende Kandidaten auswählen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QListWidget" name="candidatesList"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QTabWidget" name="diagrammtypAuswHlenTabWidget_2">
+             <property name="currentIndex">
+              <number>1</number>
+             </property>
+             <widget class="QWidget" name="pieChart_2">
+              <attribute name="title">
+               <string>Kreisdiagramm</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="barchart_2">
+              <attribute name="title">
+               <string>Säulendiagramm</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="bargraph_2">
+              <attribute name="title">
+               <string>Balkendiagramm</string>
+              </attribute>
+             </widget>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel_2">
+             <property name="text">
+              <string>Anzuzeigende Daten auswählen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QComboBox" name="anzuzeigendeDatenAuswHlenComboBox_2"/>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="diagrammtypAuswHlenLabel_2">
+             <property name="text">
+              <string>Diagrammtyp auswählen</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>500</y>
+            <width>88</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Anzeigen</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="compareElections">
          <attribute name="title">
@@ -208,7 +309,7 @@
      <x>0</x>
      <y>0</y>
      <width>1203</width>
-     <height>30</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">
@@ -216,7 +317,7 @@
      <string>Da&amp;tei</string>
     </property>
     <addaction name="actionBeenden"/>
-    <addaction name="actionDatabase_Settings"/>
+    <addaction name="actionDatabaseSettings"/>
    </widget>
    <addaction name="menuDatei"/>
   </widget>
@@ -225,9 +326,9 @@
     <string>&amp;Beenden</string>
    </property>
   </action>
-  <action name="actionDatabase_Settings">
+  <action name="actionDatabaseSettings">
    <property name="text">
-    <string>&amp;Database Settings</string>
+    <string>&amp;settings</string>
    </property>
   </action>
  </widget>

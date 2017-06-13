@@ -1,9 +1,9 @@
 #include "database.h"
 
-Database::Database()
+Database::Database(const QString name)
 {
     rec = query.record();
-
+    db_name = name;
     //db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     db = QSqlDatabase::addDatabase("QMYSQL");
     //initDatabaseSettings();
@@ -29,7 +29,7 @@ auto Database::connect() -> int
     }
 }
 
-auto Database::exec(QString queryString) -> QSqlQuery
+auto Database::exec(const QString queryString) -> QSqlQuery
 {
     query = db.exec(queryString);
     query.exec(queryString);
@@ -76,7 +76,7 @@ int Database::initDatabaseSettings()
 
     checkDatabaseSettings();
 
-    db.setDatabaseName(VWahl::settings->value("database/name").toString());
+    db.setDatabaseName(db_name);
     db.setHostName(VWahl::settings->value("database/hostname").toString());
     db.setUserName(VWahl::settings->value("database/user").toString());
     db.setPassword(VWahl::settings->value("database/password").toString());
