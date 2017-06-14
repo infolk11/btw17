@@ -12,6 +12,7 @@
 #include <QCheckBox>
 #include <QSignalMapper>
 #include <QAction>
+#include <QKeySequence>
 
 class Database;
 class DatabaseDialog;

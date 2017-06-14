@@ -15,17 +15,21 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     dbDialog = new DatabaseDialog(this);
 
+    //set shortcuts
+    ui->actionBeenden->setShortcut(Qt::CTRL + Qt::Key_Q);
+
     //it should be possible to select multiple items
     ui->partyList->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->candidatesList->setSelectionMode(QAbstractItemView::MultiSelection);
 
-    //signal and slot in new syntax
+    //signal and slot in new qt5 syntax
     connect(ui->actionBeenden, &QAction::triggered,
             this, &SettingsWindow::close);
 
     connect(ui->actionDatabaseSettings, &QAction::triggered,
             this->dbDialog, &DatabaseDialog::show);
 
+    //using lambda functions
     connect(ui->showAssociatedParty, &QCheckBox::stateChanged,
             [=](const int state){
         QSqlQuery q;
