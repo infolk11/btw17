@@ -6,7 +6,7 @@
 #include <QScreen>
 
 #include "main.h"
-#include "plottest.h"
+
 
 /**
  * Main
@@ -31,6 +31,7 @@ namespace VWahl {
 QSettings *settings;
 PresentationWindow *presentationWindow;
 SettingsWindow *settingsWindow;
+QVector<Database> *dbs;
 
 //Methods
 /**
@@ -87,7 +88,15 @@ int init()
     //Initializing the settings
     if(initSettings()!= EXIT_SUCCESS)
     {
-        Logger::log << L_ERROR << "Failed to initalize settings!";
+        Logger::log << L_ERROR << "Failed to initalize settings.";
+        return EXIT_FAILURE;
+    }
+
+    //Initializing databases
+    VWahl::dbs = new QVector<Database>();
+    if(Database::checkDatabaseSettings() != EXIT_SUCCESS)
+    {
+        Logger::log << L_ERROR << "Failed to initialize database settings.";
         return EXIT_FAILURE;
     }
 
@@ -105,13 +114,18 @@ int shutdown()
 {
     Logger::log << L_INFO << "Shutting down the program.";
 
+    VWahl::settings->sync();
+    if (VWahl::settings->status() != 0){
+        Logger::log << L_ERROR << "failed to write the settings to" << VWahl::settings->fileName().toStdString();
+        return EXIT_FAILURE;
+    }
+    else
+        Logger::log << L_INFO << "wrote the settings to" << VWahl::settings->fileName().toStdString();
+
+    //Cleaning up memory
     delete settingsWindow;
     delete presentationWindow;
     delete settings;
-
-    settingsWindow = NULL;
-    presentationWindow = NULL;
-    settings = NULL;
 
     return EXIT_SUCCESS;
 }

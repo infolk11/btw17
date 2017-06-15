@@ -9,7 +9,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->setupUi(this);
 
     db = new Database("wahl17");
-    db->initDatabaseSettings();
+    db->initByDatabaseSettings();
     if(db->connect() != EXIT_SUCCESS)
         error.showMessage(db->lastError().text());
 

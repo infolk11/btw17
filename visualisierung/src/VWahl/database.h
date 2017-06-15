@@ -18,6 +18,7 @@ class Database
 {
 public:
     Database(const QString name);
+    Database() = default;
     ~Database();
     auto connect() -> int;
     auto exec(const QString queryString) -> QSqlQuery;
@@ -36,7 +37,7 @@ public:
     static auto getData(QString wahl ) -> Record;
     static auto checkDatabaseSettings() -> int;
     auto reloadSettings() -> int;
-    auto initDatabaseSettings() -> int;
+    auto initByDatabaseSettings() -> int;
     auto isOpen() -> bool;
     auto lastError() -> QSqlError;
     auto hostName() -> QString;
@@ -47,6 +48,13 @@ public:
 private:
     //auto getSize(QSqlQuery &quey) -> int;
 
+
+    QSqlDatabase db;
+    QSqlQuery query;
+    QSqlRecord rec;
+    QString db_name;
+
+    static QList<Database> dbs;
     /**
      * will be deleted laterwards. Just here to ease programming
      *
@@ -59,10 +67,6 @@ private:
      */
     static auto writeBasicDatabaseSettings(QString h = "localhost", QString n = "wahl17", QString u = "vwahl", QString p = "pass", QString t = "QMYSQL") -> int;
     static auto doBasicSettingsExist() -> bool;
-    QSqlDatabase db;
-    QSqlQuery query;
-    QSqlRecord rec;
-    QString db_name;
 };
 
 #endif // DATABASE_H
