@@ -6,7 +6,7 @@ Database::Database(const QString name)
     db_name = name;
     //db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     db = QSqlDatabase::addDatabase("QMYSQL");
-    VWahl::dbs->append(*this);
+    //VWahl::dbs->append(*this);
     //initDatabaseSettings();
 }
 

@@ -318,6 +318,7 @@
     </property>
     <addaction name="actionBeenden"/>
     <addaction name="actionDatabaseSettings"/>
+    <addaction name="actionquerys"/>
    </widget>
    <addaction name="menuDatei"/>
   </widget>
@@ -329,6 +330,11 @@
   <action name="actionDatabaseSettings">
    <property name="text">
     <string>&amp;settings</string>
+   </property>
+  </action>
+  <action name="actionquerys">
+   <property name="text">
+    <string>querys</string>
    </property>
   </action>
  </widget>

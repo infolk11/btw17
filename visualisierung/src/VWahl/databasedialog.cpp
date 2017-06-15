@@ -27,14 +27,8 @@ void DatabaseDialog::on_acceptButton_clicked()
     VWahl::settings->setValue("database/password", ui->passwordEdit->text());
     VWahl::settings->setValue("database/name", ui->nameEdit->text());
 
-//for testing purpose
-//    Logger::log << L_INFO << "type aus object: " << ui->typeEdit->text().toStdString();
-//    Logger::log << L_INFO << "type aus file:   " << VWahl::settings->value("database/type").toString().toStdString();
-
     //I don't know how to do this...
     //VWahl::settingsWindow->db->reloadSettings();
-    Logger::log << L_INFO << "in accept: ";
-    //Logger::log << L_INFO << "in accept: " << *(VWahl::settingsWindow->db);
 
     this->hide();
 }

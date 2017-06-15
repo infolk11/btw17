@@ -14,6 +14,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         error.showMessage(db->lastError().text());
 
     dbDialog = new DatabaseDialog(this);
+    queryDialog = new QueryDialog(this);
 
     //set shortcuts
     ui->actionBeenden->setShortcut(Qt::CTRL + Qt::Key_Q);
@@ -76,6 +77,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         else
             ui->partyList->clearSelection();
     });
+
+    connect(ui->actionquerys, &QAction::triggered,
+            queryDialog, &QueryDialog::show);
 
     if(db->isOpen()){
         Logger::log << L_INFO << "opened Database!";
