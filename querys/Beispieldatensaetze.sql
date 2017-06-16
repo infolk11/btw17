@@ -82,3 +82,10 @@ INSERT INTO `wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberecht
 (1036, 'Stöffin\r\n', 16833, 'Dorfstr. 49a\r\n', 0, 0),
 (1037, 'Wulkow\r\n', 16835, 'Nietwerderweg 13a\r\n', 0, 0),
 (1038, 'Wuthenow\r\n', 16818, 'Dorfstr. 53\r\n', 0, 0);
+
+INSERT INTO stellt(P_ID, D_ID) VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5);
