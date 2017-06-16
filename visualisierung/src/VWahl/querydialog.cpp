@@ -5,9 +5,12 @@ QueryDialog::QueryDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QueryDialog)
 {
+
     ui->setupUi(this);
     connect(ui->cancelButton, &QPushButton::clicked,
             this, &QueryDialog::close);
+
+    writeBasicItemsToSettings();
     init();
 }
 
@@ -25,6 +28,10 @@ void QueryDialog::writeBasicItemsToSettings()
 {
     VWahl::settings->beginGroup("querys");
     VWahl::settings->setValue("partyIdAndName", "SELECT P_ID, P_Bezeichnung FROM partei;");
+    VWahl::settings->setValue("partys","SELECT P_Bezeichnung FROM partei ORDER BY P_Bezeichnung;");
+    VWahl::settings->setValue("candidates","SELECT Name,  Vorname FROM direktkandidaten ORDER BY Name;");
+    VWahl::settings->setValue("candidatesAndTheirPartys","SELECT d.Name, d.Vorname, p.P_Bezeichnung FROM direktkandidaten d INNER JOIN stellt s ON d.D_ID = s.D_ID INNER JOIN partei p ON s.P_ID = p.P_ID");
+    VWahl::settings->endGroup();
 }
 
 void QueryDialog::init()
