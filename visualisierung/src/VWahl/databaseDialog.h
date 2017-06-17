@@ -8,6 +8,10 @@ class DatabaseDialog : public QDialog
 {
 public:
     DatabaseDialog();
+    ~DatabaseDialog();
+
+private:
+    //Ui::DatabaseDialog *ui;
 };
 
 #endif // DATABASEDIALOG_H

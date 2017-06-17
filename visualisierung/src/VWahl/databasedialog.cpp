@@ -1,0 +1,34 @@
+#include "databasedialog.h"
+#include "ui_databasedialog.h"
+
+DatabaseDialog::DatabaseDialog(QWidget *parent) :
+    QDialog(VWahl::settingsWindow),
+    ui(new Ui::DatabaseDialog)
+{
+    ui->setupUi(this);
+
+    ui->typeEdit->insert(VWahl::settings->value("database/type").toString());
+    ui->hostnameEdit->insert(VWahl::settings->value("database/hostname").toString());
+    ui->userEdit->insert(VWahl::settings->value("database/user").toString());
+    ui->passwordEdit->insert(VWahl::settings->value("database/password").toString());
+    ui->nameEdit->insert(VWahl::settings->value("database/name").toString());
+}
+
+DatabaseDialog::~DatabaseDialog()
+{
+    delete ui;
+}
+
+void DatabaseDialog::on_acceptButton_clicked()
+{
+    VWahl::settings->setValue("database/type", ui->typeEdit->text());
+    VWahl::settings->setValue("database/hostname", ui->hostnameEdit->text());
+    VWahl::settings->setValue("database/user", ui->userEdit->text());
+    VWahl::settings->setValue("database/password", ui->passwordEdit->text());
+    VWahl::settings->setValue("database/name", ui->nameEdit->text());
+
+    //I don't know how to do this...
+    //VWahl::settingsWindow->db->reloadSettings();
+
+    this->hide();
+}

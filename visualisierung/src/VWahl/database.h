@@ -4,12 +4,11 @@
 #include <QSqlDatabase>
 #include <QtSql/QtSql>
 #include <QtSql/QSqlDatabase>
-//#include <QtSql/QSqlQueryModel>
 #include <QtSql/QSqlError>
+#include <QtSql/QSqlQuery>
 #include <QString>
 #include <QColor>
 #include <QList>
-#include <iostream>
 
 #include "logger.h"
 #include "record.h"
@@ -18,14 +17,11 @@
 class Database
 {
 public:
-    Database(QString name);
-    ~Database();
+    Database(const QString name);
     Database() = default;
+    ~Database();
     auto connect() -> int;
-    auto close() -> void;
-    auto exec(QString queryString, int column) -> QVariant;
-    auto writeDBSettings() -> void;
-    auto status() -> QString;
+    auto exec(const QString queryString) -> QSqlQuery;
 
     //get a single recordObject
     RecordObject getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn);
@@ -39,26 +35,26 @@ public:
      * @return
      */
     static auto getData(QString wahl ) -> Record;
-
-    static auto initDatabaseSettings() -> int;
-
-    //get functions
-    auto getDbType() -> QString;
-    auto getDbHost() -> QString;
-    auto getDbName() -> QString;
-    auto getDbUser() -> QString;
-    auto isConnected() -> bool;
-
-    //set functions
-    auto setDbType(QString x) -> void;
-    auto setDbHost(QString x) -> void;
-    auto setDbName(QString x) -> void;
-    auto setDbUser(QString x) -> void;
-    auto setDbPassword(QString x) -> void;
-
+    static auto checkDatabaseSettings() -> int;
+    auto reloadSettings() -> int;
+    auto initByDatabaseSettings() -> int;
+    auto isOpen() -> bool;
+    auto lastError() -> QSqlError;
+    auto hostName() -> QString;
+    auto userName() -> QString;
+    auto password() -> QString;
+    auto databaseName() -> QString;
+    auto driverName() -> QString;
 private:
     //auto getSize(QSqlQuery &quey) -> int;
 
+
+    QSqlDatabase db;
+    QSqlQuery query;
+    QSqlRecord rec;
+    QString db_name;
+
+    static QList<Database> dbs;
     /**
      * will be deleted laterwards. Just here to ease programming
      *
@@ -69,18 +65,8 @@ private:
      * @param p
      * @return
      */
-    static auto writeBasicDatabaseSettings(QString h, QString n, QString u, QString p) -> int;
+    static auto writeBasicDatabaseSettings(QString h = "localhost", QString n = "wahl17", QString u = "vwahl", QString p = "pass", QString t = "QMYSQL") -> int;
     static auto doBasicSettingsExist() -> bool;
-
-    QString type = "QMYSQL";
-    QString db_host;
-    QString db_name;
-    QString db_user;
-    QString db_password;
-
-    QSqlDatabase db;
-    QString dbcon_name;
-    bool connected = false;
 };
 
 #endif // DATABASE_H
