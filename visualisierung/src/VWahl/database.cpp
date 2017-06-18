@@ -52,7 +52,6 @@ auto Database::getData(QString wahl) -> Record
 
 int Database::checkDatabaseSettings()
 {
-
     if(!doBasicSettingsExist())
         return writeBasicDatabaseSettings();
     else

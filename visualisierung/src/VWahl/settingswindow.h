@@ -11,6 +11,7 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QCheckBox>
+#include <QSignalMapper>
 #include <QAction>
 #include <QKeySequence>
 
@@ -37,8 +38,8 @@ private:
     Ui::SettingsWindow *ui;
     DatabaseDialog *dbDialog;
     QErrorMessage error;
+    QSignalMapper *signalMapper;
     QueryDialog *queryDialog;
-
 };
 
 #endif // SETTINGSWINDOW_H

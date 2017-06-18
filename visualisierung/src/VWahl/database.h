@@ -54,7 +54,6 @@ private:
     QSqlRecord rec;
     QString db_name;
 
-    static QList<Database> dbs;
     /**
      * will be deleted laterwards. Just here to ease programming
      *
@@ -67,6 +66,8 @@ private:
      */
     static auto writeBasicDatabaseSettings(QString h = "localhost", QString n = "wahl17", QString u = "vwahl", QString p = "pass", QString t = "QMYSQL") -> int;
     static auto doBasicSettingsExist() -> bool;
+
+
 };
 
 #endif // DATABASE_H

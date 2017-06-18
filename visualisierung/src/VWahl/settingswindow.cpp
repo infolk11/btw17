@@ -15,7 +15,6 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     dbDialog = new DatabaseDialog(this);
     queryDialog = new QueryDialog(this);
-
     //set shortcuts
     ui->actionBeenden->setShortcut(Qt::CTRL + Qt::Key_Q);
 
@@ -29,6 +28,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     connect(ui->actionDatabaseSettings, &QAction::triggered,
             this->dbDialog, &DatabaseDialog::show);
+
 
     //using lambda functions
     connect(ui->showAssociatedParty, &QCheckBox::stateChanged,
@@ -61,7 +61,6 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             }
         }
     });
-
     connect(ui->selectAllCandidatesCheckBox, &QCheckBox::stateChanged,
             [=](const int state){
         if(state == Qt::Checked)
@@ -80,12 +79,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     connect(ui->actionquerys, &QAction::triggered,
             queryDialog, &QueryDialog::show);
-
     if(db->isOpen()){
         Logger::log << L_INFO << "opened Database!";
 
         //put all partys into the partyListWidget
         QSqlQuery q = db->exec(VWahl::settings->value("querys/partys").toString());
+
         q.first();
         while(q.next()){
             //2nd method better to use
