@@ -7,6 +7,7 @@
 
 #include <QSettings>
 #include <QCoreApplication>
+#include <QVector>
 
 #include "logger.h"
 
@@ -15,6 +16,7 @@
 //forward declare SettingsWindow in order to use it in main
 //I have no idea how to do this in a "better" way, nevertheless it does work
 class SettingsWindow;
+class Database;
 
 namespace VWahl
 {
@@ -35,6 +37,8 @@ namespace VWahl
     //setting object, to store settings, i.e. login details for the database
     //company: Evangelische Schule Neuruppin, name: btw17
     extern QSettings *settings;
+
+    extern QVector<Database> *dbs;
 
 }
 
