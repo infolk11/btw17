@@ -109,10 +109,6 @@ int shutdown()
     delete presentationWindow;
     delete settings;
 
-    settingsWindow = NULL;
-    presentationWindow = NULL;
-    settings = NULL;
-
     return EXIT_SUCCESS;
 }
 
