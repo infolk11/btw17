@@ -9,12 +9,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->setupUi(this);
 
     db = new Database("wahl17");
-    db->initDatabaseSettings();
+    db->initByDatabaseSettings();
     if(db->connect() != EXIT_SUCCESS)
         error.showMessage(db->lastError().text());
 
     dbDialog = new DatabaseDialog(this);
-
+    queryDialog = new QueryDialog(this);
     //set shortcuts
     ui->actionBeenden->setShortcut(Qt::CTRL + Qt::Key_Q);
 
@@ -29,13 +29,14 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     connect(ui->actionDatabaseSettings, &QAction::triggered,
             this->dbDialog, &DatabaseDialog::show);
 
+
     //using lambda functions
     connect(ui->showAssociatedParty, &QCheckBox::stateChanged,
             [=](const int state){
         QSqlQuery q;
         if(state == Qt::Checked){
             ui->partyList->clear();
-            q = db->exec("SELECT Name,  Vorname, P_Bezeichnung FROM direktkandidaten d, partei p WHERE d.p_id = p.p_id ORDER BY Name;");
+            q = db->exec(VWahl::settings->value("querys/candidatesAndTheirPartys").toString());
             if (q.lastError().type() == QSqlError::NoError){
                 while(q.next())
                     new QListWidgetItem(q.value(0).toString() + ", " + q.value(1).toString() + "\t" + q.value(2).toString(), ui->candidatesList);
@@ -48,7 +49,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         }
         else{
             ui->partyList->clear();
-            q = db->exec("SELECT Name,  Vorname FROM direktkandidaten ORDER BY Name;");
+            q = db->exec(VWahl::settings->value("querys/candidates").toString());
             if(q.lastError().type() == QSqlError::NoError){
                 while(q.next())
                    new QListWidgetItem(q.value(0).toString() + ", " + q.value(1).toString(), ui->candidatesList);
@@ -60,7 +61,6 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             }
         }
     });
-
     connect(ui->selectAllCandidatesCheckBox, &QCheckBox::stateChanged,
             [=](const int state){
         if(state == Qt::Checked)
@@ -77,11 +77,14 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             ui->partyList->clearSelection();
     });
 
+    connect(ui->actionquerys, &QAction::triggered,
+            queryDialog, &QueryDialog::show);
     if(db->isOpen()){
         Logger::log << L_INFO << "opened Database!";
 
         //put all partys into the partyListWidget
-        QSqlQuery q = db->exec("SELECT P_Bezeichnung FROM partei ORDER BY P_Bezeichnung;");
+        QSqlQuery q = db->exec(VWahl::settings->value("querys/partys").toString());
+
         q.first();
         while(q.next()){
             //2nd method better to use
@@ -90,7 +93,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         }
 
         //put all candidates into the candidatesList
-        q = db->exec("SELECT Name,  Vorname FROM direktkandidaten ORDER BY Name;");
+        q = db->exec(VWahl::settings->value("querys/candidates").toString());
         while(q.next()){
             //2nd method better to use
             //ui->candidatesList->addItem(q.value(0).toString() + ", " + q.value(1).toString());

@@ -4,6 +4,7 @@
 #include "database.h"
 #include "main.h"
 #include "databasedialog.h"
+#include "querydialog.h"
 
 #include <QMainWindow>
 #include <QErrorMessage>
@@ -16,6 +17,7 @@
 
 class Database;
 class DatabaseDialog;
+class QueryDialog;
 //class SettingsWindow;
 
 namespace Ui {
@@ -37,7 +39,7 @@ private:
     DatabaseDialog *dbDialog;
     QErrorMessage error;
     QSignalMapper *signalMapper;
-
+    QueryDialog *queryDialog;
 };
 
 #endif // SETTINGSWINDOW_H

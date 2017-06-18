@@ -6,19 +6,20 @@ Database::Database(const QString name)
     db_name = name;
     //db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     db = QSqlDatabase::addDatabase("QMYSQL");
+    //VWahl::dbs->append(*this);
     //initDatabaseSettings();
 }
 
 Database::~Database()
 {
     db.close();
-    Logger::log << L_INFO << "closed Database";
+    Logger::log << L_INFO << "closed Database" << db_name.toStdString();
 }
 
 //connects class-object to database
 auto Database::connect() -> int
 {
-    initDatabaseSettings();
+    initByDatabaseSettings();
     if (db.open()) {
         Logger::log << L_INFO<< "successfull connected to database!";
         return EXIT_SUCCESS;
@@ -51,7 +52,6 @@ auto Database::getData(QString wahl) -> Record
 
 int Database::checkDatabaseSettings()
 {
-
     if(!doBasicSettingsExist())
         return writeBasicDatabaseSettings();
     else
@@ -61,7 +61,7 @@ int Database::checkDatabaseSettings()
 int Database::reloadSettings()
 {
     db.close();
-    initDatabaseSettings();
+    initByDatabaseSettings();
     if(connect() == EXIT_FAILURE){
         Logger::log << L_ERROR << db.lastError().text().toStdString();
         return EXIT_FAILURE;
@@ -70,7 +70,7 @@ int Database::reloadSettings()
 
 }
 
-int Database::initDatabaseSettings()
+int Database::initByDatabaseSettings()
 {
     db.close();
 
@@ -104,13 +104,6 @@ auto Database::writeBasicDatabaseSettings(QString h/* = "localhost"*/, QString n
 //    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
 //    VWahl::settings->endGroup();
 
-    VWahl::settings->sync();
-    if (VWahl::settings->status() != 0){
-        Logger::log << L_ERROR << "failed to write settings to" << VWahl::settings->fileName().toStdString();
-        return EXIT_FAILURE;
-    }
-    else
-        Logger::log << L_INFO << "wrote the basic settings to" << VWahl::settings->fileName().toStdString();
     return EXIT_SUCCESS;
 }
 
