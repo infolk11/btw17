@@ -53,7 +53,7 @@ void run(QApplication& app)
         VWahl::showGui();
         Logger::log << L_INFO << "Initalized guis.";
         app.exec();
-        Logger::log << L_INFO << "Stopping the application.";
+        Logger::log << L_INFO << "Stopping execution of app.";
     }catch(...)
     {
         //TO-DO: Advanced exception handling...

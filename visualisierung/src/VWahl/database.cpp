@@ -4,10 +4,10 @@ Database::Database(const QString name)
 {
     rec = query.record();
     db_name = name;
-    //db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
-    db = QSqlDatabase::addDatabase("QMYSQL");
-    //VWahl::dbs->append(*this);
-    //initDatabaseSettings();
+    db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
+    VWahl::dbs->append(*this);
+
+    Logger::log << L_DEBUG << "Adding database " << name.toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
 }
 
 Database::~Database()
@@ -98,11 +98,11 @@ auto Database::writeBasicDatabaseSettings(QString h/* = "localhost"*/, QString n
     VWahl::settings->setValue("type", t);
     VWahl::settings->endGroup();
 
-//    //settings for sql commands
-//    VWahl::settings->beginGroup("sql");
-//    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
-//    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
-//    VWahl::settings->endGroup();
+    //    //settings for sql commands
+    //    VWahl::settings->beginGroup("sql");
+    //    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
+    //    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
+    //    VWahl::settings->endGroup();
 
     return EXIT_SUCCESS;
 }
