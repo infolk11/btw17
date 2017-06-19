@@ -5,7 +5,7 @@ SELECT SUM(Wahlbeteiligung)/SUM(Wahlberechtigte)*100 AS Gesamtwahlbeteiligung FR
 SELECT Vorname, Name, SUM(1Anzahl) AS Gesamtstimmen FROM 1stimme, direktkandidaten
 WHERE 1stimme.D_ID = direktkandidaten.D_ID
 GROUP BY 1stimme.D_ID
-ORDER BY sum(1Anzahl) DESC;
+ORDER BY SUM(1Anzahl) DESC;
 
 
 -- Erststimmen pro Kandidatem (prozentual)
@@ -31,7 +31,7 @@ GROUP BY 1stimme.D_ID;
 SELECT P_Bezeichnung, SUM(2Anzahl) AS Gesamtstimmen FROM 2stimme, partei
 WHERE 2stimme.P_ID = partei.P_ID
 GROUP BY 2stimme.P_ID
-ORDER BY sum(2Anzahl) DESC;
+ORDER BY SUM(2Anzahl) DESC;
 
 
 -- Stimmen pro Partei (prozentual)
