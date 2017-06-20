@@ -15,33 +15,6 @@ INSERT INTO partei (P_ID, P_Bezeichnung, Farbe, Listenplaetze) VALUES
 (5, 'mittlere', 'braun', 20),
 (1, 'rechte', 'rot', 20);
 
-
--- 1stimme
-INSERT INTO 1stimme (W_ID, D_ID, 1Anzahl) VALUES
-(1010, 2, 50),
-(1010, 4, 24),
-(1010, 5, 56),
-(1010, 3, 24),
-(1013, 1, 26),
-(1013, 2, 40),
-(1012, 4, 5),
-(1013, 5, 33),
-(1015, 1, 17);
-
--- 2stimme
-INSERT INTO 2stimme (W_ID, P_ID, 2Anzahl) VALUES
-(1010, 2, 78),
-(1010, 3, 112),
-(1010, 4, 76),
-(1010, 5, 55),
-(1012, 3, 11),
-(1014, 2, 42),
-(1013, 4, 60),
-(1012, 4, 79),
-(1014, 5, 22),
-(1010, 1, 101);
-
-
 -- Daten für Tabelle `wahllokal`
 INSERT INTO `wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberechtigte`, `Wahlbeteiligung`) VALUES
 (1001, 'Kita Storchennest', 16816, 'Gentzstr. 21', 0, 0),
@@ -89,3 +62,28 @@ INSERT INTO stellt(P_ID, D_ID) VALUES
 (3,3),
 (4,4),
 (5,5);
+
+-- 1stimme
+INSERT INTO 1stimme (W_ID, D_ID, 1Anzahl) VALUES
+(1010, 2, 50),
+(1010, 4, 24),
+(1010, 5, 56),
+(1010, 3, 24),
+(1013, 1, 26),
+(1013, 2, 40),
+(1012, 4, 5),
+(1013, 5, 33),
+(1015, 1, 17);
+
+-- 2stimme
+INSERT INTO 2stimme (W_ID, P_ID, 2Anzahl) VALUES
+(1010, 2, 78),
+(1010, 3, 112),
+(1010, 4, 76),
+(1010, 5, 55),
+(1012, 3, 11),
+(1014, 2, 42),
+(1013, 4, 60),
+(1012, 4, 79),
+(1014, 5, 22),
+(1010, 1, 101);
