@@ -38,23 +38,23 @@ select P_Bezeichnung, Farbe from partei where P_bezeichnung = @f or P_ID = @f;
 
 
 -- ID, Vorname und Nachname aller Kandidaten                             ACHTUNG: Änderung von 'Name' zu 'Nachname' in direktkandidaten benötigt
-select ID, Vorname, Nachname from Direktkandidaten;
+select ID, Vorname, Name from direktkandidaten;
 
 
 -- Bestimmter Kandidat und zugehörige Partei                             ACHTUNG: 'P_ID' als Fremdschlüssel in direktkandidaten benötigt, Änderung von 'Name' zu 'Nachname' in direktkandidaten benötigt
 -- set @pk= d || d = Kandidatennachname ODER Kandidaten-ID --> beides möglich
-select vorname, nachname from direktkandidaten d 
+select Vorname, Name from direktkandidaten d 
 inner join partei p on d.p_id = p.p_id where nachname=@pk or P_ID=@pk;
 
 
 --                                                                       ACHTUNG: 'P_ID' als Fremdschlüssel in direktkandidaten benötigt; Änderung von 'Name' zu 'Nachname' in direktkandidaten benötigt
 -- alle Kandidaten mit zugehöriger Partei (wenn vorhanden), geordnet nach Nachname (A-Z)  
-select vorname, Nachname, P_Bezeichnung from direktkandidaten d, partei p
+select Vorname, Name, P_Bezeichnung from direktkandidaten d, partei p
 where d.p_id = p.p_id order by Nachname;
 
 --                                                                        ACHTUNG: 'P_ID' als Fremdschlüssel in direktkandidaten benötigt; Änderung von 'Name' zu 'Nachname' in direktkandidaten benötigt
 -- alle Kandidaten mit zugehöriger Partei (wenn vorhanden), geordnet nach Partei (A-Z)
-select vorname, nachname, P_Bezeichnung from direktkandidaten d, partei p
+select Vorname, Name, P_Bezeichnung from direktkandidaten d, partei p
 where d.p_id = p.p_id order by P_Bezeichnung;
 
 
