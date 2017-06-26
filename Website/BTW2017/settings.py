@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'BTW2017.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':r'websitetest', #Bist du dir sicher, dass das richtig ist? Eigentlich ja okay
-        'USER':'dbtest',
-        'PASSWORD':'1234',
+        'NAME':r'websitetest', #name der datenbank für den Server
+        'USER':'root',
+        'PASSWORD':'',
         'HOST':'localhost',
         'PORT': '3306'
     }
