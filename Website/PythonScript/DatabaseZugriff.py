@@ -65,17 +65,5 @@ for row in Kandidat:
 
 cursor.close();
 ver.commit();
-Partei= input("Partei?")
-StimmenP= input("Stimmen Partei?")
-Kanidat= input("Kandidat?")
-KanidatStimmen=input("KandidatStimmen?")
-WahllokalID = "SELECT W_ID from Wahllokal where W_Bezeichnung="Wahllokal1";"
-
-cursor.execute(WahllokalID)
-w_id = cursor.fetchall ()
-for row in w_id :
-  print row[0], row[1];
-
-
 
 ver.close
