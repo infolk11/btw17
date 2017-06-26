@@ -1,5 +1,5 @@
 -- direktkandidaten
-INSERT INTO direktkandidaten (D_ID, Vorname, Name) VALUES
+INSERT INTO Direktkandidaten (D_ID, Vorname, Name) VALUES
 (2, 'Michael', 'Myers'),
 (3, 'Testi', 'McTestface'),
 (4, 'Walter', 'Meier'),
@@ -8,7 +8,7 @@ INSERT INTO direktkandidaten (D_ID, Vorname, Name) VALUES
 
 
 -- partei
-INSERT INTO partei (P_ID, P_Bezeichnung, Farbe, Listenplaetze) VALUES
+INSERT INTO Partei (P_ID, P_Bezeichnung, Farbe, Listenplaetze) VALUES
 (2, 'linke', 'gelb', 15),
 (3, 'obere', 'grün', 25),
 (4, 'untere', 'pink', 22),
@@ -16,7 +16,7 @@ INSERT INTO partei (P_ID, P_Bezeichnung, Farbe, Listenplaetze) VALUES
 (1, 'rechte', 'rot', 20);
 
 -- Daten für Tabelle `wahllokal`
-INSERT INTO `wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberechtigte`, `Wahlbeteiligung`) VALUES
+INSERT INTO `Wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberechtigte`, `Wahlbeteiligung`) VALUES
 (1001, 'Kita Storchennest', 16816, 'Gentzstr. 21', 0, 0),
 (1002, 'Grundschule Gentz I', 16816, 'Gerhart-Hauptmann-Str. 38', 0, 0),
 (1003, 'Stadtgarten', 16816, 'Karl-Marx-Str. 103', 0, 0),
