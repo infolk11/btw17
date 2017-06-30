@@ -7,21 +7,45 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui(new Ui::SettingsWindow)
 {
     ui->setupUi(this);
+    init();
+    buildConnects();
+    fetchDatabaseValues();
+}
 
+SettingsWindow::~SettingsWindow()
+{
+    delete db;
+    delete ui;
+}
+
+void SettingsWindow::init()
+{
     db = new Database("wahl17");
+    error = new QErrorMessage(this);
     db->initByDatabaseSettings();
+
+    //set shortcuts
+    ui->actionBeenden->setShortcut(Qt::CTRL + Qt::Key_Q);
+
+    //Open database connections
     if(db->connect() != EXIT_SUCCESS)
-        error.showMessage(db->lastError().text());
+    {
+        error->showMessage(db->lastError().text());
+        Logger::log << L_ERROR << db->lastError().text().toStdString();
+    } else
+         Logger::log << L_INFO << "opened Database!";
 
     dbDialog = new DatabaseDialog(this);
     queryDialog = new QueryDialog(this);
-    //set shortcuts
-    ui->actionBeenden->setShortcut(Qt::CTRL + Qt::Key_Q);
 
     //it should be possible to select multiple items
     ui->partyList->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->candidatesList->setSelectionMode(QAbstractItemView::MultiSelection);
 
+}
+
+void SettingsWindow::buildConnects()
+{
     //signal and slot in new qt5 syntax
     connect(ui->actionBeenden, &QAction::triggered,
             this, &SettingsWindow::close);
@@ -43,7 +67,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             }
             else{
                 Logger::log << L_ERROR << q.lastError().text().toStdString();
-                error.showMessage(q.lastError().text());
+                error->showMessage(q.lastError().text());
                 return;
             }
         }
@@ -56,7 +80,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             }
             else{
                 Logger::log << L_ERROR << q.lastError().text().toStdString();
-                error.showMessage(q.lastError().text());
+                error->showMessage(q.lastError().text());
                 return;
             }
         }
@@ -79,8 +103,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     connect(ui->actionquerys, &QAction::triggered,
             queryDialog, &QueryDialog::show);
+}
+
+int SettingsWindow::fetchDatabaseValues()
+{
+    //Only run, if database connection is established
     if(db->isOpen()){
-        Logger::log << L_INFO << "opened Database!";
 
         //put all partys into the partyListWidget
         QSqlQuery q = db->exec(VWahl::settings->value("querys/partys").toString());
@@ -101,16 +129,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         }
     }
     else{
-        Logger::log << L_ERROR << db->lastError().text().toStdString();
-        error.showMessage(db->lastError().text());
+        Logger::log << L_WARN << "Database connection not established, no changes made.";
+        return EXIT_FAILURE;
     }
-}
-
-SettingsWindow::~SettingsWindow()
-{
-    delete db;
-    delete ui;
-
-    ui = NULL;
-    db = NULL;
+    Logger::log << L_INFO << "The data have been succesfully fetched from the database.";
+    return EXIT_SUCCESS;
 }
