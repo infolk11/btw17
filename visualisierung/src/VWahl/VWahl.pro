@@ -4,7 +4,7 @@ r#-------------------------------------------------
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql widgets
 
 QMAKE_RPATHDIR += /usr/lib
 QMAKE_RPATHDIR += /usr/local/lib
