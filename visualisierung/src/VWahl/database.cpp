@@ -44,16 +44,51 @@ RecordObject Database::getRecordObject(QString getDescription, int descriptionCo
     return RecordObject(exec(getDescription).value(descriptionColumn).toString(), exec(getVotes).value(votesColumn).toInt(), exec(getColor).value(colorColumn).value<QColor>());
 }
 
-QList<Record> &Database::getData(Database::Options flags, QString candidates,QString parties)
+QList<Record> &Database::getElectionResults(QString desc, int y,Database::Options options, QList<QString> candidates, QList<QString> parties, QList<QString> pollingStations)
 {
     QList<Record> records;
-    if(flags.testFlag(Option::Candidates))
+    if(options.testFlag(Option::Candidates))
     {
-        //Adding record with candidates
+
         Record rec;
+        QList<RecordObject> objects;
+        for(QString pollingStation : pollingStations)
+            for(QString candidate : candidates)
+            {
+                QSqlQuery query = exec(VWahl::settings->value("querys/ErststimmeKandidatListe"));
+                QString name = query.value("Vorname") + " " + query.value("Name");
+                int v = query.value("Gesamtstimmen");
+                QColor color;
+                RecordObject object(name,v,color);
+                objects.push_back(object);
+            }
+        rec = Record("Direktkandidaten " + desc,y,objects);
         records.push_back(rec);
     }
+    if(options.testFlag(Option::Parties))
+    {
+        Record rec;
+        QList<RecordObject> objects;
+        for(QString pollingStation : pollingStations)
+            for(QString candidate : candidates)
+            {
+                QSqlQuery query = exec(VWahl::settings->value("querys/ZweitstimmeParteiListe"));
+                QString name = query.value("P_Bezeichnung");
+                int v = query.value("Gesamtstimmen");
+                QColor color;
+                RecordObject object(name,v,color);
+                objects.push_back(object);
+            }
+        rec = Record("Parteien " + desc,y,objects);
+        records.push_back(rec);
+    }
+
     return records;
+}
+
+Record &Database::getVoterTurnout(QString desc, int y, QList<String> pollingStations)
+{
+    //actually not supported
 }
 
 int Database::checkDatabaseSettings()

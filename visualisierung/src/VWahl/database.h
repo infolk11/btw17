@@ -44,7 +44,8 @@ public:
      * @param wahl
      * @return
      */
-    QList<Record>& getData(Options flags, QString candidates, QString parties);
+    QList<Record>& getElectionResults(QString desc, int y,Options options, QList<QString> candidates = Q_NULLPTR, QList<QString> parties = Q_NULLPTR, QList<QString> pollingStations = Q_NULLPTR);
+    Record& getVoterTurnout(QString desc, int y, QList<String> pollingStations);
     static auto checkDatabaseSettings() -> int;
     auto reloadSettings() -> int;
     auto initByDatabaseSettings() -> int;
