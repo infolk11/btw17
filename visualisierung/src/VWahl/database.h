@@ -17,6 +17,16 @@
 class Database
 {
 public:
+
+    enum Option
+    {
+        VoterTurnout = 0x0,
+        ElectionResults = 0x1,
+        Parties = 0x2,
+        Candidates = 0x3
+    };
+    Q_DECLARE_FLAGS(Options,Option)
+
     Database(const QString name);
     Database() = default;
     ~Database();
@@ -34,7 +44,7 @@ public:
      * @param wahl
      * @return
      */
-    static auto getData(QString wahl ) -> Record;
+    QList<Record>& getData(Options flags, QString candidates, QString parties);
     static auto checkDatabaseSettings() -> int;
     auto reloadSettings() -> int;
     auto initByDatabaseSettings() -> int;
@@ -45,6 +55,7 @@ public:
     auto password() -> QString;
     auto databaseName() -> QString;
     auto driverName() -> QString;
+
 private:
     //auto getSize(QSqlQuery &quey) -> int;
 
@@ -69,5 +80,7 @@ private:
 
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(Database::Options)
 
 #endif // DATABASE_H

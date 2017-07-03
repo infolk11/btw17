@@ -44,10 +44,16 @@ RecordObject Database::getRecordObject(QString getDescription, int descriptionCo
     return RecordObject(exec(getDescription).value(descriptionColumn).toString(), exec(getVotes).value(votesColumn).toInt(), exec(getColor).value(colorColumn).value<QColor>());
 }
 
-auto Database::getData(QString wahl) -> Record
+QList<Record> &Database::getData(Database::Options flags, QString candidates,QString parties)
 {
-    //Content will be delivered by other group.
-    return Record();
+    QList<Record> records;
+    if(flags.testFlag(Option::Candidates))
+    {
+        //Adding record with candidates
+        Record rec;
+        records.push_back(rec);
+    }
+    return records;
 }
 
 int Database::checkDatabaseSettings()
