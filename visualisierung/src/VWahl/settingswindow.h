@@ -24,6 +24,9 @@ namespace Ui {
 class SettingsWindow;
 }
 
+class PresentationWindow;
+class Plots;
+class Record;
 class SettingsWindow : public QMainWindow
 {
     Q_OBJECT
@@ -33,13 +36,16 @@ public:
     ~SettingsWindow();
 
     Database *db;
-
+public slots:
+    void showPlot();
 private:
     Ui::SettingsWindow *ui;
+    PresentationWindow *presentationWindow;
     DatabaseDialog *dbDialog;
     QErrorMessage* error;
     QSignalMapper *signalMapper;
     QueryDialog *queryDialog;
+
 
     /**
      * Initializes the used pointers and builds up the general class structure

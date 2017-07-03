@@ -265,7 +265,7 @@
            </item>
           </layout>
          </widget>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="showButton">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -309,7 +309,7 @@
      <x>0</x>
      <y>0</y>
      <width>1203</width>
-     <height>29</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">

@@ -25,10 +25,10 @@ SOURCES += main.cpp\
     record.cpp \
     qcustomplot.cpp \
     plottest.cpp \
-    presentationwindow.cpp \
     settingswindow.cpp \
     databasedialog.cpp \
-    querydialog.cpp
+    querydialog.cpp \
+    presentationwindow.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -40,11 +40,11 @@ HEADERS  += partei.h \
     record.h \
     qcustomplot.h \
     plottest.h \
-    presentationwindow.h \
     settingswindow.h \
     databaseDialog.h \
     databasedialog.h \
-    querydialog.h
+    querydialog.h \
+    presentationwindow.h
 
 
 unix:!macx: LIBS += -llog4cpp
@@ -56,7 +56,7 @@ STATECHARTS +=
 
 FORMS += \
     plottest.ui \
-    presentationwindow.ui \
     settingswindow.ui \
     databasedialog.ui \
-    querydialog.ui
+    querydialog.ui \
+    presentationwindow.ui

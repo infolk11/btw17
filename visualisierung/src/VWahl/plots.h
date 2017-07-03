@@ -16,7 +16,7 @@ public:
 
     enum DIA_TYPE{ PIE_CHART, BAR_GRAPH};
 
-    Plots() = delete;
+    Plots() = default;
     Plots(Record& rec, QCustomPlot* plot, DIA_TYPE tp) : record(rec), type(tp), customPlot(plot) {buildPlot();}
 
     auto getPlot() -> QWidget;

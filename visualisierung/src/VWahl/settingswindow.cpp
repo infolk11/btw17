@@ -16,12 +16,24 @@ SettingsWindow::~SettingsWindow()
 {
     delete db;
     delete ui;
+    delete presentationWindow;
+}
+
+/**
+ * Shows the plot
+ *
+ * @brief SettingsWindow::showPlot
+ */
+void SettingsWindow::showPlot()
+{
 }
 
 void SettingsWindow::init()
 {
     db = new Database("wahl17");
     error = new QErrorMessage(this);
+    presentationWindow = new PresentationWindow();
+    presentationWindow->show();
     db->initByDatabaseSettings();
 
     //set shortcuts
@@ -100,6 +112,9 @@ void SettingsWindow::buildConnects()
         else
             ui->partyList->clearSelection();
     });
+
+    //Show plot, when showButton is pressed.
+    connect(ui->showButton,&QPushButton::pressed,this,&SettingsWindow::showPlot);
 
     connect(ui->actionquerys, &QAction::triggered,
             queryDialog, &QueryDialog::show);
