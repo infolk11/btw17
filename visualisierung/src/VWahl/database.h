@@ -37,15 +37,19 @@ public:
     RecordObject getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn);
 
     /**
-     * Reads the dates for a record out of the database.
-     * Criterias for the dates are: Type and year of election, the radius and the participants like candidates or parties.
+     * @warning actually not working!
      *
-     * @brief getData
-     * @param wahl
+     * @brief Database::getElectionResults
+     * @param desc
+     * @param y
+     * @param options
+     * @param candidates
+     * @param parties
+     * @param pollingStations
      * @return
      */
-    QList<Record>& getElectionResults(QString desc, int y,Options options, QList<QString> candidates = Q_NULLPTR, QList<QString> parties = Q_NULLPTR, QList<QString> pollingStations = Q_NULLPTR);
-    Record& getVoterTurnout(QString desc, int y, QList<String> pollingStations);
+    QList<Record>& getElectionResults(QString desc, int y, Options options, QList<QString> candidates = QList<QString>{}, QList<QString> parties = QList<QString>{}, QList<QString> pollingStations = QList<QString>{});
+    Record& getVoterTurnout(QString desc, int y, QList<QString> pollingStations);
     static auto checkDatabaseSettings() -> int;
     auto reloadSettings() -> int;
     auto initByDatabaseSettings() -> int;

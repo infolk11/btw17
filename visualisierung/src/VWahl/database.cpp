@@ -44,7 +44,19 @@ RecordObject Database::getRecordObject(QString getDescription, int descriptionCo
     return RecordObject(exec(getDescription).value(descriptionColumn).toString(), exec(getVotes).value(votesColumn).toInt(), exec(getColor).value(colorColumn).value<QColor>());
 }
 
-QList<Record> &Database::getElectionResults(QString desc, int y,Database::Options options, QList<QString> candidates, QList<QString> parties, QList<QString> pollingStations)
+/**
+ * @warning actually not working!
+ *
+ * @brief Database::getElectionResults
+ * @param desc
+ * @param y
+ * @param options
+ * @param candidates
+ * @param parties
+ * @param pollingStations
+ * @return
+ */
+QList<Record> &Database::getElectionResults(QString desc, int y, Database::Options options, QList<QString> candidates, QList<QString> parties, QList<QString> pollingStations)
 {
     QList<Record> records;
     if(options.testFlag(Option::Candidates))
@@ -55,9 +67,9 @@ QList<Record> &Database::getElectionResults(QString desc, int y,Database::Option
         for(QString pollingStation : pollingStations)
             for(QString candidate : candidates)
             {
-                QSqlQuery query = exec(VWahl::settings->value("querys/ErststimmeKandidatListe"));
-                QString name = query.value("Vorname") + " " + query.value("Name");
-                int v = query.value("Gesamtstimmen");
+                QSqlQuery query = exec(VWahl::settings->value("querys/ErststimmeKandidatListe").toString());
+                QString name = query.value("Vorname").toString() + QString(" ") + query.value("Name").toString();
+                int v = query.value("Gesamtstimmen").toInt();
                 QColor color;
                 RecordObject object(name,v,color);
                 objects.push_back(object);
@@ -72,9 +84,9 @@ QList<Record> &Database::getElectionResults(QString desc, int y,Database::Option
         for(QString pollingStation : pollingStations)
             for(QString candidate : candidates)
             {
-                QSqlQuery query = exec(VWahl::settings->value("querys/ZweitstimmeParteiListe"));
-                QString name = query.value("P_Bezeichnung");
-                int v = query.value("Gesamtstimmen");
+                QSqlQuery query = exec(VWahl::settings->value("querys/ZweitstimmeParteiListe").toString());
+                QString name = query.value("P_Bezeichnung").toString();
+                int v = query.value("Gesamtstimmen").toInt();
                 QColor color;
                 RecordObject object(name,v,color);
                 objects.push_back(object);
@@ -86,9 +98,11 @@ QList<Record> &Database::getElectionResults(QString desc, int y,Database::Option
     return records;
 }
 
-Record &Database::getVoterTurnout(QString desc, int y, QList<String> pollingStations)
+Record &Database::getVoterTurnout(QString desc, int y, QList<QString> pollingStations)
 {
+    Record rec;
     //actually not supported
+    return rec;
 }
 
 int Database::checkDatabaseSettings()
