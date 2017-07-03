@@ -26,6 +26,9 @@ SettingsWindow::~SettingsWindow()
  */
 void SettingsWindow::showPlot()
 {
+    Logger::log << L_INFO << "Plot changed";
+    Plots p;
+    presentationWindow->showPlot(p);
 }
 
 void SettingsWindow::init()
@@ -149,4 +152,24 @@ int SettingsWindow::fetchDatabaseValues()
     }
     Logger::log << L_INFO << "The data have been succesfully fetched from the database.";
     return EXIT_SUCCESS;
+}
+
+void SettingsWindow::closeEvent(QCloseEvent *event)
+{
+    Logger::log << L_DEBUG << "Close event triggered.";
+    QMessageBox msgBox;
+    msgBox.setText("Möchten Sie das Programm wirklich schließen?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    int res = msgBox.exec();
+    if(QMessageBox::Yes == res)
+    {
+        Logger::log << L_DEBUG << "User confirmed close event";
+        presentationWindow->close();
+        event->accept();
+    }
+    else
+    {
+        Logger::log << L_DEBUG << "User canceled close event";
+        event->setAccepted(false);
+    }
 }

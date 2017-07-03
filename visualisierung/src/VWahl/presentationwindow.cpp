@@ -1,5 +1,6 @@
 #include "presentationwindow.h"
 #include "ui_presentationwindow.h"
+#include "logger.h"
 
 PresentationWindow::PresentationWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +12,7 @@ PresentationWindow::PresentationWindow(QWidget *parent) :
 void PresentationWindow::showPlot(Plots p)
 {
     //Will later show the plot
+    Logger::log << L_INFO << "Showing the new plot.";
 }
 
 PresentationWindow::~PresentationWindow()

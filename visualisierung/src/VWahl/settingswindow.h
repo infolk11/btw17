@@ -14,6 +14,8 @@
 #include <QSignalMapper>
 #include <QAction>
 #include <QKeySequence>
+#include <QCloseEvent>
+#include <QMessageBox>
 
 class Database;
 class DatabaseDialog;
@@ -68,6 +70,9 @@ private:
      * @return EXIT_SUCCESS if changes were made, EXIT_FAILURE if not
      */
     auto fetchDatabaseValues() -> int;
+
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // SETTINGSWINDOW_H
