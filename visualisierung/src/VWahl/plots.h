@@ -1,7 +1,7 @@
 #ifndef PLOTS_H
 #define PLOTS_H
 
-#include <record.h>
+#include "record.h"
 
 
 class Plots
