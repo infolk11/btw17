@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     settingswindow.cpp \
     databasedialog.cpp \
     querydialog.cpp \
-    presentationwindow.cpp
+    presentationwindow.cpp \
+    pollingstation.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -44,7 +45,8 @@ HEADERS  += partei.h \
     databaseDialog.h \
     databasedialog.h \
     querydialog.h \
-    presentationwindow.h
+    presentationwindow.h \
+    pollingstation.h
 
 
 unix:!macx: LIBS += -llog4cpp

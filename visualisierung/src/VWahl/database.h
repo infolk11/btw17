@@ -15,7 +15,7 @@
 #include "main.h"
 #include "kandidat.h"
 #include "partei.h"
-
+#include "pollingstation.h"
 
 class Database
 {
@@ -64,6 +64,11 @@ public:
     auto databaseName() -> QString;
     auto driverName() -> QString;
 
+    QList<Kandidat> getCandidates() const;
+    QList<PollingStation> getPollingStations() const;
+    QList<Partei> getParties() const;
+    void updateData();
+
 private:
     //auto getSize(QSqlQuery &quey) -> int;
 
@@ -86,6 +91,12 @@ private:
     static auto writeBasicDatabaseSettings(QString h = "localhost", QString n = "wahl17", QString u = "vwahl", QString p = "pass", QString t = "QMYSQL") -> int;
     static auto doBasicSettingsExist() -> bool;
 
+    /*
+     * One database typically represents one election, so we will use the database as a container for the values
+     */
+     QList<Kandidat> candidates;
+     QList<PollingStation> pollingStations;
+     QList<Partei> parties;
 
 };
 

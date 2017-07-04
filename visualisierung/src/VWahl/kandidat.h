@@ -11,7 +11,8 @@ class Kandidat : public RecordObject
 {
 public:
     Kandidat() = default;
-    Kandidat(int i, QString n, QString ln, int v, QColor col) : RecordObject(n + " " + ln,v,col), id(i), name(n), LName(ln) {}
+    Kandidat(int i, QString ln, QString n) : id(i),lname(ln),name(n) {}
+    Kandidat(int i, QString n, QString ln, int v, QColor col) : RecordObject(n + " " + ln,v,col), id(i), name(n), LName(ln), colour(col) {}
 
     int getId() const;
     void setId(int value);
@@ -36,8 +37,9 @@ private:
      */
     int id;
     QString name;
-    QString LName;
+    QString lname;
     QImage image;
+    QColor colour;
 };
 
 #endif // KANDIDAT_H

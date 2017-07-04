@@ -193,6 +193,42 @@ auto Database::doBasicSettingsExist() -> bool
 
 }
 
+QList<Partei> Database::getParties() const
+{
+    return parties;
+}
+
+void Database::updateData()
+{
+    //Candidates
+    candidates.clear();
+    QSqlQuery candidatesQuery = QSqlQuery(VWahl::settings->value("querys/KandidatListe").toString(),db);
+    candidatesQuery.exec();
+    while(candidatesQuery.next())
+    {
+        int id = query.value("D_ID").toInt();
+        QString lname = query.value("Name").toString();
+        QString name = query.value("Vorname").toString();
+        candidates.push_back(Kandidat(id,lname,name));
+    }
+
+    //Parties
+    parties.clear();
+    QSqlQuery partiesQuery = QSqlQuery(VWahl::settings->value("/*ausstehend*/"));
+
+    //ausstehend
+}
+
+QList<PollingStation> Database::getPollingStations() const
+{
+    return pollingStations;
+}
+
+QList<Kandidat> Database::getCandidates() const
+{
+    return candidates;
+}
+
 auto Database::isOpen() -> bool
 {
     return db.isOpen();
