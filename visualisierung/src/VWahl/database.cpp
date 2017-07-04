@@ -58,7 +58,7 @@ RecordObject Database::getRecordObject(QString getDescription, int descriptionCo
  * @param pollingStations
  * @return
  */
-QList<Record> &Database::getElectionResults(QString desc, int y, Database::Options options, QList<int> candidates, QList<int> parties, QList<int> pollingStations)
+QList<Record> Database::getElectionResults(QString desc, int y, Database::Options options, QList<int> candidates, QList<int> parties, QList<int> pollingStations)
 {
     QList<Record> records;
     if(options.testFlag(Option::Candidates))
@@ -66,7 +66,7 @@ QList<Record> &Database::getElectionResults(QString desc, int y, Database::Optio
 
         Record rec;
         QList<RecordObject> objects;
-        for(int candiate: canidates)
+        for(int candidate: candidates)
         {
             Kandidat k;
             QSqlQuery candidateInfos = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
@@ -119,7 +119,7 @@ QList<Record> &Database::getElectionResults(QString desc, int y, Database::Optio
     return records;
 }
 
-Record &Database::getVoterTurnout(QString desc, int y, QList<QString> pollingStations)
+Record Database::getVoterTurnout(QString desc, int y, QList<QString> pollingStations)
 {
     Record rec;
     //actually not supported

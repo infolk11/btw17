@@ -4,7 +4,9 @@
 #include <QString>
 #include <QColor>
 
-class Partei
+#include "record.h"
+
+class Partei : public RecordObject
 {
 public:
     Partei() = default;

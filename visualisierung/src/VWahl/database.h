@@ -13,6 +13,9 @@
 #include "logger.h"
 #include "record.h"
 #include "main.h"
+#include "kandidat.h"
+#include "partei.h"
+
 
 class Database
 {
@@ -37,7 +40,7 @@ public:
     RecordObject getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn);
 
     /**
-     * @warning actually not working!
+     * @warning actually not working!QString
      *
      * @brief Database::getElectionResults
      * @param desc
@@ -48,8 +51,8 @@ public:
      * @param pollingStations
      * @return
      */
-    QList<Record>& getElectionResults(QString desc, int y, Options options, QList<int> candidates = QList<QString>{}, QList<int> parties = QList<QString>{}, QList<int> pollingStations = QList<QString>{});
-    Record& getVoterTurnout(QString desc, int y, QList<QString> pollingStations);
+    QList<Record> getElectionResults(QString desc, int y, Options options, QList<int> candidates = QList<int>{}, QList<int> parties = QList<int>{}, QList<int> pollingStations = QList<int>{});
+    Record getVoterTurnout(QString desc, int y, QList<QString> pollingStations);
     static auto checkDatabaseSettings() -> int;
     auto reloadSettings() -> int;
     auto initByDatabaseSettings() -> int;
