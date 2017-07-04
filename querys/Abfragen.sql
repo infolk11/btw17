@@ -46,5 +46,24 @@ WHERE partei.P_ID = 2stimme.P_ID
 AND 2stimme.P_ID = @p
 GROUP BY 2stimme.P_ID
 
+-- Stimmen Direktkandidat in bestimmten Wahllokal
+SELECT 1Anzahl FROM 1stimme
+WHERE D_ID = @d
+AND W_ID = @w;
 
+-- Stimmen Partei in bestimmten Wahllokal
+SELECT 2Anzahl FROM 2stimme
+WHERE P_ID = @d
+AND W_ID = @w;
 
+-- Informationen Direktkandidat
+SELECT Vorname, Name FROM direktkandidaten
+WHERE D_ID = @d;
+
+-- Information Partei
+SELECT P_Bezeichnung, Farbe, Listenplaetze FROM partei
+WHERE P_ID = @p;
+
+-- Information Wahllokal
+SELECT W_Bezeichnung, PLZ, Straße, Wahlberechtigte, Wahlbeteiligung, SUM(Wahlbeteiligung)/SUM(Wahlberechtigte)*100 AS BestimmteWahlbeteiligung FROM wahllokal
+WHERE W_ID = @w;
