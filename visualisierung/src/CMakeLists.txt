@@ -39,8 +39,8 @@ set(SOURCE_FILES
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sql REQUIRED)
 find_package(Qt5Core REQUIRED)
-
+find_package(Qt5Gui REQUIRED)
 
 add_executable(src ${SOURCE_FILES})
 
-target_link_libraries(src Qt5::Widgets Qt5::Sql QT5:Core)
+qt5_use_modules(src Sql Gui Widgets)
