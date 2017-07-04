@@ -1,5 +1,5 @@
 -- direktkandidaten
-INSERT INTO direktkandidaten (D_ID, Vorname, Name) VALUES
+INSERT INTO Direktkandidaten (D_ID, Vorname, Name) VALUES
 (2, 'Michael', 'Myers'),
 (3, 'Testi', 'McTestface'),
 (4, 'Walter', 'Meier'),
@@ -8,42 +8,15 @@ INSERT INTO direktkandidaten (D_ID, Vorname, Name) VALUES
 
 
 -- partei
-INSERT INTO partei (P_ID, P_Bezeichnung, Farbe, Listenplaetze) VALUES
+INSERT INTO Partei (P_ID, P_Bezeichnung, Farbe, Listenplaetze) VALUES
 (2, 'linke', 'gelb', 15),
 (3, 'obere', 'grün', 25),
 (4, 'untere', 'pink', 22),
 (5, 'mittlere', 'braun', 20),
 (1, 'rechte', 'rot', 20);
 
-
--- 1stimme
-INSERT INTO 1stimme (W_ID, D_ID, 1Anzahl) VALUES
-(1010, 2, 50),
-(1010, 4, 24),
-(1010, 5, 56),
-(1010, 3, 24),
-(1013, 1, 26),
-(1013, 2, 40),
-(1012, 4, 5),
-(1013, 5, 33),
-(1015, 1, 17);
-
--- 2stimme
-INSERT INTO 2stimme (W_ID, P_ID, 2Anzahl) VALUES
-(1010, 2, 78),
-(1010, 3, 112),
-(1010, 4, 76),
-(1010, 5, 55),
-(1012, 3, 11),
-(1014, 2, 42),
-(1013, 4, 60),
-(1012, 4, 79),
-(1014, 5, 22),
-(1010, 1, 101);
-
-
 -- Daten für Tabelle `wahllokal`
-INSERT INTO `wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberechtigte`, `Wahlbeteiligung`) VALUES
+INSERT INTO `Wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberechtigte`, `Wahlbeteiligung`) VALUES
 (1001, 'Kita Storchennest', 16816, 'Gentzstr. 21', 0, 0),
 (1002, 'Grundschule Gentz I', 16816, 'Gerhart-Hauptmann-Str. 38', 0, 0),
 (1003, 'Stadtgarten', 16816, 'Karl-Marx-Str. 103', 0, 0),
@@ -82,3 +55,36 @@ INSERT INTO `wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberecht
 (1036, 'Stöffin\r\n', 16833, 'Dorfstr. 49a\r\n', 0, 0),
 (1037, 'Wulkow\r\n', 16835, 'Nietwerderweg 13a\r\n', 0, 0),
 (1038, 'Wuthenow\r\n', 16818, 'Dorfstr. 53\r\n', 0, 0);
+
+INSERT INTO stellt(P_ID, D_ID) VALUES
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5);
+
+-- 1stimme
+INSERT INTO 1stimme (W_ID, D_ID, 1Anzahl) VALUES
+(1010, 2, 50),
+(1010, 4, 24),
+(1010, 5, 56),
+(1010, 3, 24),
+(1013, 1, 26),
+(1013, 2, 40),
+(1012, 4, 5),
+(1013, 5, 33),
+(1015, 1, 17);
+
+-- 2stimme
+INSERT INTO 2stimme (W_ID, P_ID, 2Anzahl) VALUES
+(1010, 2, 78),
+(1010, 3, 112),
+(1010, 4, 76),
+(1010, 5, 55),
+(1012, 3, 11),
+(1014, 2, 42),
+(1013, 4, 60),
+(1012, 4, 79),
+(1014, 5, 22),
+(1010, 1, 101);
+

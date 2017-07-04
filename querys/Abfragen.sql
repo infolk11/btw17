@@ -1,58 +1,69 @@
 -- Durchschnitt gesamter Wahlbeteiligung (prozentual)
-SELECT sum(Wahlbeteiligung)/sum(Wahlberechtigte)*100 as Gesamtwahlbeteiligung from wahllokal;
+SELECT SUM(Wahlbeteiligung)/SUM(Wahlberechtigte)*100 AS Gesamtwahlbeteiligung FROM wahllokal;
 
 -- Erststimmen pro Kandidaten
-SELECT Vorname, Name, sum(1Anzahl) as Gesamtstimmen FROM 1stimme, direktkandidaten
+SELECT Vorname, Name, SUM(1Anzahl) AS Gesamtstimmen FROM 1stimme, direktkandidaten
 WHERE 1stimme.D_ID = direktkandidaten.D_ID
 GROUP BY 1stimme.D_ID
-ORDER BY sum(1Anzahl) desc;
+ORDER BY SUM(1Anzahl) DESC;
 
 
--- Erststimmen pro Kandidatem (prozentual)
-SELECT Vorname, Name, sum(1Anzahl)/(SELECT sum(1Anzahl) from 1stimme)*100 as Prozent from 1stimme, direktkandidaten
+-- Erststimmen pro Kandidaten (prozentual)
+SELECT Vorname, Name, SUM(1Anzahl)/(SELECT SUM(1Anzahl) FROM 1stimme)*100 AS Prozent FROM 1stimme, direktkandidaten
 WHERE  1stimme.D_ID = direktkandidaten.D_ID
 GROUP BY 1stimme.D_ID
 HAVING Prozent >= 3
-ORDER BY Prozent desc;
+ORDER BY Prozent DESC;
 
--- Erststimmen pro Kandidatem (prozentual) zum Vergleich (bei weniger als 5 Direktkandidaten Variable 0 setzen)
-SET @d1 = 0;
-SET @d2 = 0;
-SET @d3 = 0;
-SET @d4 = 0;
-SET @d5 = 0;
+-- Erststimmen pro Kandidaten (prozentual) zum Vergleich (bei weniger als 5 Direktkandidaten Variable 0 setzen)
+SET @d = 0;
 
-SELECT Vorname, Name, sum(1Anzahl)/(SELECT sum(1Anzahl) from 1stimme)*100 as Prozent from 1stimme, direktkandidaten
+SELECT Vorname, Name, SUM(1Anzahl)/(SELECT SUM(1Anzahl) FROM 1stimme)*100 AS Prozent FROM 1stimme, direktkandidaten
 WHERE 1stimme.D_ID = direktkandidaten.D_ID
-AND 1stimme.D_ID in (@d1, @d2, @d3, @d4, @d5)
+AND 1stimme.D_ID = @d
 GROUP BY 1stimme.D_ID;
 
 -- Stimmen pro Partei
-SELECT P_Bezeichnung, sum(2Anzahl) as Gesamtstimmen FROM 2stimme, partei
+SELECT P_Bezeichnung, SUM(2Anzahl) AS Gesamtstimmen FROM 2stimme, partei
 WHERE 2stimme.P_ID = partei.P_ID
 GROUP BY 2stimme.P_ID
-ORDER BY sum(2Anzahl) desc;
+ORDER BY SUM(2Anzahl) DESC;
 
 
 -- Stimmen pro Partei (prozentual)
-SELECT P_Bezeichnung, sum(2Anzahl)/(SELECT sum(2Anzahl) from 2stimme)*100 as Prozent from 2stimme, partei
+SELECT P_Bezeichnung, SUM(2Anzahl)/(SELECT SUM(2Anzahl) FROM 2stimme)*100 AS Prozent FROM 2stimme, partei
 WHERE 2stimme.P_ID = partei.P_ID
 GROUP BY 2stimme.P_ID
 HAVING Prozent >= 3
-ORDER BY Prozent desc;
+ORDER BY Prozent DESC;
 SET @p = 2;
 
 -- Stimmen pro Partei (prozentual) zum Vergleich (bei weniger als 5 Parteien Variable 0 setzen)
-SET @p1 = 0;
-SET @p2 = 0;
-SET @p3 = 0;
-SET @p4 = 0;
-SET @p5 = 0;
+SET @p = 0;
 
-SELECT P_Bezeichnung, sum(2Anzahl)/(SELECT sum(2Anzahl) from 2stimme)*100 as Prozent from 2stimme, partei
+SELECT P_Bezeichnung, SUM(2Anzahl)/(SELECT SUM(2Anzahl) FROM 2stimme)*100 AS Prozent FROM 2stimme, partei
 WHERE partei.P_ID = 2stimme.P_ID
-AND 2stimme.P_ID in (@p1, @p2, @p3, @p4, @p5)
+AND 2stimme.P_ID = @p
 GROUP BY 2stimme.P_ID
 
+-- Stimmen Direktkandidat in bestimmten Wahllokal
+SELECT 1Anzahl FROM 1stimme
+WHERE D_ID = @d
+AND W_ID = @w;
 
+-- Stimmen Partei in bestimmten Wahllokal
+SELECT 2Anzahl FROM 2stimme
+WHERE P_ID = @d
+AND W_ID = @w;
 
+-- Informationen Direktkandidat
+SELECT Vorname, Name FROM direktkandidaten
+WHERE D_ID = @d;
+
+-- Information Partei
+SELECT P_Bezeichnung, Farbe, Listenplaetze FROM partei
+WHERE P_ID = @p;
+
+-- Information Wahllokal
+SELECT W_Bezeichnung, PLZ, Straße, Wahlberechtigte, Wahlbeteiligung, SUM(Wahlbeteiligung)/SUM(Wahlberechtigte)*100 AS BestimmteWahlbeteiligung FROM wahllokal
+WHERE W_ID = @w;

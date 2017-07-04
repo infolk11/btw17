@@ -1,4 +1,3 @@
-
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
 
