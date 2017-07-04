@@ -1,10 +1,5 @@
 #include "pollingstation.h"
 
-PollingStation::PollingStation()
-{
-
-}
-
 int PollingStation::getId() const
 {
     return id;

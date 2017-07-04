@@ -214,7 +214,7 @@ void Database::updateData()
 
     //Parties
     parties.clear();
-    QSqlQuery partiesQuery = QSqlQuery(VWahl::settings->value("/*ausstehend*/"));
+    QSqlQuery partiesQuery = QSqlQuery(VWahl::settings->value("/*ausstehend*/").toString(),db);
 
     //ausstehend
 }

@@ -1,13 +1,14 @@
 #ifndef POLLINGSTATION_H
 #define POLLINGSTATION_H
 
+#include <QString>
 
 class PollingStation
 {
 public:
     PollingStation() = default;
-    PollingStaion(QString desc) : description(desc) {}
-    PollingStaion(QString desc, QString pc, QString str, int v, vt) : description(desc), postCode(pc), street(str), voters(v), voterTurnout(vt) {}
+    PollingStation(QString desc) : description(desc) {}
+    PollingStation(QString desc, QString pc, QString str, int v, int vt) : description(desc), postCode(pc), street(str), voters(v), voterTurnout(vt) {}
     int getId() const;
     void setId(int value);
 
