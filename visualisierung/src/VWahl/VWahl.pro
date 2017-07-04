@@ -1,10 +1,10 @@
-#-------------------------------------------------
+r#-------------------------------------------------
 #
 # Project created by QtCreator 2017-04-06T22:30:40
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql widgets
 
 QMAKE_RPATHDIR += /usr/lib
 QMAKE_RPATHDIR += /usr/local/lib
@@ -25,9 +25,10 @@ SOURCES += main.cpp\
     record.cpp \
     qcustomplot.cpp \
     plottest.cpp \
-    presentationwindow.cpp \
     settingswindow.cpp \
-    databasedialog.cpp
+    databasedialog.cpp \
+    querydialog.cpp \
+    presentationwindow.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -39,10 +40,11 @@ HEADERS  += partei.h \
     record.h \
     qcustomplot.h \
     plottest.h \
-    presentationwindow.h \
     settingswindow.h \
     databaseDialog.h \
-    databasedialog.h
+    databasedialog.h \
+    querydialog.h \
+    presentationwindow.h
 
 
 unix:!macx: LIBS += -llog4cpp
@@ -54,6 +56,7 @@ STATECHARTS +=
 
 FORMS += \
     plottest.ui \
-    presentationwindow.ui \
     settingswindow.ui \
-    databasedialog.ui
+    databasedialog.ui \
+    querydialog.ui \
+    presentationwindow.ui

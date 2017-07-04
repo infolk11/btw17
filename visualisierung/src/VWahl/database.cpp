@@ -1,32 +1,38 @@
 #include "database.h"
+#include "kandidat.h"
+#include "partei.h"
 
-Database::Database()
+Database::Database(const QString name)
 {
-    db = QSqlDatabase::addDatabase(VWahl::settings->value("type").toString());
+    rec = query.record();
+    db_name = name;
+    db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
+    VWahl::dbs->append(*this);
+
+    Logger::log << L_DEBUG << "Adding database " << name.toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
 }
 
 Database::~Database()
 {
     db.close();
-    Logger::log << L_INFO << "closed Database";
+    Logger::log << L_INFO << "closed Database" << db_name.toStdString();
 }
 
 //connects class-object to database
 auto Database::connect() -> int
 {
-    initDatabaseSettings();
+    initByDatabaseSettings();
     if (db.open()) {
         Logger::log << L_INFO<< "successfull connected to database!";
         return EXIT_SUCCESS;
     }
     else {
-        //Konvertiert QSqlError zu QString und dann zu Std::String.
-        Logger::log << L_ERROR << db.lastError().text().toStdString();
+        Logger::log << L_DEBUG << db.lastError().text().toStdString();
         return EXIT_FAILURE;
     }
 }
 
-auto Database::exec(QString queryString) -> QSqlQuery
+auto Database::exec(const QString queryString) -> QSqlQuery
 {
     query = db.exec(queryString);
     query.exec(queryString);
@@ -40,22 +46,116 @@ RecordObject Database::getRecordObject(QString getDescription, int descriptionCo
     return RecordObject(exec(getDescription).value(descriptionColumn).toString(), exec(getVotes).value(votesColumn).toInt(), exec(getColor).value(colorColumn).value<QColor>());
 }
 
-auto Database::getData(QString wahl) -> Record
+/**
+ * @warning actually not working!
+ *
+ * @brief Database::getElectionResults
+ * @param desc
+ * @param y
+ * @param options
+ * @param candidates
+ * @param parties
+ * @param pollingStations
+ * @return
+ */
+QList<Record> &Database::getElectionResults(QString desc, int y, Database::Options options, QList<int> candidates, QList<int> parties, QList<int> pollingStations)
 {
-    //Content will be delivered by other group.
-    return Record();
+    QList<Record> records;
+    if(options.testFlag(Option::Candidates))
+    {
+
+        Record rec;
+        QList<RecordObject> objects;
+        for(int candiate: canidates)
+        {
+            Kandidat k;
+            QSqlQuery candidateInfos = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+            candidateInfos.bindValue("/*ausstehend*/",QVariant(candidate));
+            candidateInfos.exec();
+
+            //Initialisieren mit Ergebnissen der Querys - ausstehend
+
+            //Errechnen der Stimmen
+            int votes = 0;
+            for(int pollingStation : pollingStations)
+            {
+                QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+                voteQuery.bindValue("/*ausstehend*/",QVariant(pollingStation));
+                query.exec();
+
+                //Addieren der Votes - ausstehend
+
+            }
+            objects.push_back(k);
+        }
+        rec = Record(desc + " Direktkanidaten",y,objects);
+        records.push_back(rec);
+    }
+    if(options.testFlag(Option::Parties))
+    {
+        Record rec;
+        QList<RecordObject> objects;
+
+        for(int party : parties)
+        {
+            Partei p;
+            QSqlQuery partyInfos(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+            partyInfos.bindValue("/*ausstehend*/",QVariant(party));
+
+            //Mit Daten anreichern - ausstehend
+            int votes = 0;
+            for(int pollingStation : pollingStations)
+            {
+                QSqlQuery voteQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+                voteQuery.bindValue("/*ausstehend*/",pollingStation);
+
+                //Errechnen der Votes - ausstehend
+            }
+            objects.push_back(p);
+        }
+        rec = Record(desc + " Parteien",y,objects);
+        records.push_back(rec);
+    }
+    return records;
 }
 
-int Database::initDatabaseSettings()
+Record &Database::getVoterTurnout(QString desc, int y, QList<QString> pollingStations)
+{
+    Record rec;
+    //actually not supported
+    return rec;
+}
+
+int Database::checkDatabaseSettings()
+{
+    if(!doBasicSettingsExist())
+        return writeBasicDatabaseSettings();
+    else
+        return EXIT_SUCCESS;
+}
+
+int Database::reloadSettings()
 {
     db.close();
-    if(!doBasicSettingsExist())
-        writeBasicDatabaseSettings();
+    initByDatabaseSettings();
+    if(connect() == EXIT_FAILURE){
+        Logger::log << L_ERROR << db.lastError().text().toStdString();
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
 
-    db.setDatabaseName(VWahl::settings->value("name").toString());
-    db.setHostName(VWahl::settings->value("hostname").toString());
-    db.setUserName(VWahl::settings->value("user").toString());
-    db.setPassword(VWahl::settings->value("password").toString());
+}
+
+int Database::initByDatabaseSettings()
+{
+    db.close();
+
+    checkDatabaseSettings();
+
+    db.setDatabaseName(db_name);
+    db.setHostName(VWahl::settings->value("database/hostname").toString());
+    db.setUserName(VWahl::settings->value("database/user").toString());
+    db.setPassword(VWahl::settings->value("database/password").toString());
 
     return EXIT_SUCCESS;
 }
@@ -74,31 +174,22 @@ auto Database::writeBasicDatabaseSettings(QString h/* = "localhost"*/, QString n
     VWahl::settings->setValue("type", t);
     VWahl::settings->endGroup();
 
-//    //settings for sql commands
-//    VWahl::settings->beginGroup("sql");
-//    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
-//    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
-//    VWahl::settings->endGroup();
+    //    //settings for sql commands
+    //    VWahl::settings->beginGroup("sql");
+    //    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
+    //    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
+    //    VWahl::settings->endGroup();
 
-    VWahl::settings->sync();
-    if (VWahl::settings->status() != 0){
-        Logger::log << L_ERROR << "failed to write settings to" << VWahl::settings->fileName().toStdString();
-        return EXIT_FAILURE;
-    }
-    else
-        Logger::log << L_INFO << "wrote the basic settings to" << VWahl::settings->fileName().toStdString();
     return EXIT_SUCCESS;
 }
 
 auto Database::doBasicSettingsExist() -> bool
 {
-    VWahl::settings->beginGroup("database");
-
-    return (VWahl::settings->contains("hostname") &&
-            VWahl::settings->contains("name") &&
-            VWahl::settings->contains("user") &&
-            VWahl::settings->contains("databasepassword") &&
-            VWahl::settings->contains("type"));
+    return (VWahl::settings->contains("database/hostname") &&
+            VWahl::settings->contains("database/name") &&
+            VWahl::settings->contains("database/user") &&
+            VWahl::settings->contains("database/password") &&
+            VWahl::settings->contains("database/type"));
 
 }
 

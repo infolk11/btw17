@@ -22,6 +22,9 @@ public:
     explicit DatabaseDialog(QWidget *parent = 0);
     ~DatabaseDialog();
 
+private slots:
+    void on_acceptButton_clicked();
+
 private:
     Ui::DatabaseDialog *ui;
 };

@@ -87,3 +87,4 @@ INSERT INTO 2stimme (W_ID, P_ID, 2Anzahl) VALUES
 (1012, 4, 79),
 (1014, 5, 22),
 (1010, 1, 101);
+

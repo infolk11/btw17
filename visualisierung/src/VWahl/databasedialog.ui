@@ -108,13 +108,22 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>cancelButton</tabstop>
+  <tabstop>acceptButton</tabstop>
+  <tabstop>typeEdit</tabstop>
+  <tabstop>hostnameEdit</tabstop>
+  <tabstop>nameEdit</tabstop>
+  <tabstop>userEdit</tabstop>
+  <tabstop>passwordEdit</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
    <sender>cancelButton</sender>
    <signal>clicked()</signal>
    <receiver>DatabaseDialog</receiver>
-   <slot>close()</slot>
+   <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>443</x>
