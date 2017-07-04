@@ -48,7 +48,7 @@ public:
      * @param pollingStations
      * @return
      */
-    QList<Record>& getElectionResults(QString desc, int y, Options options, QList<QString> candidates = QList<QString>{}, QList<QString> parties = QList<QString>{}, QList<QString> pollingStations = QList<QString>{});
+    QList<Record>& getElectionResults(QString desc, int y, Options options, QList<int> candidates = QList<QString>{}, QList<int> parties = QList<QString>{}, QList<int> pollingStations = QList<QString>{});
     Record& getVoterTurnout(QString desc, int y, QList<QString> pollingStations);
     static auto checkDatabaseSettings() -> int;
     auto reloadSettings() -> int;

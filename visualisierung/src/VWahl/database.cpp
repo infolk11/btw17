@@ -1,4 +1,6 @@
 #include "database.h"
+#include "kandidat.h"
+#include "partei.h"
 
 Database::Database(const QString name)
 {
@@ -56,7 +58,7 @@ RecordObject Database::getRecordObject(QString getDescription, int descriptionCo
  * @param pollingStations
  * @return
  */
-QList<Record> &Database::getElectionResults(QString desc, int y, Database::Options options, QList<QString> candidates, QList<QString> parties, QList<QString> pollingStations)
+QList<Record> &Database::getElectionResults(QString desc, int y, Database::Options options, QList<int> candidates, QList<int> parties, QList<int> pollingStations)
 {
     QList<Record> records;
     if(options.testFlag(Option::Candidates))
@@ -64,37 +66,56 @@ QList<Record> &Database::getElectionResults(QString desc, int y, Database::Optio
 
         Record rec;
         QList<RecordObject> objects;
-        for(QString pollingStation : pollingStations)
-            for(QString candidate : candidates)
+        for(int candiate: canidates)
+        {
+            Kandidat k;
+            QSqlQuery candidateInfos = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+            candidateInfos.bindValue("/*ausstehend*/",QVariant(candidate));
+            candidateInfos.exec();
+
+            //Initialisieren mit Ergebnissen der Querys - ausstehend
+
+            //Errechnen der Stimmen
+            int votes = 0;
+            for(int pollingStation : pollingStations)
             {
-                QSqlQuery query = exec(VWahl::settings->value("querys/ErststimmeKandidatListe").toString());
-                QString name = query.value("Vorname").toString() + QString(" ") + query.value("Name").toString();
-                int v = query.value("Gesamtstimmen").toInt();
-                QColor color;
-                RecordObject object(name,v,color);
-                objects.push_back(object);
+                QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+                voteQuery.bindValue("/*ausstehend*/",QVariant(pollingStation));
+                query.exec();
+
+                //Addieren der Votes - ausstehend
+
             }
-        rec = Record("Direktkandidaten " + desc,y,objects);
+            objects.push_back(k);
+        }
+        rec = Record(desc + " Direktkanidaten",y,objects);
         records.push_back(rec);
     }
     if(options.testFlag(Option::Parties))
     {
         Record rec;
         QList<RecordObject> objects;
-        for(QString pollingStation : pollingStations)
-            for(QString candidate : candidates)
+
+        for(int party : parties)
+        {
+            Partei p;
+            QSqlQuery partyInfos(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+            partyInfos.bindValue("/*ausstehend*/",QVariant(party));
+
+            //Mit Daten anreichern - ausstehend
+            int votes = 0;
+            for(int pollingStation : pollingStations)
             {
-                QSqlQuery query = exec(VWahl::settings->value("querys/ZweitstimmeParteiListe").toString());
-                QString name = query.value("P_Bezeichnung").toString();
-                int v = query.value("Gesamtstimmen").toInt();
-                QColor color;
-                RecordObject object(name,v,color);
-                objects.push_back(object);
+                QSqlQuery voteQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
+                voteQuery.bindValue("/*ausstehend*/",pollingStation);
+
+                //Errechnen der Votes - ausstehend
             }
-        rec = Record("Parteien " + desc,y,objects);
+            objects.push_back(p);
+        }
+        rec = Record(desc + " Parteien",y,objects);
         records.push_back(rec);
     }
-
     return records;
 }
 
