@@ -203,7 +203,11 @@ void Database::updateData()
     //candidates
     candidates.clear();
     QSqlQuery candidatesQuery = QSqlQuery(VWahl::settings->value("querys/KandidatListe").toString(),db);
-    candidatesQuery.exec();
+    if(! candidatesQuery.exec())
+    {
+        Logger::log << L_ERROR << "Failed to execute the query " << candidatesQuery.executedQuery().toStdString();
+        return;
+    }
     while(candidatesQuery.next())
     {
         int id = query.value("D_ID").toInt();
@@ -218,6 +222,11 @@ void Database::updateData()
     parties.clear();
     QSqlQuery partiesQuery = QSqlQuery(VWahl::settings->value("querys/ParteiListe").toString(),db);
     partiesQuery.exec();
+    if(! partiesQuery.exec())
+    {
+        Logger::log << L_ERROR << "Failed to execute the query " << partiesQuery.executedQuery().toStdString();
+        return;
+    }
     while(partiesQuery.next())
     {
         QString desc = query.value("P_Bezeichnung").toString();
@@ -232,6 +241,11 @@ void Database::updateData()
     pollingStations.clear();
     QSqlQuery pollingStationsQuery = QSqlQuery(VWahl::settings->value("querys/WahllokalListe").toString(),db);
     pollingStationsQuery.exec();
+    if(! pollingStationsQuery.exec())
+    {
+        Logger::log << L_ERROR << "Failed to execute the query " << pollingStationsQuery.executedQuery().toStdString();
+        return;
+    }
     while(pollingStationsQuery.next())
     {
         QString desc = pollingStationsQuery.value("W_Bezeichnung").toString();
