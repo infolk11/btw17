@@ -200,7 +200,7 @@ QList<Partei> Database::getParties() const
 
 void Database::updateData()
 {
-    //Candidates
+    //candidates
     candidates.clear();
     QSqlQuery candidatesQuery = QSqlQuery(VWahl::settings->value("querys/KandidatListe").toString(),db);
     candidatesQuery.exec();
@@ -209,14 +209,39 @@ void Database::updateData()
         int id = query.value("D_ID").toInt();
         QString lname = query.value("Name").toString();
         QString name = query.value("Vorname").toString();
-        candidates.push_back(Kandidat(id,lname,name));
+        QColor col = query.value("/*ausstehend*/").value<QColor>();
+        Kandidat k = Kandidat(id,lname,name,col);
+        candidates.push_back(k);
     }
 
-    //Parties
+    //parties
     parties.clear();
-    QSqlQuery partiesQuery = QSqlQuery(VWahl::settings->value("/*ausstehend*/").toString(),db);
+    QSqlQuery partiesQuery = QSqlQuery(VWahl::settings->value("querys/ParteiListe").toString(),db);
+    partiesQuery.exec();
+    while(partiesQuery.next())
+    {
+        QString desc = query.value("P_Bezeichnung").toString();
+        int id = query.value("P_ID").toInt();
+        int listPlaces = query.value("Listenplaetze").toInt();
+        QColor colour = query.value("Farbe").value<QColor>();
+        parties.push_back(Partei(id,listPlaces,desc,colour));
+    }
 
-    //ausstehend
+
+    //polling stations
+    pollingStations.clear();
+    QSqlQuery pollingStationsQuery = QSqlQuery(VWahl::settings->value("querys/WahllokalListe").toString(),db);
+    pollingStationsQuery.exec();
+    while(pollingStationsQuery.next())
+    {
+        QString desc = pollingStationsQuery.value("W_Bezeichnung").toString();
+        int id = pollingStationsQuery.value("W_ID").toInt();
+        QString pc = pollingStationsQuery.value("PLZ").toString();
+        QString street = pollingStationsQuery.value("Straße").toString();
+
+        PollingStation ps = PollingStation(desc,id,pc,street);
+        pollingStations.push_back(ps);
+    }
 }
 
 QList<PollingStation> Database::getPollingStations() const

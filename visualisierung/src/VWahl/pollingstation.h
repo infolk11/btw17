@@ -7,7 +7,7 @@ class PollingStation
 {
 public:
     PollingStation() = default;
-    PollingStation(QString desc) : description(desc) {}
+    PollingStation(QString desc, int i, QString pc, QString str) : description(desc), id(i),postCode(pc),street(str) {}
     PollingStation(QString desc, QString pc, QString str, int v, int vt) : description(desc), postCode(pc), street(str), voters(v), voterTurnout(vt) {}
     int getId() const;
     void setId(int value);
