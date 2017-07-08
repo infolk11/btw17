@@ -52,6 +52,7 @@ HEADERS  += partei.h \
 unix:!macx: LIBS += -llog4cpp
 
 INCLUDEPATH += $$PWD/../../lib
+INCLUDEPATH += /usr/include/mysql
 DEPENDPATH += $$PWD/../../lib
 
 STATECHARTS +=

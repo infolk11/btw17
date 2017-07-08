@@ -50,7 +50,7 @@ void run(QApplication& app)
         }
 
         Logger::log << L_INFO << "Running the application.";
-        VWahl::showGui();
+        //VWahl::showGui();
         Logger::log << L_INFO << "Initalized guis.";
         app.exec();
         Logger::log << L_INFO << "Stopping execution of app.";

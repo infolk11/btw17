@@ -2,19 +2,19 @@
 #include "kandidat.h"
 #include "partei.h"
 
-Database::Database(const QString& ty, const QString& st, const int y)
+Database::Database(const QString& ty, const QString& st, const int y) : type(ty), state(st), year(y)
 {
 
     db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     VWahl::dbs->append(*this);
 
-    Logger::log << L_DEBUG << "Adding database " << name.toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
+    Logger::log << L_DEBUG << "Adding database " << getNamingScheme(type,state,year).toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
 }
 
 Database::~Database()
 {
     db.close();
-    Logger::log << L_INFO << "closed Database" << db_name.toStdString();
+    Logger::log << L_INFO << "closed Database" << databaseName().toStdString();
 }
 
 //connects class-object to database
@@ -33,17 +33,12 @@ auto Database::connect() -> int
 
 auto Database::exec(const QString queryString) -> QSqlQuery
 {
+    QSqlQuery query;
     query = db.exec(queryString);
     query.exec(queryString);
     return query;
 }
 
-//returns a recordobject related to given sql commands
-RecordObject Database::getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn)
-{
-    //columns are related to index in the current query record
-    return RecordObject(exec(getDescription).value(descriptionColumn).toString(), exec(getVotes).value(votesColumn).toInt(), exec(getColor).value(colorColumn).value<QColor>());
-}
 
 /**
  * @warning actually not working!
@@ -80,7 +75,7 @@ QList<Record> Database::getElectionResults(QString desc, int y, Database::Option
             {
                 QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
                 voteQuery.bindValue("/*ausstehend*/",QVariant(pollingStation));
-                query.exec();
+                voteQuery.exec();
 
                 //Addieren der Votes - ausstehend
 
@@ -127,10 +122,42 @@ Record Database::getVoterTurnout(QString desc, int y, QList<QString> pollingStat
 
 int Database::checkDatabaseSettings()
 {
+    bool returnV = false;
     if(!doBasicSettingsExist())
-        return writeBasicDatabaseSettings();
+        returnV = writeBasicDatabaseSettings();
     else
-        return EXIT_SUCCESS;
+        returnV = EXIT_SUCCESS;
+
+    if(returnV == EXIT_SUCCESS)
+        buildUpAvailableDatabases();
+
+    return returnV;
+}
+
+void Database::buildUpAvailableDatabases()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
+    db.setHostName(VWahl::settings->value("database/hostname").toString());
+    db.setUserName(VWahl::settings->value("database/user").toString());
+    db.setPassword(VWahl::settings->value("database/password").toString());
+    bool ok = db.open();
+    if(ok)
+    {
+        Logger::log << L_INFO << "Successfully build up default database connection";
+        QSqlQuery query = QSqlQuery("show databases",db);
+        query.exec();
+        while(query.next())
+        {
+            Logger::log << L_INFO << "Available database: " << query.value(0).toString().toStdString();
+        }
+    }
+    else
+        Logger::log << L_ERROR << "Failed to build up default database connection: " << db.lastError().databaseText().toStdString();
+}
+
+QString Database::getNamingScheme(QString type, QString state, int year)
+{
+    return VWahl::settings->value("database/databasePrefix").toString() + "_" + type.toUpper() + "_" + state.toUpper() + "_" + year;
 }
 
 int Database::reloadSettings()
@@ -151,7 +178,7 @@ int Database::initByDatabaseSettings()
 
     checkDatabaseSettings();
 
-    db.setDatabaseName(db_name);
+    db.setDatabaseName(getNamingScheme(type,state,year));
     db.setHostName(VWahl::settings->value("database/hostname").toString());
     db.setUserName(VWahl::settings->value("database/user").toString());
     db.setPassword(VWahl::settings->value("database/password").toString());
@@ -209,10 +236,10 @@ void Database::updateData()
     }
     while(candidatesQuery.next())
     {
-        int id = query.value("D_ID").toInt();
-        QString lname = query.value("Name").toString();
-        QString name = query.value("Vorname").toString();
-        QColor col = query.value("/*ausstehend*/").value<QColor>();
+        int id = candidatesQuery.value("D_ID").toInt();
+        QString lname = candidatesQuery.value("Name").toString();
+        QString name = candidatesQuery.value("Vorname").toString();
+        QColor col = candidatesQuery.value("/*ausstehend*/").value<QColor>();
         Kandidat k = Kandidat(id,lname,name,col);
         candidates.push_back(k);
     }
@@ -228,10 +255,10 @@ void Database::updateData()
     }
     while(partiesQuery.next())
     {
-        QString desc = query.value("P_Bezeichnung").toString();
-        int id = query.value("P_ID").toInt();
-        int listPlaces = query.value("Listenplaetze").toInt();
-        QColor colour = query.value("Farbe").value<QColor>();
+        QString desc = partiesQuery.value("P_Bezeichnung").toString();
+        int id = partiesQuery.value("P_ID").toInt();
+        int listPlaces = partiesQuery.value("Listenplaetze").toInt();
+        QColor colour = partiesQuery.value("Farbe").value<QColor>();
         parties.push_back(Partei(id,listPlaces,desc,colour));
     }
 
