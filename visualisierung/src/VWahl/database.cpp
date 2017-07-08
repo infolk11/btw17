@@ -2,10 +2,9 @@
 #include "kandidat.h"
 #include "partei.h"
 
-Database::Database(const QString name)
+Database::Database(const QString& ty, const QString& st, const int y)
 {
-    rec = query.record();
-    db_name = name;
+
     db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     VWahl::dbs->append(*this);
 

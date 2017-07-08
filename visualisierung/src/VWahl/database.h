@@ -17,6 +17,7 @@
 #include "partei.h"
 #include "pollingstation.h"
 
+
 class Database
 {
 public:
@@ -30,14 +31,11 @@ public:
     };
     Q_DECLARE_FLAGS(Options,Option)
 
-    Database(const QString name);
+    Database(const QString& ty, const QString& st, const int y);
     Database() = default;
     ~Database();
     auto connect() -> int;
     auto exec(const QString queryString) -> QSqlQuery;
-
-    //get a single recordObject
-    RecordObject getRecordObject(QString getDescription, int descriptionColumn, QString getVotes, int votesColumn, QString getColor, int colorColumn);
 
     /**
      * @warning actually not working!QString
@@ -53,7 +51,13 @@ public:
      */
     QList<Record> getElectionResults(QString desc, int y, Options options, QList<int> candidates = QList<int>{}, QList<int> parties = QList<int>{}, QList<int> pollingStations = QList<int>{});
     Record getVoterTurnout(QString desc, int y, QList<QString> pollingStations);
+
+    //Static functions
     static auto checkDatabaseSettings() -> int;
+    static auto buildUpAvailableDatabases() -> void;
+    static auto closeAllDatabases() -> void;
+    static auto getNamingScheme(QString type, QString state, int year) -> QString;
+
     auto reloadSettings() -> int;
     auto initByDatabaseSettings() -> int;
     auto isOpen() -> bool;
@@ -74,9 +78,9 @@ private:
 
 
     QSqlDatabase db;
-    QSqlQuery query;
-    QSqlRecord rec;
-    QString db_name;
+    QString type;
+    QString state;
+    int year;
 
     /**
      * will be deleted laterwards. Just here to ease programming
