@@ -1,9 +1,8 @@
-
 <html>
     <head>
         <title>Update Data In Database Using CodeIgniter</title>
         <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(). "css/update.css" ?>">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(). "css/1Stimme_update.css" ?>">
     </head> 
     <body>
         <div id="container">
@@ -14,7 +13,7 @@
                     <!--Fetching Names Of All Students From Database-->
 					<ol>
                         <?php foreach ($students as $student): ?>
-                            <li><a href="<?php echo base_url() . "index.php/update_ctrl/show_student_id/" . $student->W_ID; ?>"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo $student->W_ID; ?></a></li>
+                            <li><a href="<?php echo base_url() . "index.php/1Stimme_update_ctrl/show_student_id/" . $student->W_ID; ?>"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php echo $student->W_ID; ?></a></li>
                         <?php endforeach; ?>
                     </ol>
                 </div>
@@ -22,7 +21,7 @@
 					<!--Fetching All Details of Selected Student From Database And Showing In a Form-->
                     <?php foreach ($single_student as $student): ?>
                         <p>Bearbeite die Daten & Klicke den 'Update' Button</p>
-                        <form method="post" action="<?php echo base_url() . "index.php/update_ctrl/update_student_id1"?>">
+                        <form method="post" action="<?php echo base_url() . "index.php/1Stimme_update_ctrl/update_student_id1"?>">
                             <label id="hide">Id :</label><br/> 
                             <input type="text" id="hide" name="dwid" value="<?php echo $student->W_ID; ?>"><br/>      
 
@@ -36,7 +35,6 @@
 							
 							 <!-- <label>Wahllokal :</label><br/> 
                             <input type="text" name="dmobile" value="<?php echo $student->W_ID; ?>"><br/>
-
                             <!-- <label>Address :</label><br/> 
                             <input type="text" name="daddress" value="<?php echo $student->student_address; ?>"><br/>
 							
