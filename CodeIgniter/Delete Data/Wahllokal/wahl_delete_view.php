@@ -15,6 +15,7 @@
 					<li><a href="<?php echo base_url() . "index.php/wahl_delete_ctrl/show_student_id/" . $student->W_ID ?>">
 						<?php echo $student->W_ID; ?> / <?php echo $student->W_Bezeichnung; ?></a></li>
 				<?php endforeach; ?>
+				<p><a href="<?php echo base_url() . "index.php/navi_ctrl/load_navi_view"; ?>">Zurück zur Navigation</a><p/>
 			</div>
 			<div id="detail">
 				<!--====== Displaying Fetched Details from Database ========-->
