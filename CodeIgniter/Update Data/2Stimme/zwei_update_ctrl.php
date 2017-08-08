@@ -17,8 +17,8 @@ function show_student_id_params($w_id, $p_id, $msg_id) {
     }
 	
 function show_student_id() {
-        $w_id = $this->uri->segment(4);
-        $p_id = $this->uri->segment(3);
+        $w_id = $this->uri->segment(3);
+        $p_id = $this->uri->segment(4);
 		$this->show_student_id_params($w_id, $p_id, -1);
     }
 
