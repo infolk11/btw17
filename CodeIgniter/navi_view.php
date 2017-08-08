@@ -40,12 +40,14 @@
 					<a href="<?php echo base_url() . "index.php/dkan_update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
 					<a href="<?php echo base_url() . "index.php/dkan_delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
 					<div id="dkan">
-				<div id="stellt">
-					<p>Stellt-Beziehung</p>
+		         </div> 
+					<div id="stellt">
+					<p>Stellt</p>
 					<a href="<?php echo base_url() . "index.php/stellt_insert_ctrl/show_view/-1/-1" ?>">Datensatz einfügen</a><br/>
 					<a href="<?php echo base_url() . "index.php/stellt_update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
 					<a href="<?php echo base_url() . "index.php/stellt_delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
-                </div> 
+					<div id="stellt">
+					
                 </div> 
             </div> 
         </div>
