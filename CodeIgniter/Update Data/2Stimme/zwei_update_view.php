@@ -15,6 +15,7 @@
                             <li><a href="<?php echo base_url() . "index.php/zwei_update_ctrl/show_student_id/" . $student->P_ID . "/" . $student->W_ID; ?>">
 								<?php echo $student->W_ID; ?> / <?php echo $student->P_ID; ?></a></li>
                         <?php endforeach; ?>
+			<p><a href="<?php echo base_url() . "index.php/navi_ctrl/load_navi_view"; ?>">Zurück zur Navigation</a><p/>
                 </div>
                 <div id="detail">
 					<!--Fetching All Details of Selected Student From Database And Showing In a Form-->
