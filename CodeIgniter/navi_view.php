@@ -27,6 +27,20 @@
 					<a href="<?php echo base_url() . "index.php/zwei_update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
 					<a href="<?php echo base_url() . "index.php/zwei_delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
                 </div> 
+		    		<div id="partei">
+					<p>Partei</p>
+					<a href="<?php echo base_url() . "index.php/part_insert_ctrl/show_view/-1/-1" ?>">Datensatz einfügen</a><br/>
+					<a href="<?php echo base_url() . "index.php/part_update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
+					<a href="<?php echo base_url() . "index.php/part_delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
+					<div id="partei">
+                </div> 
+				<div id="dkan">
+					<p>Direktkandidaten</p>
+					<a href="<?php echo base_url() . "index.php/dkan_insert_ctrl/show_view/-1/-1" ?>">Datensatz einfügen</a><br/>
+					<a href="<?php echo base_url() . "index.php/dkan_update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
+					<a href="<?php echo base_url() . "index.php/dkan_delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
+					<div id="dkan">
+                </div> 
             </div> 
         </div>
     </body>
