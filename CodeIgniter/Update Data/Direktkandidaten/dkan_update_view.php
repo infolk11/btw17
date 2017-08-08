@@ -14,6 +14,7 @@
 						<li><a href="<?php echo base_url() . "index.php/dkan_update_ctrl/show_student_id/" . $student->D_ID ?>">
 							<?php echo $student->D_ID; ?> / <?php echo $student->Vorname; ?> <?php echo $student->Name; ?></a></li>
 					<?php endforeach; ?>
+			<p><a href="<?php echo base_url() . "index.php/navi_ctrl/load_navi_view"; ?>">Zurück zur Navigation</a><p/>
                 </div>
                 <div id="detail">				
                     <?php foreach ($single_student as $student): ?>
