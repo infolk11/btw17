@@ -11,9 +11,9 @@
                 <h1>Navigation</h1><hr/> 
                 <div id="1stimme">
 					<p>Erststimme</p>
-					<a href="<?php echo base_url() . "index.php/insert_ctrl/show_view" ?>">Datensatz einfügen</a><br/>
-					<a href="<?php echo base_url() . "index.php/update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
-					<a href="<?php echo base_url() . "index.php/delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
+					<a href="<?php echo base_url() . "index.php/erst_insert_ctrl/show_view" ?>">Datensatz einfügen</a><br/>
+					<a href="<?php echo base_url() . "index.php/erst_update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
+					<a href="<?php echo base_url() . "index.php/erst_delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
                 </div>
 		<div id="zweitstimme">
 					<p>Zweitstimme</p>
