@@ -7,7 +7,7 @@
 <body>
         <div id="container">
             <div id="wrapper">
-				<h1>Erststimme</h1><hr/>
+				<h1>Zweitstimme</h1><hr/>
 				<?php if (isset($message)) { ?>
 				<CENTER><h3 style="color:green;">Daten erfolgreich eingegeben!</h3></CENTER><br>
 				<?php } ?>
@@ -19,7 +19,7 @@
 				<?php echo form_label('P_ID :'); ?> <?php echo form_error('dp_id'); ?><br/>
 				<?php echo form_input(array('name' => 'dp_id')); ?><br/>
 
-				<?php echo form_label('2Anzahl :'); ?> <?php echo form_error('danzahl'); ?><br/>
+				<?php echo form_label('Anzahl :'); ?> <?php echo form_error('danzahl'); ?><br/>
 				<?php echo form_input(array('name' => 'danzahl')); ?><br/>
 
 				<?php echo form_submit(array('value' => 'Anlegen')); ?>
