@@ -1,13 +1,13 @@
 <html>
     <head>
-        <title>Insert</title>
+        <title>wahl_insert</title>
         <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(). "css/styles.css" ?>">
     </head> 
 <body>
         <div id="container">
             <div id="wrapper">
-				<h1>Erststimme</h1><hr/>
+				<h1>Wahllokale</h1><hr/>
 				<?php if (isset($message)) { ?>
 				<CENTER><h3 style="color:green;">Daten erfolgreich eingegeben!</h3></CENTER><br>
 				<?php } ?>
