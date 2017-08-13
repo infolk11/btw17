@@ -19,7 +19,7 @@
 				<?php echo form_label('D_ID :'); ?> <?php echo form_error('dd_id'); ?><br/>
 				<?php echo form_input(array('name' => 'dd_id')); ?><br/>
 
-				<?php echo form_label('1Anzahl :'); ?> <?php echo form_error('danzahl'); ?><br/>
+				<?php echo form_label('Anzahl :'); ?> <?php echo form_error('danzahl'); ?><br/>
 				<?php echo form_input(array('name' => 'danzahl')); ?><br/>
 
 				<?php echo form_submit(array('value' => 'Anlegen')); ?>
