@@ -24,6 +24,7 @@
 				<?php echo form_input(array('name' => 'dname')); ?><br/>
 
 				<?php echo form_submit(array('value' => 'Anlegen')); ?>
+		    <p><a href="<?php echo base_url() . "index.php/navi_ctrl/load_navi_view"; ?>">Zurück zur Navigation</a></p>
 				<?php echo form_close(); ?><br/>
 
             </div> 
