@@ -44,7 +44,7 @@
                 </div>
 		<div id="wahllokal">
 					<p>Wahllokal</p>
-					<a href="<?php echo base_url() . "index.php/wahl_insert_ctrl/schow_view/-1/-1" ?>">Datensatz einfügen</a><br/>
+					<a href="<?php echo base_url() . "index.php/wahl_insert_ctrl/show_view/-1/-1" ?>">Datensatz einfügen</a><br/>
 					<a href="<?php echo base_url() . "index.php/wahl_update_ctrl/show_student_id/-1/-1" ?>">Datensatz aktualisieren</a><br/>
 					<a href="<?php echo base_url() . "index.php/wahl_delete_ctrl/show_student_id/-1/-1" ?>">Datensatz löschen</a><br/>
                </div> 	
