@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Insert</title>
+        <title>erst_nsert</title>
         <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(). "css/styles.css" ?>">
     </head> 
