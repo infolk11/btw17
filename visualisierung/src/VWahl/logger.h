@@ -5,10 +5,13 @@
 #include <QDebug>
 #include <QFile>
 //#include <QErrorMessage>
-//#include <QString>
+#include <QString>
 //#include <iostream>
 #include <sstream>
 #include <string>
+#include <QTime>
+#include <QTimer>
+
 
 using namespace std;
 
@@ -40,16 +43,22 @@ typedef enum {EMERG  = 0,
 class Logger
 {
   public:
-    static ostringstream  log;
     static void init();
+    static QString      log();
+    static void         send(QString str);
+    static QString      Logger::value;
+    static QTextStream  * Logger::ts;
+    static void         TimerFflush();
 
-    friend ostringstream &operator<< (ostringstream &ostr, const char* a);
-    friend ostringstream &operator<< (ostringstream &ostr, int a);
-    friend ostringstream &operator<< (ostringstream &ostr, string a);
+    friend QString &operator << (QString &c, QString a);
+    friend QString &operator << (QString &c, string a);
+    friend QString &operator << (QString &c, const char * a);
+    friend QString &operator << (QString &c, int a);
 
-  private:
     Logger();
-    ~Logger();
+
+    private:
+    // ~Logger();
 };
 
 #endif // QT_LOGGER_H

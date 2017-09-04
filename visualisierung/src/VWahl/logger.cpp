@@ -1,10 +1,10 @@
 #include "logger.h"
 
 //Static variables
-
-ostringstream  Logger::log;
-int output_counter;
+QString Logger::value;
+int send_state;
 int ErrorNumber;
+QTextStream * Logger::ts;
 
 /**
  * Initializing the logger
@@ -13,49 +13,119 @@ int ErrorNumber;
  */
 
 
+Logger::Logger(void){
+}
+
 void Logger::init() {
 
-    QString str = "Start logger";
-    qDebug() << str;
-    output_counter = 0;
-}
+    static QFile outFile("log.txt");
 
-ostringstream &operator<< (ostringstream &ostr, const char* a)
-{
-    QFile outFile("log.txt");
     outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream ts(&outFile);
 
-    if(output_counter == 1)
-    {
-        qDebug() << ErrorNumber << a;
-        ts << ErrorNumber << a << endl;
-        output_counter = 0;
-    }
-    else
-    {
-        qDebug() << a;
-        ts << a << endl;
-    }
+    static QTextStream out(&outFile);
 
-    return ostr;
+    Logger::ts = &out;
+
+    qDebug().noquote().nospace();
+
+    send_state = 0;
 }
 
-ostringstream &operator<< (ostringstream &ostr, int a)
+
+QString Logger::log()
 {
+    QString str;
 
-    if (output_counter == 0)
+   send_state = 0;
+
+   return str ;
+}
+
+QString &operator << (QString &c, const char * a)
+{
+    QString str;
+
+    str.sprintf("%s",a);
+
+    Logger::send(str);
+
+    return str;
+}
+QString &operator << (QString &c, QString a)
+{
+    Logger::send(a);
+
+    return a;
+}
+
+QString &operator << (QString &c, string a)
+{
+    QString str;
+
+    //str.sprintf("%s",a);
+    str = QString::fromStdString(a);
+    Logger::send(str);
+
+    return str;
+}
+
+QString &operator << (QString &c, int a)
+{
+    QString str;
+
+    str.sprintf("%d",a);
+
+    Logger::send(str);
+
+    return str;
+}
+
+void Logger::send(QString str)
+{
+    if(send_state == 0)
     {
-        ErrorNumber = a;
-        output_counter = 1;
+        if(Logger::value.length() > 0)
+        {
+            qDebug()        << Logger::value;
+            *Logger::ts     << Logger::value << "\n";
+
+            Logger::value.clear();
+        }
+
+        QDateTime time;
+        /*
+        QString temp_str;
+        temp_str = time.toString();
+        QByteArray ba = temp_str.toLatin1();
+        const char *c_str2 = ba.data();
+        */
+
+        Logger::value.append(time.currentDateTime().toString());
+        Logger::value.append("  ");
+
+        send_state = 1;
+    }
+    else if (send_state == 1)
+    {
+        QTimer::singleShot(20,TimerFflush);
+        send_state = 2;
     }
 
-    return ostr;
+    Logger::value.append(str);
+
 }
 
-ostringstream &operator<< (ostringstream &ostr, string a)
+
+void Logger::TimerFflush()
 {
-    qDebug("hallo");
+    if(Logger::value.length() > 0)
+    {
+        qDebug()        << Logger::value;
+        *Logger::ts     << Logger::value << "\n";
 
-    return ostr;
+        Logger::value.clear();
+    }
+    send_state = 1;
 }
+
+
