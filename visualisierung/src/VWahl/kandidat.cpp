@@ -22,14 +22,14 @@ void Kandidat::setName(const QString &value)
     name = value;
 }
 
-QString Kandidat::getLname() const
+QString Kandidat::getLName() const
 {
-    return lname;
+    return LName;
 }
 
-void Kandidat::setLname(const QString &value)
+void Kandidat::setLName(const QString &value)
 {
-    lname = value;
+    LName = value;
 }
 
 QImage Kandidat::getImage() const

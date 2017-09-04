@@ -29,10 +29,10 @@ typedef enum {EMERG  = 0,
 } PriorityLevel;
 */
 
-#define L_ERROR 300
-#define L_WARN  400
-#define L_INFO  600
-#define L_DEBUG 700
+#define L_ERROR "ERROR       "
+#define L_WARN  "WARNING     "
+#define L_INFO  "INFO        "
+#define L_DEBUG "DEBUG       "
 
 
 /**

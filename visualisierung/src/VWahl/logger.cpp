@@ -18,23 +18,35 @@ Logger::Logger(void){
 
 void Logger::init() {
 
-    static QFile outFile("log.txt");
 
-    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    QDateTime Time;
+    QString FileName;
+    QString FileVersion;
 
+    FileVersion = Time.currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    FileVersion.replace(":","_");
+    FileVersion.replace("-","_");
+    FileVersion.replace(" ","-");
+
+
+    FileName = QString("log_%1.txt").arg(FileVersion);
+
+    static QFile outFile(FileName);
+    //outFile.rename(FileName);
+    //outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    outFile.open(QIODevice::WriteOnly);
+    //outFile.open(QIODevice::WriteOnly);
     static QTextStream out(&outFile);
 
     Logger::ts = &out;
 
-    qDebug().noquote().nospace();
 
-    send_state = 0;
 }
 
 
 QString Logger::log()
 {
-    QString str;
+   QString str;
 
    send_state = 0;
 
@@ -57,18 +69,15 @@ QString &operator << (QString &c, QString a)
 
     return a;
 }
-
 QString &operator << (QString &c, string a)
 {
     QString str;
 
-    //str.sprintf("%s",a);
     str = QString::fromStdString(a);
     Logger::send(str);
 
     return str;
 }
-
 QString &operator << (QString &c, int a)
 {
     QString str;
@@ -84,48 +93,28 @@ void Logger::send(QString str)
 {
     if(send_state == 0)
     {
-        if(Logger::value.length() > 0)
-        {
-            qDebug()        << Logger::value;
-            *Logger::ts     << Logger::value << "\n";
-
-            Logger::value.clear();
-        }
 
         QDateTime time;
-        /*
-        QString temp_str;
-        temp_str = time.toString();
-        QByteArray ba = temp_str.toLatin1();
-        const char *c_str2 = ba.data();
-        */
 
-        Logger::value.append(time.currentDateTime().toString());
-        Logger::value.append("  ");
+        //Logger::value.append(time.currentDateTime().toString().remove("Mo").remove("Sep"));
+        //Logger::value.append(time.currentDateTime().toString());
+        //Logger::value.append("  ");
 
-        send_state = 1;
-    }
-    else if (send_state == 1)
-    {
-        QTimer::singleShot(20,TimerFflush);
-        send_state = 2;
-    }
+      send_state = 1;
+      }
 
     Logger::value.append(str);
-
-}
-
-
-void Logger::TimerFflush()
-{
-    if(Logger::value.length() > 0)
+    int endcounter = Logger::value.count("\n");
+    if(endcounter > 0)
     {
-        qDebug()        << Logger::value;
-        *Logger::ts     << Logger::value << "\n";
-
+        Logger::value.remove("\n");
+        qDebug().noquote()  << Logger::value;
+        *Logger::ts         << Logger::value << "\n";
+        Logger::ts->flush();
         Logger::value.clear();
+        send_state = 1;
     }
-    send_state = 1;
-}
 
+
+}
 
