@@ -1,18 +1,38 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <log4cpp/Category.hh>
-#include <log4cpp/Appender.hh>
-#include <log4cpp/FileAppender.hh>
-#include <log4cpp/OstreamAppender.hh>
-#include <log4cpp/Layout.hh>
-#include <log4cpp/PatternLayout.hh>
-#include <log4cpp/Priority.hh>
+//#include <Qdialog>
+#include <QDebug>
+#include <QFile>
+//#include <QErrorMessage>
+#include <QString>
+//#include <iostream>
+#include <sstream>
+#include <string>
+#include <QTime>
+#include <QTimer>
 
-#define L_ERROR log4cpp::Priority::ERROR
-#define L_WARN  log4cpp::Priority::WARN
-#define L_INFO  log4cpp::Priority::INFO
-#define L_DEBUG log4cpp::Priority::DEBUG
+
+using namespace std;
+
+/*
+typedef enum {EMERG  = 0,
+              FATAL  = 0,
+              ALERT  = 100,
+              CRIT   = 200,
+              ERROR  = 300,
+              WARN   = 400,
+              NOTICE = 500,
+              INFO   = 600,
+              DEBUG  = 700,
+              NOTSET = 800
+} PriorityLevel;
+*/
+
+#define L_ERROR 300
+#define L_WARN  400
+#define L_INFO  600
+#define L_DEBUG 700
 
 
 /**
@@ -22,13 +42,23 @@
  */
 class Logger
 {
-public:
-    Logger() = delete; //only static methods
+  public:
     static void init();
-    static log4cpp::Category& log;
-private:
-    static log4cpp::Appender* appender;
-    static log4cpp::Appender* consoleAppender;
+    static QString      log();
+    static void         send(QString str);
+    static QString      Logger::value;
+    static QTextStream  * Logger::ts;
+    static void         TimerFflush();
+
+    friend QString &operator << (QString &c, QString a);
+    friend QString &operator << (QString &c, string a);
+    friend QString &operator << (QString &c, const char * a);
+    friend QString &operator << (QString &c, int a);
+
+    Logger();
+
+    private:
+    // ~Logger();
 };
 
-#endif // LOGGER_H
+#endif // QT_LOGGER_H

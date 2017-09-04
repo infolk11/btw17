@@ -1,6 +1,7 @@
 #include "database.h"
 #include "kandidat.h"
 #include "partei.h"
+#include "logger.h"
 
 Database::Database(const QString& ty, const QString& st, const int y) : type(ty), state(st), year(y)
 {
@@ -8,13 +9,13 @@ Database::Database(const QString& ty, const QString& st, const int y) : type(ty)
     db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     VWahl::dbs->append(*this);
 
-    Logger::log << L_DEBUG << "Adding database " << getNamingScheme(type,state,year).toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
+    Logger::log() << L_DEBUG << "Adding database " << name.toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
 }
 
 Database::~Database()
 {
     db.close();
-    Logger::log << L_INFO << "closed Database" << databaseName().toStdString();
+    Logger::log() << L_INFO << "closed Database" << db_name.toStdString();
 }
 
 //connects class-object to database
@@ -22,11 +23,11 @@ auto Database::connect() -> int
 {
     initByDatabaseSettings();
     if (db.open()) {
-        Logger::log << L_INFO<< "successfull connected to database!";
+        Logger::log() << L_INFO<< "successfull connected to database!";
         return EXIT_SUCCESS;
     }
     else {
-        Logger::log << L_DEBUG << db.lastError().text().toStdString();
+        Logger::log() << L_DEBUG << db.lastError().text().toStdString();
         return EXIT_FAILURE;
     }
 }
@@ -165,7 +166,7 @@ int Database::reloadSettings()
     db.close();
     initByDatabaseSettings();
     if(connect() == EXIT_FAILURE){
-        Logger::log << L_ERROR << db.lastError().text().toStdString();
+        //to do Logger::log << L_ERROR << db.lastError().text().toStdString();
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

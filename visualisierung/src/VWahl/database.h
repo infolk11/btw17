@@ -10,7 +10,7 @@
 #include <QColor>
 #include <QList>
 
-#include "logger.h"
+//to do #include "logger.h"
 #include "record.h"
 #include "main.h"
 #include "kandidat.h"
