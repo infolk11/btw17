@@ -46,38 +46,8 @@ QVector<Database> *dbs;
  */
 void run(QApplication& app)
 {
-    QString str;
-    int Value;
-
-    Logger::init();
-
-  str = "String1  ";
-
-    Logger::log() << str << "12345678" ;
-
-    str = "String2  ";
-
-    Value = 2000;
-
-    Logger::log() << Value << "  bbbbb " << str << "000 " ;
-
-    str = "String3  ";
-
-    Value = 3000;
-
-    Logger::log() << Value << "  bbbbb " << str << "000 " ;
-
-
     try
     {
-        string str;
-        str = "hallo";
-
-        string value;
-        value = "234";
-        Logger::log() << L_DEBUG<< "Adding database "<< str << " from type " << value;
-
-
         if(VWahl::init() != EXIT_SUCCESS)
         {
             Logger::log() << L_ERROR << "Failed to initialize the program. This is an fatal error which will cause a shutdown.";
@@ -88,6 +58,7 @@ void run(QApplication& app)
         VWahl::showGui();
 
         Logger::log() << L_INFO << "Initalized guis.";
+
         app.exec();
         Logger::log() << L_INFO << "Stopping execution of app.";
     }catch(...)
