@@ -1,6 +1,5 @@
 #include "databasedialog.h"
 #include "ui_databasedialog.h"
-#include "logger.h"
 
 DatabaseDialog::DatabaseDialog(QWidget *parent) :
     QDialog(VWahl::settingsWindow),
@@ -34,8 +33,8 @@ void DatabaseDialog::on_acceptButton_clicked()
 
     //I don't know how to do this...
     //VWahl::settingsWindow->db->reloadSettings();
-   // Logger::log << L_INFO << "in accept: ";
-    //Logger::log() << L_INFO << "in accept: " << *(VWahl::settingsWindow->db);
+    Logger::log << L_INFO << "in accept: ";
+    //Logger::log << L_INFO << "in accept: " << *(VWahl::settingsWindow->db);
 
     this->hide();
 }
