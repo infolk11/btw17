@@ -2,7 +2,7 @@
 -- Tabellenstruktur für Tabelle `direktkandidaten`
 --
 
-CREATE TABLE `direktkandidaten` (
+CREATE TABLE `Direktkandidaten` (
   `D_ID` int(4) NOT NULL,
   `Vorname` varchar(255) COLLATE latin1_german2_ci NOT NULL,
   `Name` varchar(255) COLLATE latin1_german2_ci NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `direktkandidaten` (
 -- Tabellenstruktur für Tabelle `partei`
 --
 
-CREATE TABLE `partei` (
+CREATE TABLE `Partei` (
   `P_ID` int(2) NOT NULL,
   `P_Bezeichnung` varchar(255) COLLATE latin1_german2_ci NOT NULL,
   `Farbe` varchar(255) COLLATE latin1_german2_ci NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE `partei` (
 -- Tabellenstruktur für Tabelle `wahllokal`
 --
 
-CREATE TABLE `wahllokal` (
+CREATE TABLE `Wahllokal` (
   `W_ID` int(4) NOT NULL,
   `W_Bezeichnung` varchar(255) COLLATE latin1_german2_ci NOT NULL,
   `PLZ` int(5) NOT NULL,
