@@ -41,7 +41,6 @@ HEADERS  += partei.h \
     qcustomplot.h \
     plottest.h \
     settingswindow.h \
-    databaseDialog.h \
     databasedialog.h \
     querydialog.h \
     presentationwindow.h

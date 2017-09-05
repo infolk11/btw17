@@ -25,7 +25,7 @@ SettingsWindow::~SettingsWindow()
  */
 void SettingsWindow::showPlot()
 {
-    Logger::log << L_INFO << "Plot changed";
+    Logger::log << L_INFO << "Plot changed" << "\n";
     Plots p;
     presentationWindow->showPlot(p);
 }
@@ -45,9 +45,9 @@ void SettingsWindow::init()
     if(db->connect() != EXIT_SUCCESS)
     {
         error->showMessage(db->lastError().text());
-        Logger::log << L_ERROR << db->lastError().text().toStdString();
+        Logger::log << L_ERROR << db->lastError().text().toStdString() << "\n";
     } else
-         Logger::log << L_INFO << "opened Database!";
+         Logger::log << L_INFO << "opened Database!" << "\n";
 
     dbDialog = new DatabaseDialog(this);
     queryDialog = new QueryDialog(this);
@@ -80,7 +80,7 @@ void SettingsWindow::buildConnects()
                     new QListWidgetItem(q.value(0).toString() + ", " + q.value(1).toString() + "\t" + q.value(2).toString(), ui->candidatesList);
             }
             else{
-                Logger::log << L_ERROR << q.lastError().text().toStdString();
+                Logger::log << L_ERROR << q.lastError().text().toStdString() << "\n";
                 error->showMessage(q.lastError().text());
                 return;
             }
@@ -93,7 +93,7 @@ void SettingsWindow::buildConnects()
                    new QListWidgetItem(q.value(0).toString() + ", " + q.value(1).toString(), ui->candidatesList);
             }
             else{
-                Logger::log << L_ERROR << q.lastError().text().toStdString();
+                Logger::log << L_ERROR << q.lastError().text().toStdString() << "\n";
                 error->showMessage(q.lastError().text());
                 return;
             }
@@ -146,29 +146,29 @@ int SettingsWindow::fetchDatabaseValues()
         }
     }
     else{
-        Logger::log << L_WARN << "Database connection not established, no changes made.";
+        Logger::log << L_WARN << "Database connection not established, no changes made." << "\n";
         return EXIT_FAILURE;
     }
-    Logger::log << L_INFO << "The data have been succesfully fetched from the database.";
+    Logger::log << L_INFO << "The data have been succesfully fetched from the database." << "\n";
     return EXIT_SUCCESS;
 }
 
 void SettingsWindow::closeEvent(QCloseEvent *event)
 {
-    Logger::log << L_DEBUG << "Close event triggered.";
+    Logger::log << L_DEBUG << "Close event triggered." << "\n";
     QMessageBox msgBox;
     msgBox.setText("Möchten Sie das Programm wirklich schließen?");
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     int res = msgBox.exec();
     if(QMessageBox::Yes == res)
     {
-        Logger::log << L_DEBUG << "User confirmed close event";
+        Logger::log << L_DEBUG << "User confirmed close event" << "\n";
         presentationWindow->close();
         event->accept();
     }
     else
     {
-        Logger::log << L_DEBUG << "User canceled close event";
+        Logger::log << L_DEBUG << "User canceled close event" << "\n";
         event->setAccepted(false);
     }
 }
