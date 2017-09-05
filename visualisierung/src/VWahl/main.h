@@ -40,6 +40,8 @@ namespace VWahl
 
     extern QVector<Database> *dbs;
 
+    extern Logger *log;
+
 }
 
 #endif // MAIN_H

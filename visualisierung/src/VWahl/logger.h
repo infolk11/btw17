@@ -43,22 +43,24 @@ typedef enum {EMERG  = 0,
 class Logger
 {
   public:
-    static void init();
-    static QString      log();
-    static void         send(QString str);
-    static QString      Logger::value;
-    static QTextStream  * Logger::ts;
-    static void         TimerFflush();
+    void init();
+    static Logger       log;
+    void         send(QString str);
+    QString      value;
+    QFile        *outFile;
+    QTextStream  *ts;
+    void         TimerFflush();
 
-    friend QString &operator << (QString &c, QString a);
-    friend QString &operator << (QString &c, string a);
-    friend QString &operator << (QString &c, const char * a);
-    friend QString &operator << (QString &c, int a);
+    friend Logger &operator << (Logger& l, const char * a);
+    friend Logger &operator << (Logger& l, string a);
+    friend Logger &operator << (Logger& l, QString a);
+    friend Logger &operator << (Logger& l, int a);
 
-    Logger();
+
 
     private:
-    // ~Logger();
+        Logger() = default;
+        ~Logger();
 };
 
 #endif // QT_LOGGER_H

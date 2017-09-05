@@ -1,10 +1,7 @@
 #include "logger.h"
 
 //Static variables
-QString Logger::value;
-int send_state;
-int ErrorNumber;
-QTextStream * Logger::ts;
+Logger Logger::log = Logger();
 
 /**
  * Initializing the logger
@@ -13,11 +10,8 @@ QTextStream * Logger::ts;
  */
 
 
-Logger::Logger(void){
-}
 
 void Logger::init() {
-
 
     QDateTime Time;
     QString FileName;
@@ -31,78 +25,53 @@ void Logger::init() {
 
     FileName = QString("log_%1.txt").arg(FileVersion);
 
-    static QFile outFile(FileName);
+    outFile = new QFile(FileName);
     //outFile.rename(FileName);
     //outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    outFile.open(QIODevice::WriteOnly);
+    outFile->open(QIODevice::WriteOnly);
     //outFile.open(QIODevice::WriteOnly);
-    static QTextStream out(&outFile);
-
-    Logger::ts = &out;
+    ts = new QTextStream(outFile);
 
 
 }
 
-
-QString Logger::log()
-{
-   QString str;
-
-   send_state = 0;
-
-   return str ;
-}
-
-QString &operator << (QString &c, const char * a)
+Logger &operator << (Logger &l, const char * a)
 {
     QString str;
 
     str.sprintf("%s",a);
+    l.send(str);
 
-    Logger::send(str);
-
-    return str;
+    return l;
 }
-QString &operator << (QString &c, QString a)
+Logger &operator << (Logger &l, QString a)
 {
-    Logger::send(a);
+    l.send(a);
 
-    return a;
+    return l;
 }
-QString &operator << (QString &c, string a)
+Logger &operator << (Logger &l, string a)
 {
     QString str;
 
     str = QString::fromStdString(a);
-    Logger::send(str);
+    l.send(str);
 
-    return str;
+    return l;
 }
-QString &operator << (QString &c, int a)
+Logger &operator << (Logger &l, int a)
 {
     QString str;
 
     str.sprintf("%d",a);
 
-    Logger::send(str);
+    l.send(str);
 
-    return str;
+    return l;
 }
 
 void Logger::send(QString str)
 {
-    if(send_state == 0)
-    {
-
-        QDateTime time;
-
-        //Logger::value.append(time.currentDateTime().toString().remove("Mo").remove("Sep"));
-        //Logger::value.append(time.currentDateTime().toString());
-        //Logger::value.append("  ");
-
-      send_state = 1;
-      }
-
     Logger::value.append(str);
     int endcounter = Logger::value.count("\n");
     if(endcounter > 0)
@@ -112,9 +81,12 @@ void Logger::send(QString str)
         *Logger::ts         << Logger::value << "\n";
         Logger::ts->flush();
         Logger::value.clear();
-        send_state = 1;
     }
+}
 
-
+Logger::~Logger()
+{
+    delete ts;
+    delete outFile;
 }
 

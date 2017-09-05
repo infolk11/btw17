@@ -9,13 +9,13 @@ Database::Database(const QString name)
     db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
     VWahl::dbs->append(*this);
 
-    Logger::log() << L_DEBUG << "Adding database " << name.toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString() << "\n";
+    Logger::log << L_DEBUG << "Adding database " << name.toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString() << "\n";
 }
 
 Database::~Database()
 {
     db.close();
-    Logger::log() << L_INFO << "closed Database" << db_name.toStdString() << "\n";
+    Logger::log << L_INFO << "closed Database" << db_name.toStdString() << "\n";
 }
 
 //connects class-object to database
@@ -23,11 +23,11 @@ auto Database::connect() -> int
 {
     initByDatabaseSettings();
     if (db.open()) {
-        Logger::log() << L_INFO<< "successfull connected to database!" << "\n";
+        Logger::log << L_INFO<< "successfull connected to database!" << "\n";
         return EXIT_SUCCESS;
     }
     else {
-        Logger::log() << L_DEBUG << db.lastError().text().toStdString() << "\n";
+        Logger::log << L_DEBUG << db.lastError().text().toStdString() << "\n";
         return EXIT_FAILURE;
     }
 }
@@ -139,7 +139,7 @@ int Database::reloadSettings()
     db.close();
     initByDatabaseSettings();
     if(connect() == EXIT_FAILURE){
-        Logger::log() << L_ERROR << db.lastError().text().toStdString() << "\n";
+        Logger::log << L_ERROR << db.lastError().text().toStdString() << "\n";
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

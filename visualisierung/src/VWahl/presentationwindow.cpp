@@ -12,7 +12,7 @@ PresentationWindow::PresentationWindow(QWidget *parent) :
 void PresentationWindow::showPlot(Plots p)
 {
     //Will later show the plot
-    Logger::log() << L_INFO << "Showing the new plot." << "\n";
+    Logger::log << L_INFO << "Showing the new plot." << "\n";
 }
 
 PresentationWindow::~PresentationWindow()

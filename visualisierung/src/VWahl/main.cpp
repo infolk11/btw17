@@ -32,6 +32,7 @@ QSettings *settings;
 PresentationWindow *presentationWindow;
 SettingsWindow *settingsWindow;
 QVector<Database> *dbs;
+Logger *log;
 
 //Methods
 /**
@@ -45,19 +46,19 @@ void run(QApplication& app)
     {
         if(VWahl::init() != EXIT_SUCCESS)
         {
-            Logger::log() << L_ERROR << "Failed to initialize the program. This is an fatal error which will cause a shutdown." << "\n";
+            Logger::log << L_ERROR << "Failed to initialize the program. This is an fatal error which will cause a shutdown." <<"\n";
             return;
         }
 
-        Logger::log() << L_INFO << "Running the application." << "\n";
+        Logger::log << L_INFO << "Running the application." << "\n";
         VWahl::showGui();
-        Logger::log() << L_INFO << "Initalized guis." << "\n";
+        Logger::log << L_INFO << "Initalized guis." << "\n";
         app.exec();
-        Logger::log() << L_INFO << "Stopping execution of app." << "\n";
+        Logger::log << L_INFO << "Stopping execution of app." << "\n";
     }catch(...)
     {
         //TO-DO: Advanced exception handling...
-        Logger::log() << L_ERROR << "A fatal error has occured!" << "\n";
+        Logger::log << L_ERROR << "A fatal error has occured!" << "\n";
     }
     VWahl::shutdown();
 }
@@ -83,12 +84,13 @@ void showGui()
 int init()
 {
     //Initializing the logger
-    Logger::init();
+
+    Logger::log.init();
 
     //Initializing the settings
     if(initSettings()!= EXIT_SUCCESS)
     {
-        Logger::log() << L_ERROR << "Failed to initalize settings!" << "\n";
+        Logger::log << L_ERROR << "Failed to initalize settings!" << "\n";
         return EXIT_FAILURE;
     }
 
@@ -96,11 +98,11 @@ int init()
     VWahl::dbs = new QVector<Database>();
     if(Database::checkDatabaseSettings() != EXIT_SUCCESS)
     {
-        Logger::log() << L_ERROR << "Failed to initialize database settings." << "\n";
+        Logger::log << L_ERROR << "Failed to initialize database settings." << "\n";
         return EXIT_FAILURE;
     }
 
-    Logger::log() << L_INFO << "Initialized the program." << "\n";
+    Logger::log << L_INFO << "Initialized the program." << "\n";
     return EXIT_SUCCESS;
 }
 
@@ -112,15 +114,15 @@ int init()
  */
 int shutdown()
 {
-    Logger::log() << L_INFO << "Shutting down the program." << "\n";
+    Logger::log << L_INFO << "Shutting down the program." << "\n";
 
     VWahl::settings->sync();
     if (VWahl::settings->status() != 0){
-        Logger::log() << L_ERROR << "failed to write the settings to" << VWahl::settings->fileName().toStdString() << "\n";
+        Logger::log << L_ERROR << "failed to write the settings to" << VWahl::settings->fileName().toStdString() << "\n";
         return EXIT_FAILURE;
     }
     else
-        Logger::log() << L_INFO << "wrote the settings to" << VWahl::settings->fileName().toStdString() << "\n";
+        Logger::log << L_INFO << "wrote the settings to" << VWahl::settings->fileName().toStdString() << "\n";
 
     //Cleaning up memory
     delete settingsWindow;

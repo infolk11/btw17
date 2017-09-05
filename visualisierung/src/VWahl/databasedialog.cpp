@@ -33,7 +33,7 @@ void DatabaseDialog::on_acceptButton_clicked()
 
     //I don't know how to do this...
     //VWahl::settingsWindow->db->reloadSettings();
-    Logger::log() << L_INFO << "in accept: " << "\n";
+    Logger::log << L_INFO << "in accept: " << "\n";
     //Logger::log << L_INFO << "in accept: " << *(VWahl::settingsWindow->db);
 
     this->hide();
