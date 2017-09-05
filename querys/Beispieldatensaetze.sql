@@ -1,5 +1,5 @@
 -- direktkandidaten
-INSERT INTO `direktkandidaten` (`D_ID`, `Vorname`, `Name`, `Farbe`) VALUES
+INSERT INTO `Direktkandidaten` (`D_ID`, `Vorname`, `Name`, `Farbe`) VALUES
 (1, 'Kirsten', 'Tackmann', '#cd1076'),
 (2, 'Dagmar', 'Ziegler', '#cd0000'),
 (3, 'Sebastian', 'Steineke', '#000000'),
@@ -13,7 +13,7 @@ INSERT INTO `direktkandidaten` (`D_ID`, `Vorname`, `Name`, `Farbe`) VALUES
 
 
 -- partei
-INSERT INTO `partei` (`P_ID`, `P_Bezeichnung`, `Farbe`, `Listenplaetze`) VALUES
+INSERT INTO `Partei` (`P_ID`, `P_Bezeichnung`, `Farbe`, `Listenplaetze`) VALUES
 (1, 'DIE LINKE', '#cd1076', 1),
 (2, 'SPD', '#cd0000', 1),
 (3, 'CDU/CSU', '#000000', 1),
