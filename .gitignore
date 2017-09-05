@@ -183,3 +183,4 @@ ENV/
 # others
 .directory
 ~*
+*.user
