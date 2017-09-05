@@ -1,16 +1,18 @@
 --
--- Tabellenstruktur für Tabelle `Direktkandidaten`
+-- Tabellenstruktur für Tabelle `direktkandidaten`
 --
 
 CREATE TABLE `Direktkandidaten` (
   `D_ID` int(4) NOT NULL,
   `Vorname` varchar(255) COLLATE latin1_german2_ci NOT NULL,
   `Name` varchar(255) COLLATE latin1_german2_ci NOT NULL,
+  `P_ID` int(2) NOT NULL,
+  `Farbe` varchar(255) COLLATE latin1_german2_ci,
   PRIMARY KEY (D_ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_german2_ci ROW_FORMAT=COMPACT;
 
 --
--- Tabellenstruktur für Tabelle `Partei`
+-- Tabellenstruktur für Tabelle `partei`
 --
 
 CREATE TABLE `Partei` (
@@ -22,7 +24,7 @@ CREATE TABLE `Partei` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_german2_ci ROW_FORMAT=COMPACT;
 
 --
--- Tabellenstruktur für Tabelle `Wahllokal`
+-- Tabellenstruktur für Tabelle `wahllokal`
 --
 
 CREATE TABLE `Wahllokal` (
