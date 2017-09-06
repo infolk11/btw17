@@ -37,20 +37,9 @@ public:
     auto connect() -> int;
     auto exec(const QString queryString) -> QSqlQuery;
 
-    /**
-     * @warning actually not working!QString
-     *
-     * @brief Database::getElectionResults
-     * @param desc
-     * @param y
-     * @param options
-     * @param candidates
-     * @param parties
-     * @param pollingStations
-     * @return
-     */
-    QList<Record> getElectionResults(QString desc, int y, Options options, QList<int> candidates = QList<int>{}, QList<int> parties = QList<int>{}, QList<int> pollingStations = QList<int>{});
-    Record getVoterTurnout(QString desc, int y, QList<QString> pollingStations);
+    int getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations);
+    int getVotesParty(Partei party, QList<PollingStation> pollingStations);
+    void updateData();
 
     //Static functions
     static auto checkDatabaseSettings() -> int;
@@ -71,7 +60,6 @@ public:
     QList<Kandidat> getCandidates() const;
     QList<PollingStation> getPollingStations() const;
     QList<Partei> getParties() const;
-    void updateData();
 
 private:
     //auto getSize(QSqlQuery &quey) -> int;

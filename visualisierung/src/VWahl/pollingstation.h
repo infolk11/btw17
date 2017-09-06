@@ -3,17 +3,16 @@
 
 #include <QString>
 
-class PollingStation
+#include "record.h"
+
+class PollingStation : public RecordObject
 {
 public:
     PollingStation() = default;
-    PollingStation(QString desc, int i, QString pc, QString str) : description(desc), id(i),postCode(pc),street(str) {}
-    PollingStation(QString desc, QString pc, QString str, int v, int vt) : description(desc), postCode(pc), street(str), voters(v), voterTurnout(vt) {}
+    PollingStation(QString desc, int i, QString pc, QString str) : RecordObject(desc), id(i),postCode(pc),street(str) {}
+    PollingStation(QString desc, QString pc, QString str, int v, int vt) : RecordObject(desc), postCode(pc), street(str), voters(v), voterTurnout(vt) {}
     int getId() const;
     void setId(int value);
-
-    QString getDescription() const;
-    void setDescription(const QString &value);
 
     QString getPostCode() const;
     void setPostCode(const QString &value);
@@ -29,7 +28,6 @@ public:
 
 private:
     int id;
-    QString description;
     QString postCode;
     QString street;
     int voters;

@@ -39,87 +39,47 @@ auto Database::exec(const QString queryString) -> QSqlQuery
     return query;
 }
 
-
-/**
- * @warning actually not working!
- *
- * @brief Database::getElectionResults
- * @param desc
- * @param y
- * @param options
- * @param candidates
- * @param parties
- * @param pollingStations
- * @return
- */
-QList<Record> Database::getElectionResults(QString desc, int y, Database::Options options, QList<int> candidates, QList<int> parties, QList<int> pollingStations)
+int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations)
 {
-    QList<Record> records;
-    if(options.testFlag(Option::Candidates))
+    int votes = 0;
+    for(PollingStation p : pollingStations)
     {
-
-        Record rec;
-        QList<RecordObject> objects;
-        for(int candidate: candidates)
+        QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("BestimmteStimmenDirektkandidatWahllokal").toString(),db);
+        voteQuery.bindValue("@d",QVariant(k.getId()));
+        voteQuery.bindValue("@w",QVariant(p.getId()));
+        voteQuery.exec();
+        if(! voteQuery.exec())
         {
-            Kandidat k;
-            QSqlQuery candidateInfos = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
-            candidateInfos.bindValue("/*ausstehend*/",QVariant(candidate));
-            candidateInfos.exec();
-
-            //Initialisieren mit Ergebnissen der Querys - ausstehend
-
-            //Errechnen der Stimmen
-            int votes = 0;
-            for(int pollingStation : pollingStations)
-            {
-                QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
-                voteQuery.bindValue("/*ausstehend*/",QVariant(pollingStation));
-                voteQuery.exec();
-
-                //Addieren der Votes - ausstehend
-
-            }
-            objects.push_back(k);
+            Logger::log << L_ERROR << "Failed to execute the query " << voteQuery.executedQuery() << "\n";
+            return 0;
         }
-        rec = Record(desc + " Direktkanidaten",y,objects);
-        records.push_back(rec);
+        int v = voteQuery.value("1Anzahl").toInt();
+        votes += v;
     }
-    if(options.testFlag(Option::Parties))
-    {
-        Record rec;
-        QList<RecordObject> objects;
 
-        for(int party : parties)
-        {
-            Partei p;
-            QSqlQuery partyInfos(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
-            partyInfos.bindValue("/*ausstehend*/",QVariant(party));
-
-            //Mit Daten anreichern - ausstehend
-            int votes = 0;
-            for(int pollingStation : pollingStations)
-            {
-                QSqlQuery voteQuery(VWahl::settings->value("/*Abfrage ausstehend*/").toString(),db);
-                voteQuery.bindValue("/*ausstehend*/",pollingStation);
-
-                //Errechnen der Votes - ausstehend
-            }
-            objects.push_back(p);
-        }
-        rec = Record(desc + " Parteien",y,objects);
-        records.push_back(rec);
-    }
-    return records;
+    return votes;
 }
 
-Record Database::getVoterTurnout(QString desc, int y, QList<QString> pollingStations)
+int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
 {
-    Record rec;
-    //actually not supported
-    return rec;
-}
+    int votes = 0;
+    for(PollingStation p : pollingStations)
+    {
+        QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("BestimmteStimmenParteiWahllokal").toString(),db);
+        voteQuery.bindValue("@d",QVariant(party.getP_id()));
+        voteQuery.bindValue("@w",QVariant(p.getId()));
+        voteQuery.exec();
+        if(! voteQuery.exec())
+        {
+            Logger::log << L_ERROR << "Failed to execute the query " << voteQuery.executedQuery() << "\n";
+            return 0;
+        }
+        int v = voteQuery.value("1Anzahl").toInt();
+        votes += v;
+    }
 
+    return votes;
+}
 int Database::checkDatabaseSettings()
 {
     bool returnV = false;
