@@ -10,7 +10,7 @@
 	if ($conn->connect_error) {
 		die("Connection failed".$conn->connect_error);
 	}
-	$sql = "SELECT W_Bezeichnung, w_id FROM Wahllokal";
+	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal";
 	$result = $conn->exec($sql);
 	if($result->num_rows>0) {
 		echo '<!DOCTYPE html>
@@ -29,7 +29,7 @@
 		echo "Keine Wahllokale gefunden";
 	}
 	
-	$sql = "SELECT p_bezeichnung, p_id FROM partei";
+	$sql = "SELECT P_Bezeichnung, P_ID FROM Partei";
 	$result = $conn->exec($sql);
 	if($result->num_rows>0) {
 		echo '				<table name="partei">
@@ -48,8 +48,8 @@
 		echo "Keine Parteien gefunden";
 	}
 	
-	$sql = "SELECT vorname, name, d_id FROM Direktkandidaten";
-	$result = $conn->exec($sql);
+	$sql = "SELECT Vorname, Name, d_id FROM Direktkandidaten";
+	$result = $conn->exec();
 	if($result->num_rows>0) {
 		echo '				<table name="Kandidat">
 								<tr>
