@@ -38,9 +38,9 @@ namespace VWahl
     //company: Evangelische Schule Neuruppin, name: btw17
     extern QSettings *settings;
 
-    extern QVector<Database> *dbs;
-
     extern Logger *log;
+
+    extern Database *db;
 
 }
 

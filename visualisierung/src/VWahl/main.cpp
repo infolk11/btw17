@@ -33,6 +33,7 @@ PresentationWindow *presentationWindow;
 SettingsWindow *settingsWindow;
 QVector<Database> *dbs;
 Logger *log;
+Database *db;
 
 //Methods
 /**
@@ -95,12 +96,25 @@ int init()
     }
 
     //Initializing databases
-    VWahl::dbs = new QVector<Database>();
+    db = new Database(VWahl::settings->value("database/type").toString(),
+                      VWahl::settings->value("database/state").toString(),
+                      VWahl::settings->value("database/year").toInt());
+
     if(Database::checkDatabaseSettings() != EXIT_SUCCESS)
     {
         Logger::log << L_ERROR << "Failed to initialize database settings." << "\n";
         return EXIT_FAILURE;
     }
+
+    //Open database connections
+    if(db->connect() != EXIT_SUCCESS)
+    {
+        error->showMessage(db->lastError().text());
+        Logger::log << L_ERROR << db->lastError().text().toStdString() << "\n";
+        return EXIT_FAILURE;
+    } else
+         Logger::log << L_INFO << "opened Database!" << "\n";
+
 
     Logger::log << L_INFO << "Initialized the program." << "\n";
     return EXIT_SUCCESS;
