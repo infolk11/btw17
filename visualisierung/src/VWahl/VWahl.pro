@@ -5,6 +5,7 @@ r#-------------------------------------------------
 #-------------------------------------------------
 
 QT       += core gui sql widgets
+CONFIG += c++11
 
 QMAKE_RPATHDIR += /usr/lib
 QMAKE_RPATHDIR += /usr/local/lib
@@ -46,7 +47,6 @@ HEADERS  += partei.h \
     presentationwindow.h
 
 
-unix:!macx: LIBS += -llog4cpp
 
 INCLUDEPATH += $$PWD/../../lib
 DEPENDPATH += $$PWD/../../lib
