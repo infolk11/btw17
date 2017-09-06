@@ -1,0 +1,6 @@
+wilhelm.friedemann@student.hpi.de
+
+git branch "coole_neue_website_ohne_katzenbilder"
+git add *
+git commit -m "Cooler Commit mit neuer epischer Website" 
+git push
