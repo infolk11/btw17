@@ -15,23 +15,24 @@ void Logger::init() {
 
     QDateTime Time;
     QString FileName;
+    QString SaveFileName;
     QString FileVersion;
 
-    FileVersion = Time.currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    FileVersion = Time.currentDateTime().toString("yyyy-MM-dd");
     FileVersion.replace(":","_");
     FileVersion.replace("-","_");
     FileVersion.replace(" ","-");
 
-
-    FileName = QString("log_%1.txt").arg(FileVersion);
+    FileName = QString("log.txt");
+    SaveFileName = QString("log_%1.txt").arg(FileVersion);
 
     outFile = new QFile(FileName);
-    //outFile.rename(FileName);
-    //outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    outFile->open(QIODevice::WriteOnly);
-    //outFile.open(QIODevice::WriteOnly);
-    ts = new QTextStream(outFile);
+    outSaveFile = new QFile(SaveFileName);
 
+    outFile->open(QIODevice::WriteOnly);
+    outSaveFile->open(QIODevice::WriteOnly);
+    ts = new QTextStream(outFile);
+    sts = new QTextStream(outSaveFile);
 
 }
 
@@ -55,12 +56,15 @@ Logger &operator << (Logger &l, string a)
     QString str;
 
     str = QString::fromStdString(a);
+
+
     l.send(str);
 
     return l;
 }
 Logger &operator << (Logger &l, int a)
 {
+
     QString str;
 
     str.sprintf("%d",a);
@@ -72,21 +76,40 @@ Logger &operator << (Logger &l, int a)
 
 void Logger::send(QString str)
 {
+    QString LogTime;
+
     Logger::value.append(str);
     int endcounter = Logger::value.count("\n");
     if(endcounter > 0)
     {
+
         Logger::value.remove("\n");
-        qDebug().noquote()  << Logger::value;
-        *Logger::ts         << Logger::value << "\n";
+
+
+        QDateTime time;
+        LogTime.append( time.currentDateTime().toString("hh:mm:ss:zzz"));
+        LogTime.append("  ");
+
+        LogTime.append(value);
+
+        qDebug().noquote()  << LogTime;
+
+
+        *Logger::ts         << LogTime<< "\n";
         Logger::ts->flush();
+        *Logger::sts         << LogTime<< "\n";
+        Logger::sts->flush();
         Logger::value.clear();
     }
+
 }
+
 
 Logger::~Logger()
 {
     delete ts;
+    delete sts;
     delete outFile;
+    delete outSaveFile;
 }
 
