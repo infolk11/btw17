@@ -12,6 +12,8 @@ class RecordObject
 {
    public:
     RecordObject() = default;
+    RecordObject(QString desc) : description(desc) {}
+    RecordObject(QString desc, QColor col) : description(desc),color(col) {}
     RecordObject(QString desc, int v, QColor col) : description(desc), votes(v), color(col) {}
 
     QString getDescription() const;

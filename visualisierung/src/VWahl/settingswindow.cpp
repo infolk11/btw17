@@ -32,7 +32,7 @@ void SettingsWindow::showPlot()
 
 void SettingsWindow::init()
 {
-    db = new Database("wahl17");
+    db = new Database("btw","de",2017);
     error = new QErrorMessage(this);
     presentationWindow = new PresentationWindow();
     presentationWindow->show();

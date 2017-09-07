@@ -20,7 +20,6 @@
 class Database;
 class DatabaseDialog;
 class QueryDialog;
-//class SettingsWindow;
 
 namespace Ui {
 class SettingsWindow;
@@ -36,8 +35,6 @@ class SettingsWindow : public QMainWindow
 public:
     explicit SettingsWindow(QWidget *parent = 0);
     ~SettingsWindow();
-
-    Database *db;
 public slots:
     void showPlot();
 private:

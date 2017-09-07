@@ -10,16 +10,6 @@ void PollingStation::setId(int value)
     id = value;
 }
 
-QString PollingStation::getDescription() const
-{
-    return description;
-}
-
-void PollingStation::setDescription(const QString &value)
-{
-    description = value;
-}
-
 QString PollingStation::getPostCode() const
 {
     return postCode;
