@@ -109,7 +109,6 @@ int init()
     //Open database connections
     if(db->connect() != EXIT_SUCCESS)
     {
-        error->showMessage(db->lastError().text());
         Logger::log << L_ERROR << db->lastError().text().toStdString() << "\n";
         return EXIT_FAILURE;
     } else

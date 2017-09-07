@@ -60,13 +60,6 @@ private:
      */
     auto buildConnects() -> void;
 
-    /**
-     * fetches the actual data from the database
-     *
-     * @brief fetchDatabaseValues
-     * @return EXIT_SUCCESS if changes were made, EXIT_FAILURE if not
-     */
-    auto fetchDatabaseValues() -> int;
 
 protected:
     void closeEvent(QCloseEvent *event);

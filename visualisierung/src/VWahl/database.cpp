@@ -6,7 +6,6 @@ Database::Database(const QString& ty, const QString& st, const int y) : type(ty)
 {
 
     db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString(),getNamingScheme(type,state,year));
-    VWahl::dbs->append(*this);
 
     Logger::log << L_INFO << "Adding database " << getNamingScheme(type,state,year).toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
 }
