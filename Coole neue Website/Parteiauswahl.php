@@ -4,7 +4,7 @@
 	$password = "";
 	$dbname= "btw_17";
 
-	$wl = $_REQUEST['wahllokal'];
+	#$wl = $_REQUEST['wahllokal'];
 		
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	if ($conn->connect_error) {
@@ -20,9 +20,10 @@
 					</head>
 					<body>
 						<form action = "Insert.php" method="post">
+							<label for="wahllokal">Wählen sie ein Wahllokal aus:</label>
 							<select name="wahllokal">';
 		while($row = $result->fetch_assoc()) {
-			echo "<option name = " + $row['w_id'] + ">"+ $row["w_bezeichnung"] +"</option>";
+			echo "<option name = ".$row['W_ID'].">".$row["W_Bezeichnung"]."</option>";
 		}
 		echo'				</select>';
 	}else {
@@ -39,8 +40,8 @@
 								</tr>';
 		while($row = $result->fetch_assoc()) {
 			echo "<tr>
-					<td>"+ $row["p_bezeichnung"] + "</td>
-					<td> <input type='text' name='partei[" + $row["p_id"] + " ]'> </td> 
+					<td>".$row["P_Bezeichnung"]."</td>
+					<td> <input type='text' name='partei[".$row["P_ID"]." ]'> </td> 
 				 </tr>";
 		}
 		echo'				</table>';
@@ -48,7 +49,7 @@
 		echo "Keine Parteien gefunden";
 	}
 	
-	$sql = "SELECT Vorname, Name, d_id FROM Direktkandidaten";
+	$sql = "SELECT Vorname, Name, D_ID FROM Direktkandidaten";
 	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
 		echo '				<table name="Kandidat">
@@ -58,17 +59,17 @@
 								</tr>';
 		while($row = $result->fetch_assoc()) {
 			echo "<tr>
-					<td>"+ $row["vorname"] + " " + $row['name']+ "</td>
-					<td> <input type='text' name='kandidat[" + $row["d_id"] + " ]'> </td> 
+					<td>".$row["Vorname"]." ".$row['Name']."</td>
+					<td> <input type='text' name='kandidat[".$row["D_ID"]." ]'> </td> 
 				 </tr>";
 		}
 		echo'				</table>
-							<button type ="submit" name="submit">
+							<button type ="submit" name="submit">Absenden</button>
 						</form>
 					</body>
 				<html>';
 	}else {
-		echo "Keine Parteien gefunden";
+		echo "Keine Direktkandidaten gefunden";
 	}
 	$conn->close();	
 ?>
