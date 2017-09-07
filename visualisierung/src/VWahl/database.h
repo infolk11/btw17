@@ -42,8 +42,6 @@ public:
     void updateData();
 
     //Static functions
-    static auto checkDatabaseSettings() -> int;
-    static auto buildUpAvailableDatabases() -> void;
     static auto closeAllDatabases() -> void;
     static auto getNamingScheme(QString type, QString state, int year) -> QString;
 

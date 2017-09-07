@@ -5,9 +5,10 @@
 Database::Database(const QString& ty, const QString& st, const int y) : type(ty), state(st), year(y)
 {
 
-    db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString(),getNamingScheme(type,state,year));
+    db = QSqlDatabase::addDatabase(VWahl::settings->value("database/databaseType").toString(),getNamingScheme(type,state,year));
 
-    Logger::log << L_INFO << "Adding database " << getNamingScheme(type,state,year).toStdString() << " from type " << VWahl::settings->value("database/type").toString().toStdString();
+    Logger::log << L_INFO << "Adding connection " << db.connectionName() << " from type "
+                <<  db.driverName() << "\n";
 }
 
 Database::~Database()
@@ -19,7 +20,9 @@ Database::~Database()
 //connects class-object to database
 auto Database::connect() -> int
 {
-    initByDatabaseSettings();
+    if(initByDatabaseSettings() != EXIT_SUCCESS)
+        return EXIT_FAILURE;
+
     if (db.open()) {
         Logger::log << L_INFO<< "successfull connected to database!";
         return EXIT_SUCCESS;
@@ -79,44 +82,10 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
 
     return votes;
 }
-int Database::checkDatabaseSettings()
-{
-    bool returnV = false;
-    if(!doBasicSettingsExist())
-        returnV = writeBasicDatabaseSettings();
-    else
-        returnV = EXIT_SUCCESS;
-
-    if(returnV == EXIT_SUCCESS)
-        buildUpAvailableDatabases();
-
-    return returnV;
-}
-
-void Database::buildUpAvailableDatabases()
-{
-    QSqlDatabase db = QSqlDatabase::addDatabase(VWahl::settings->value("database/type").toString());
-    db.setHostName(VWahl::settings->value("database/hostname").toString());
-    db.setUserName(VWahl::settings->value("database/user").toString());
-    db.setPassword(VWahl::settings->value("database/password").toString());
-    bool ok = db.open();
-    if(ok)
-    {
-        Logger::log << L_INFO << "Successfully build up default database connection";
-        QSqlQuery query = QSqlQuery("show databases",db);
-        query.exec();
-        while(query.next())
-        {
-            Logger::log << L_INFO << "Available database: " << query.value(0).toString().toStdString();
-        }
-    }
-    else
-        Logger::log << L_ERROR << "Failed to build up default database connection: " << db.lastError().databaseText().toStdString();
-}
 
 QString Database::getNamingScheme(QString type, QString state, int year)
 {
-    return VWahl::settings->value("database/databasePrefix").toString() + "_" + type.toUpper() + "_" + state.toUpper() + "_" + year;
+    return "_" + VWahl::settings->value("database/databasePrefix").toString() + "_" + type.toUpper() + "_" + state.toUpper() + "_" + QStringLiteral("%1").arg(year);
 }
 
 int Database::reloadSettings()
@@ -133,50 +102,24 @@ int Database::reloadSettings()
 
 int Database::initByDatabaseSettings()
 {
-    db.close();
+    //Make sure database is closed
+    if(db.isOpen())
+        db.close();
 
-    checkDatabaseSettings();
+    QString hostname = VWahl::settings->value("database/hostname").toString();
+    QString user = VWahl::settings->value("database/user").toString();
+    QString password = VWahl::settings->value("database/password").toString();
+    QString databaseName = getNamingScheme(type,state,year);
+    Logger::log << L_INFO << "Connecting to database " << databaseName << " on host " << hostname << " with user " << user << " and password " << password << "\n";
 
-    db.setDatabaseName(getNamingScheme(type,state,year));
-    db.setHostName(VWahl::settings->value("database/hostname").toString());
-    db.setUserName(VWahl::settings->value("database/user").toString());
-    db.setPassword(VWahl::settings->value("database/password").toString());
-
-    return EXIT_SUCCESS;
-}
-
-
-
-auto Database::writeBasicDatabaseSettings(QString h/* = "localhost"*/, QString n/* = "wahl17"*/, QString u/* = "vwahl"*/, QString p/* = "pass"*/, QString t/* = "QMYSQL"*/) -> int
-{
-
-    //set basic values for the database connection in database-group
-    VWahl::settings->beginGroup("database");
-    VWahl::settings->setValue("hostname", h);
-    VWahl::settings->setValue("name", n);
-    VWahl::settings->setValue("user", u);
-    VWahl::settings->setValue("password", p);
-    VWahl::settings->setValue("type", t);
-    VWahl::settings->endGroup();
-
-    //    //settings for sql commands
-    //    VWahl::settings->beginGroup("sql");
-    //    VWahl::settings->setValue("partei", "SELECT ... FROM ...");
-    //    VWahl::settings->setValue("kandidat", "SELECT ... FROM ...");
-    //    VWahl::settings->endGroup();
+    db.setDatabaseName(databaseName);
+    db.setHostName(hostname);
+    db.setUserName(user);
+    db.setPassword(password);
 
     return EXIT_SUCCESS;
 }
 
-auto Database::doBasicSettingsExist() -> bool
-{
-    return (VWahl::settings->contains("database/hostname") &&
-            VWahl::settings->contains("database/name") &&
-            VWahl::settings->contains("database/user") &&
-            VWahl::settings->contains("database/password") &&
-            VWahl::settings->contains("database/type"));
-
-}
 
 QList<Partei> Database::getParties() const
 {

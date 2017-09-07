@@ -100,15 +100,11 @@ int init()
                       VWahl::settings->value("database/state").toString(),
                       VWahl::settings->value("database/year").toInt());
 
-    if(Database::checkDatabaseSettings() != EXIT_SUCCESS)
-    {
-        Logger::log << L_ERROR << "Failed to initialize database settings." << "\n";
-        return EXIT_FAILURE;
-    }
 
     //Open database connections
     if(db->connect() != EXIT_SUCCESS)
     {
+        Logger::log << L_ERROR << "Failed to establish database connection!\n";
         Logger::log << L_ERROR << db->lastError().text().toStdString() << "\n";
         return EXIT_FAILURE;
     } else
