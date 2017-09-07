@@ -11,7 +11,7 @@
 		die("Connection failed".$conn->connect_error);
 	}
 	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal";
-	$result = $conn->exec($sql);
+	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
 		echo '<!DOCTYPE html>
 				<html>
@@ -30,7 +30,7 @@
 	}
 	
 	$sql = "SELECT P_Bezeichnung, P_ID FROM Partei";
-	$result = $conn->exec($sql);
+	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
 		echo '				<table name="partei">
 								<tr>
@@ -49,7 +49,7 @@
 	}
 	
 	$sql = "SELECT Vorname, Name, d_id FROM Direktkandidaten";
-	$result = $conn->exec();
+	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
 		echo '				<table name="Kandidat">
 								<tr>
