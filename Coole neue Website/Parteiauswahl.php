@@ -15,15 +15,17 @@
 	if($result->num_rows>0) {
 		echo '<!DOCTYPE html>
 				<html>
+					<!-- <meta charset="utf-8"/> -->
 					<head>
+						
 						<title> Wahllokalauswahl </title>
 					</head>
 					<body>
 						<form action = "Insert.php" method="post">
 							<label for="wahllokal">Wählen sie ein Wahllokal aus:</label>
-							<select name="wahllokal">';
+							<select name="wahllokal" width="100px">';
 		while($row = $result->fetch_assoc()) {
-			echo "<option name = ".$row['W_ID'].">".$row["W_Bezeichnung"]."</option>";
+			echo "<option value = ".$row['W_ID'].">".$row["W_Bezeichnung"]."</option>";
 		}
 		echo'				</select>';
 	}else {
@@ -41,7 +43,7 @@
 		while($row = $result->fetch_assoc()) {
 			echo "<tr>
 					<td>".$row["P_Bezeichnung"]."</td>
-					<td> <input type='text' name='partei[".$row["P_ID"]." ]'> </td> 
+					<td> <input type='text' name='partei[".$row["P_ID"]."]'> </td> 
 				 </tr>";
 		}
 		echo'				</table>';
@@ -60,7 +62,7 @@
 		while($row = $result->fetch_assoc()) {
 			echo "<tr>
 					<td>".$row["Vorname"]." ".$row['Name']."</td>
-					<td> <input type='text' name='kandidat[".$row["D_ID"]." ]'> </td> 
+					<td> <input type='text' name='kandidat[".$row["D_ID"]."]'> </td> 
 				 </tr>";
 		}
 		echo'				</table>
@@ -69,7 +71,7 @@
 					</body>
 				<html>';
 	}else {
-		echo "Keine Direktkandidaten gefunden";
+		echo "Keine Kandidaten gefunden";
 	}
 	$conn->close();	
 ?>
