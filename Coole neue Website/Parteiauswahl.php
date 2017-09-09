@@ -71,7 +71,7 @@
 					</body>
 				<html>';
 	}else {
-		echo "Keine Kandidaten gefunden";
+		echo "Keine Parteien gefunden";
 	}
 	$conn->close();	
 ?>
