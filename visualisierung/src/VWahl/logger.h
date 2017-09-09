@@ -29,10 +29,10 @@ typedef enum {EMERG  = 0,
 } PriorityLevel;
 */
 
-#define L_ERROR "ERROR       "
-#define L_WARN  "WARNING     "
-#define L_INFO  "INFO        "
-#define L_DEBUG "DEBUG       "
+#define L_ERROR "ERROR    "
+#define L_WARN  "WARNING  "
+#define L_INFO  "INFO     "
+#define L_DEBUG "DEBUG    "
 
 
 /**
@@ -48,7 +48,9 @@ class Logger
     void         send(QString str);
     QString      value;
     QFile        *outFile;
+    QFile        *outSaveFile;
     QTextStream  *ts;
+    QTextStream  *sts;
     void         TimerFflush();
 
     friend Logger &operator << (Logger& l, const char * a);
