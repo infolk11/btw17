@@ -60,6 +60,14 @@ private:
      */
     auto buildConnects() -> void;
 
+    /**
+     * Refreshes the data-cache
+     *
+     * @brief refreshData
+     * @param db
+     */
+    void refreshData(Database *db);
+
 
 protected:
     void closeEvent(QCloseEvent *event);

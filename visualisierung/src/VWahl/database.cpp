@@ -130,7 +130,8 @@ void Database::updateData()
 {
     //candidates
     candidates.clear();
-    QSqlQuery candidatesQuery = QSqlQuery(VWahl::settings->value("querys/KandidatListe").toString(),db);
+    QString candidateQueryString = VWahl::settings->value("querys/KandidatListe").toString();
+    QSqlQuery candidatesQuery = QSqlQuery(candidateQueryString,db);
     if(! candidatesQuery.exec())
     {
         Logger::log << L_ERROR << "Failed to execute the query " << candidatesQuery.executedQuery().toStdString();
