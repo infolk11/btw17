@@ -46,7 +46,7 @@ int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStation
     int votes = 0;
     for(PollingStation p : pollingStations)
     {
-        QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("BestimmteStimmenDirektkandidatWahllokal").toString(),db);
+        QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("querys/BestimmteStimmenDirektkandidatWahllokal").toString(),db);
         voteQuery.bindValue("@d",QVariant(k.getId()));
         voteQuery.bindValue("@w",QVariant(p.getId()));
         voteQuery.exec();
@@ -67,7 +67,8 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
     int votes = 0;
     for(PollingStation p : pollingStations)
     {
-        QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("BestimmteStimmenParteiWahllokal").toString(),db);
+        QString queryString = VWahl::settings->value("querys/BestimmteStimmenParteiWahllokal").toString();
+        QSqlQuery voteQuery = QSqlQuery(queryString,db);
         voteQuery.bindValue("@d",QVariant(party.getP_id()));
         voteQuery.bindValue("@w",QVariant(p.getId()));
         voteQuery.exec();
@@ -129,12 +130,14 @@ QList<Partei> Database::getParties() const
 void Database::updateData()
 {
     //candidates
+    Logger::log << L_INFO << "Refreshing cache for candidates...\n";
     candidates.clear();
     QString candidateQueryString = VWahl::settings->value("querys/KandidatListe").toString();
     QSqlQuery candidatesQuery = QSqlQuery(candidateQueryString,db);
     if(! candidatesQuery.exec())
     {
-        Logger::log << L_ERROR << "Failed to execute the query " << candidatesQuery.executedQuery().toStdString();
+        Logger::log << L_ERROR << "Failed to execute the query " << candidatesQuery.executedQuery().toStdString()<< "\n";
+        Logger::log << L_ERROR << "The candidates cache couldn't be refreshed.\n";
         return;
     }
     while(candidatesQuery.next())
@@ -148,12 +151,14 @@ void Database::updateData()
     }
 
     //parties
+    Logger::log << L_INFO << "Refreshing cache for parties...\n";
     parties.clear();
     QSqlQuery partiesQuery = QSqlQuery(VWahl::settings->value("querys/ParteiListe").toString(),db);
     partiesQuery.exec();
     if(! partiesQuery.exec())
     {
-        Logger::log << L_ERROR << "Failed to execute the query " << partiesQuery.executedQuery().toStdString();
+        Logger::log << L_ERROR << "Failed to execute the query " << partiesQuery.executedQuery().toStdString() << "\n";
+        Logger::log << L_ERROR << "The parties cache couldn't be refreshed.\n";
         return;
     }
     while(partiesQuery.next())
@@ -167,12 +172,14 @@ void Database::updateData()
 
 
     //polling stations
+    Logger::log << L_INFO << "Refreshing cache for polling stations...\n";
     pollingStations.clear();
     QSqlQuery pollingStationsQuery = QSqlQuery(VWahl::settings->value("querys/WahllokalListe").toString(),db);
     pollingStationsQuery.exec();
     if(! pollingStationsQuery.exec())
     {
-        Logger::log << L_ERROR << "Failed to execute the query " << pollingStationsQuery.executedQuery().toStdString();
+        Logger::log << L_ERROR << "Failed to execute the query " << pollingStationsQuery.executedQuery().toStdString() << "\n";
+        Logger::log << L_ERROR << "The polling station cache couldn't be refreshed.\n";
         return;
     }
     while(pollingStationsQuery.next())
@@ -185,6 +192,8 @@ void Database::updateData()
         PollingStation ps = PollingStation(desc,id,pc,street);
         pollingStations.push_back(ps);
     }
+
+    Logger::log << L_INFO << "All caches have been refreshed successfully.\n";
 }
 
 QList<PollingStation> Database::getPollingStations() const

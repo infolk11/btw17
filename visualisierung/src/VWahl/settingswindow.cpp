@@ -25,9 +25,60 @@ void SettingsWindow::showPlot()
 {
     Logger::log << L_INFO << "Plot changed" << "\n";
     Plots p;
+    Record r;
+    QList<RecordObject> objects;
+    Logger::log << L_DEBUG << "Selected tab: " << ui->tabWidget->currentIndex() << "\n";
+
+    switch(ui->tabWidget->currentIndex())
+    {
+    case 0: makePartyPlot(objects);
+        break;
+    case 1:makeCandidatePlot(objects);
+        break;
+    default:
+        Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
+    }
 
     //TO-DO: create plot
     presentationWindow->showPlot(p);
+}
+
+void SettingsWindow::makePartyPlot(QList<RecordObject>& objects)
+{
+    Logger::log << L_DEBUG << "Making plot for parties\n";
+    for(QListWidgetItem *item : ui->partyList->selectedItems())
+    {
+        int index = QString(item->text().split(",").at(0)).toInt();
+        Logger::log << L_DEBUG << "Selected party: " << index;
+        for(Partei p : VWahl::db->getParties())
+            if(p.getP_id() == index)
+            {
+                Logger::log  << "Partyname: " << p.getDescription() << "\n";
+                int votes = VWahl::db->getVotesParty(p,VWahl::db->getPollingStations());
+                RecordObject ro(p.getDescription(),votes,p.getColor());
+                objects.push_back(ro);
+            }
+    }
+}
+
+void SettingsWindow::makeCandidatePlot(QList<RecordObject>& objects)
+{
+    Logger::log << L_DEBUG << "Making plot for candidates\n";
+    for(QListWidgetItem *item : ui->partyList->selectedItems())
+    {
+        int index = QString(item->text().split(",").at(0)).toInt();
+        Logger::log << L_DEBUG << "Selected candidate: " << index;
+        for(Kandidat k : VWahl::db->getCandidates())
+        {
+            if(k.getId() == index)
+            {
+                Logger::log << "Description: " << k.getDescription() << "\n";
+                int votes = VWahl::db->getVotesCandidate(k,VWahl::db->getPollingStations());
+                RecordObject ro(k.getDescription(),votes,k.getColor());
+                objects.push_back(ro);
+            }
+        }
+    }
 }
 
 void SettingsWindow::init()
@@ -76,7 +127,8 @@ void SettingsWindow::buildConnects()
     });
 
     //Show plot, when showButton is pressed.
-    connect(ui->showButton,&QPushButton::pressed,this,&SettingsWindow::showPlot);
+    connect(ui->showButton,&QPushButton::pressed,this,&SettingsWindow::showPlot); //Direktkandidaten-Anzeige-Button
+    connect(ui->pushButton,&QPushButton::pressed,this,&SettingsWindow::showPlot); //Partein-Anzeige-Button
 
     connect(ui->actionquerys, &QAction::triggered,
             queryDialog, &QueryDialog::show);
