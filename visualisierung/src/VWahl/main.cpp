@@ -95,6 +95,11 @@ int init()
         return EXIT_FAILURE;
     }
 
+    //Print all keys in settings-file
+    Logger::log << L_DEBUG << "Settings for program...\n";
+    for(QString key : VWahl::settings->allKeys())
+        Logger::log << L_DEBUG << "key: " << key  << " value: " << VWahl::settings->value(key).toString() <<"\n";
+
     //Initializing databases
     db = new Database(VWahl::settings->value("database/type").toString(),
                       VWahl::settings->value("database/state").toString(),
@@ -144,6 +149,7 @@ int shutdown()
 int initSettings()
 {
     settings = new QSettings("Evangelische_Schule_Neuruppin", "btw17");
+    settings->setIniCodec("UTF-8");
     settings->sync();
     return EXIT_SUCCESS;
 }

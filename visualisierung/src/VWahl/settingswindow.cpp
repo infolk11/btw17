@@ -25,6 +25,8 @@ void SettingsWindow::showPlot()
 {
     Logger::log << L_INFO << "Plot changed" << "\n";
     Plots p;
+
+    //TO-DO: create plot
     presentationWindow->showPlot(p);
 }
 
@@ -43,6 +45,8 @@ void SettingsWindow::init()
     //it should be possible to select multiple items
     ui->partyList->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->candidatesList->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    refreshData(VWahl::db);
 
 }
 
@@ -76,6 +80,22 @@ void SettingsWindow::buildConnects()
 
     connect(ui->actionquerys, &QAction::triggered,
             queryDialog, &QueryDialog::show);
+}
+
+void SettingsWindow::refreshData(Database *db)
+{
+    //Aktualisieren des Data-Caches
+    db->updateData();
+
+
+    //Einlesen des Caches
+    ui->candidatesList->clear();
+    for(Kandidat k : db->getCandidates())
+        new QListWidgetItem(QStringLiteral("%1").arg(k.getId()) + ", " + k.getName() + " " + k.getLname(), ui->candidatesList);
+
+    ui->partyList->clear();
+    for(Partei p : db->getParties())
+        new QListWidgetItem(QStringLiteral("%1").arg(p.getP_id()) + ", " + p.getDescription(), ui->partyList);
 }
 
 
