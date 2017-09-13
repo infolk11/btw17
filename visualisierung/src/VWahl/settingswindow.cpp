@@ -49,12 +49,13 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& objects)
     for(QListWidgetItem *item : ui->partyList->selectedItems())
     {
         int index = QString(item->text().split(",").at(0)).toInt();
-        Logger::log << L_DEBUG << "Selected party: " << index;
+        Logger::log << L_DEBUG << "Selected party: " << index << "\n";
         for(Partei p : VWahl::db->getParties())
             if(p.getP_id() == index)
             {
-                Logger::log  << "Partyname: " << p.getDescription() << "\n";
+                Logger::log  << L_DEBUG << "Description: " << p.getDescription() << "\n";
                 int votes = VWahl::db->getVotesParty(p,VWahl::db->getPollingStations());
+                Logger::log << L_DEBUG << "Votes: " << votes << "\n";
                 RecordObject ro(p.getDescription(),votes,p.getColor());
                 objects.push_back(ro);
             }
@@ -64,16 +65,17 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& objects)
 void SettingsWindow::makeCandidatePlot(QList<RecordObject>& objects)
 {
     Logger::log << L_DEBUG << "Making plot for candidates\n";
-    for(QListWidgetItem *item : ui->partyList->selectedItems())
+    for(QListWidgetItem *item : ui->candidatesList->selectedItems())
     {
         int index = QString(item->text().split(",").at(0)).toInt();
-        Logger::log << L_DEBUG << "Selected candidate: " << index;
+        Logger::log << L_DEBUG << "Selected candidate: " << index << "\n";
         for(Kandidat k : VWahl::db->getCandidates())
         {
             if(k.getId() == index)
             {
-                Logger::log << "Description: " << k.getDescription() << "\n";
+                Logger::log << L_DEBUG << "Description: " << k.getDescription() << "\n";
                 int votes = VWahl::db->getVotesCandidate(k,VWahl::db->getPollingStations());
+                Logger::log << L_DEBUG << "Votes: " << votes << "\n";
                 RecordObject ro(k.getDescription(),votes,k.getColor());
                 objects.push_back(ro);
             }

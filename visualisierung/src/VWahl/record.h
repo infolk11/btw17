@@ -20,6 +20,8 @@ class RecordObject
     int getVotes() const;
     QColor getColor() const;
 
+    void setVotes(int value);
+
 private:
     QString description;
     int votes;

@@ -15,6 +15,11 @@ QColor RecordObject::getColor() const
     return color;
 }
 
+void RecordObject::setVotes(int value)
+{
+    votes = value;
+}
+
 unsigned short Record::getYear() const
 {
     return year;
