@@ -17,21 +17,31 @@
 	//sql parteien abfragen
 	$sql = "SELECT P_ID FROM Partei";
 	$result = mysqli_query($conn, $sql);
-	// in result speichern
 	
-	//for each über result
+	$stmt = $conn->prepare("INSERT INTO 2stimme(W_ID, P_ID, 2Anzahl) VALUES (?, ?, ?)");
+	$stmt->bind_param("iii", $wl, $tmp_p_id, $tmp_parteien);
+	
+	//Parteien Zeile für Zeile einfügen
 	while ($r = $result->fetch_assoc()){
-		$sql = "INSERT INTO 2stimme(W_ID, P_ID, 2Anzahl) VALUES (".$wl.", ".$r["P_ID"].", ".$parteien[$r["P_ID"]].")";
-		mysqli_query($conn, $sql);
+		#Variablen aus Arrays holen, um sie in prepared Statements einzufügen
+		$tmp_p_id = $r["P_ID"];
+		$tmp_parteien = $parteien[$r["P_ID"]];
+		$stmt->execute();
 	}
 	unset ($r);
-		//insert wert von p[result] wo p_id: result 
+		
+	$stmt = $conn->prepare("INSERT INTO 1stimme(W_ID, D_ID, 1Anzahl) VALUES (?, ?, ?)");
+	$stmt->bind_param("iii", $wl, $tmp_d_id, $tmp_kandidaten);
 	
 	$sql = "SELECT D_ID FROM Direktkandidaten";
 	$result = mysqli_query($conn, $sql);
+	#Direktkandidaten Zeile für zeile einfügen
 	while ($r = $result->fetch_assoc()){
-		$sql = "INSERT INTO 1stimme(W_ID, D_ID, 1Anzahl) VALUES (".$wl.", ".$r["D_ID"].", ".$kandidaten[$r["D_ID"]].")";
-		mysqli_query($conn, $sql);
+		#Variablen aus Arrays holen, um sie in prepared Statements einzufügen
+		$tmp_d_id = $r["D_ID"];
+		$tmp_kandidaten = $kandidaten[$r["D_ID"]];
+		$stmt->execute();
+		
 	} 
 	$e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 		W_ID = '".$wl."'
@@ -82,7 +92,7 @@
 	
 	echo ' 	</table>
 			<br>
-			 <a href="Updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 				
+			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 				
 			</body>
 		<html>';
 		
