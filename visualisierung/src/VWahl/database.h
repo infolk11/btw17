@@ -10,6 +10,8 @@
 #include <QColor>
 #include <QList>
 
+
+#include "vwahlexception.h"
 #include "logger.h"
 #include "record.h"
 #include "main.h"

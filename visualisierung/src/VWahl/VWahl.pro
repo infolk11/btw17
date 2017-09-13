@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     databasedialog.cpp \
     querydialog.cpp \
     presentationwindow.cpp \
-    pollingstation.cpp
+    pollingstation.cpp \
+    vwahlexception.cpp
 
 HEADERS  += partei.h \
     kandidat.h \
@@ -46,7 +47,8 @@ HEADERS  += partei.h \
     databasedialog.h \
     querydialog.h \
     presentationwindow.h \
-    pollingstation.h
+    pollingstation.h \
+    vwahlexception.h
 
 
 

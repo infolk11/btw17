@@ -64,24 +64,31 @@ int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStation
 
 int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
 {
-    int votes = 0;
-    for(PollingStation p : pollingStations)
+    int votes = -1;
+    try
     {
-        QString queryString = VWahl::settings->value("querys/BestimmteStimmenParteiWahllokal").toString();
-        QSqlQuery voteQuery = QSqlQuery(queryString,db);
-        voteQuery.bindValue("@d",QVariant(party.getP_id()));
-        voteQuery.bindValue("@w",QVariant(p.getId()));
-        voteQuery.exec();
-        if(! voteQuery.exec())
+
+        for(PollingStation p : pollingStations)
         {
-            Logger::log << L_ERROR << "Failed to execute the query " << voteQuery.executedQuery() << "\n";
-            return 0;
+            QString queryString = VWahl::settings->value("querys/BestimmteStimmenParteiWahllokal").toString();
+            QSqlQuery voteQuery = QSqlQuery(queryString,db);
+            voteQuery.bindValue("@d",QVariant(party.getP_id()));
+            voteQuery.bindValue("@w",QVariant(p.getId()));
+            voteQuery.exec();
+            if(! voteQuery.exec())
+                throw VWahlException("Failed to execute query" + voteQuery.executedQuery());
+            int v = voteQuery.value("1Anzahl").toInt();
+            votes += v;
         }
-        int v = voteQuery.value("1Anzahl").toInt();
-        votes += v;
+    }catch(std::exception e)
+    {
+        VWahlException e1("Error receiving votes for party " + party.getDescription() + " : " + e.what());
+        Logger::log << L_ERROR << e1.what();
+        throw e1;
     }
 
     return votes;
+
 }
 
 QString Database::getNamingScheme(QString type, QString state, int year)
