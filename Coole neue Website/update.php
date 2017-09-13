@@ -9,6 +9,7 @@
 	$partei = $_POST['partei'];
 	$kandidat = $_POST['kandidat'];
 	$pok = $_POST['pok'];
+	
 
 	
 	$conn = new mysqli($servername, $username, $password, $dbname);
@@ -80,10 +81,9 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 	
 	echo ' 	</table>
 			<br>
-			 <a href="Updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 				
+			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 				
 			</body>
 		<html>';
 		
 
 ?>
-
