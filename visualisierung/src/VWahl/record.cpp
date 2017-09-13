@@ -40,12 +40,13 @@ void Record::setElection(const QString &value)
     election = value;
 }
 
-QList<RecordObject> Record::getObjects() const
+QList<QList<RecordObject> > Record::getObjects() const
 {
     return objects;
 }
 
-void Record::setObjects(const QList<RecordObject> &value)
+void Record::setObjects(const QList<QList<RecordObject> > &value)
 {
     objects = value;
 }
+
