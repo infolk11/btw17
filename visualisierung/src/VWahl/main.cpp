@@ -18,7 +18,7 @@
  */
 int main(int argc, char *argv[])
 {
-    QApplication app(argc,argv);
+    VWahl::VWahlApplication app(argc,argv);
     VWahl::run(app);
     return EXIT_SUCCESS;
     //app.exec();

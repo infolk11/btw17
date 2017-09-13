@@ -67,7 +67,6 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
     int votes = -1;
     try
     {
-
         for(PollingStation p : pollingStations)
         {
             QString queryString = VWahl::settings->value("querys/BestimmteStimmenParteiWahllokal").toString();
@@ -75,16 +74,15 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
             voteQuery.bindValue("@d",QVariant(party.getP_id()));
             voteQuery.bindValue("@w",QVariant(p.getId()));
             voteQuery.exec();
-            if(! voteQuery.exec())
+            if(! voteQuery.exec() || !voteQuery.next())
                 throw VWahlException("Failed to execute query" + voteQuery.executedQuery());
-            int v = voteQuery.value("1Anzahl").toInt();
+            int v = voteQuery.value("2Anzahl").toInt();
             votes += v;
         }
-    }catch(std::exception e)
+
+    }catch(...)
     {
-        VWahlException e1("Error receiving votes for party " + party.getDescription() + " : " + e.what());
-        Logger::log << L_ERROR << e1.what();
-        throw e1;
+        Logger::log << "Error while receiving votes for " << party.getDescription() << "\n";
     }
 
     return votes;
