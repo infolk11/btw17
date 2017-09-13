@@ -10,7 +10,7 @@
 	if ($conn->connect_error) {
 		die("Connection failed".$conn->connect_error);
 	}
-	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal";
+	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal ORDER BY W_Bezeichnung";
 	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
 		echo '<!DOCTYPE html>
@@ -21,7 +21,7 @@
 						<title> Wahllokalauswahl </title>
 					</head>
 					<body>
-						<form action = "Update.php" method="post">
+						<form action = "update.php" method="post">
 							<label for="wahllokal">Wählen sie ein Wahllokal aus:</label>
 							<select name="wahllokal" width="100px">';
 		while($row = $result->fetch_assoc()) {
