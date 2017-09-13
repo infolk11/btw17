@@ -44,19 +44,25 @@ auto Database::exec(const QString queryString) -> QSqlQuery
 int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations)
 {
     int votes = 0;
-    for(PollingStation p : pollingStations)
+    try
     {
-        QSqlQuery voteQuery = QSqlQuery(VWahl::settings->value("querys/BestimmteStimmenDirektkandidatWahllokal").toString(),db);
-        voteQuery.bindValue("@d",QVariant(k.getId()));
-        voteQuery.bindValue("@w",QVariant(p.getId()));
-        voteQuery.exec();
-        if(! voteQuery.exec())
+        for(PollingStation p : pollingStations)
         {
-            Logger::log << L_ERROR << "Failed to execute the query " << voteQuery.executedQuery() << "\n";
-            return 0;
+            QString queryString = VWahl::settings->value("querys/BestimmteStimmenDirektkandidatWahllokal").toString();
+            QSqlQuery voteQuery = QSqlQuery(db);
+            voteQuery.prepare(queryString);
+            voteQuery.bindValue(":d",QVariant(k.getId()));
+            voteQuery.bindValue(":w",QVariant(p.getId()));
+            voteQuery.exec();
+            if(! voteQuery.exec() || ! voteQuery.next())
+                throw VWahlException("Failed to execute query " + voteQuery.executedQuery());
+            int v = voteQuery.value("1Anzahl").toInt();
+            votes += v;
         }
-        int v = voteQuery.value("1Anzahl").toInt();
-        votes += v;
+    }catch(VWahlException e)
+    {
+        Logger::log << "Error while receiving votes for candidate " << k.getDescription() << " " << e.what() << "\n";
+        throw e;
     }
 
     return votes;
@@ -64,25 +70,27 @@ int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStation
 
 int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
 {
-    int votes = -1;
+    int votes = 0;
     try
     {
         for(PollingStation p : pollingStations)
         {
             QString queryString = VWahl::settings->value("querys/BestimmteStimmenParteiWahllokal").toString();
-            QSqlQuery voteQuery = QSqlQuery(queryString,db);
-            voteQuery.bindValue("@d",QVariant(party.getP_id()));
-            voteQuery.bindValue("@w",QVariant(p.getId()));
+            QSqlQuery voteQuery = QSqlQuery(db);
+            voteQuery.prepare(queryString);
+            voteQuery.bindValue(":d",QVariant(party.getP_id()));
+            voteQuery.bindValue(":w",QVariant(p.getId()));
             voteQuery.exec();
             if(! voteQuery.exec() || !voteQuery.next())
-                throw VWahlException("Failed to execute query" + voteQuery.executedQuery());
+                throw VWahlException("Failed to execute query " + voteQuery.executedQuery());
             int v = voteQuery.value("2Anzahl").toInt();
             votes += v;
         }
 
-    }catch(...)
+    }catch(VWahlException e)
     {
-        Logger::log << "Error while receiving votes for " << party.getDescription() << "\n";
+        Logger::log << "Error while receiving votes for party " << party.getDescription() << " " << e.what() << "\n";
+        throw e;
     }
 
     return votes;
@@ -150,7 +158,7 @@ void Database::updateData()
         int id = candidatesQuery.value("D_ID").toInt();
         QString lname = candidatesQuery.value("Name").toString();
         QString name = candidatesQuery.value("Vorname").toString();
-        QColor col = candidatesQuery.value("/*ausstehend*/").value<QColor>();
+        QColor col = candidatesQuery.value("Farbe").value<QColor>();
         Kandidat k = Kandidat(id,lname,name,col);
         candidates.push_back(k);
     }

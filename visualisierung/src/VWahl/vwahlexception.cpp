@@ -1,7 +1,11 @@
 #include "vwahlexception.h"
 
+#include <QByteArray>
+
 const char* VWahlException::what()
 {
-    return errorMsg.toStdString().c_str();
+    QByteArray ba = errorMsg.toLatin1();
+    const char* ca = ba.data();
+    return ca;
 }
 
