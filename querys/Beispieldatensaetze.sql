@@ -1,15 +1,15 @@
 -- direktkandidaten
-INSERT INTO `Direktkandidaten` (`D_ID`, `Vorname`, `Name`, `Farbe`) VALUES
-(1, 'Kirsten', 'Tackmann', '#cd1076'),
-(2, 'Dagmar', 'Ziegler', '#cd0000'),
-(3, 'Sebastian', 'Steineke', '#000000'),
-(4, 'Jens-Dieter', 'Engelgardt', '#ffff00 	'),
-(5, 'Kathrin Anke', 'Boleslawsky', '#00cd00'),
-(6, 'Peter', 'Börs', '#8b4513'),
-(7, 'Michael', 'Polte', '#ff8c00'),
-(8, 'Hans-Gregor ', 'Rieger', ''),
-(9, 'Mathias', 'Krebs', ''),
-(10, 'Jonas', 'Kayser', '');
+INSERT INTO `Direktkandidaten` (`D_ID`,`P_ID`, `Vorname`, `Name`, `Farbe`) VALUES
+(1,1,'Kirsten', 'Tackmann', '#cd1076'),
+(2,2, 'Dagmar', 'Ziegler', '#cd0000'),
+(3,3, 'Sebastian', 'Steineke', '#000000'),
+(4,4, 'Jens-Dieter', 'Engelgardt', '#ffff00 	'),
+(5,5, 'Kathrin Anke', 'Boleslawsky', '#00cd00'),
+(6,6, 'Peter', 'Börs', '#8b4513'),
+(7,7, 'Michael', 'Polte', '#ff8c00'),
+(8,8, 'Hans-Gregor ', 'Rieger', ''),
+(9,9, 'Mathias', 'Krebs', ''),
+(10,10, 'Jonas', 'Kayser', '');
 
 
 -- partei
