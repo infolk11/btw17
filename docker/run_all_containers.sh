@@ -3,6 +3,9 @@
 #run registry
 docker run -d -p 127.0.0.1:5000:5000 --restart=always --name registry registry:latest
 
+#create bridged btw17 network
+docker network create -d bridge btw17
+
 #run mysql container first
 docker run --name mysql \
         --network btw17 \
