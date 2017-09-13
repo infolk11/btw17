@@ -24,27 +24,31 @@ SettingsWindow::~SettingsWindow()
 void SettingsWindow::showPlot()
 {
     Logger::log << L_INFO << "Plot changed" << "\n";
-    Plots p;
-    Record r;
-    QList<RecordObject> objects;
+    QList<QList<RecordObject>> objects;
     Logger::log << L_DEBUG << "Selected tab: " << ui->tabWidget->currentIndex() << "\n";
 
     switch(ui->tabWidget->currentIndex())
     {
-    case 0: makePartyPlot(objects);
+    case 0: //Parteien
+        objects.push_back(makePartyPlot());
         break;
-    case 1:makeCandidatePlot(objects);
+    case 1: //Kandidaten
+        objects.push_back(makeCandidatePlot());
         break;
     default:
         Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
     }
 
+    int year = VWahl::settings->value("database/year").toInt();
+    Record r("Beschreibung",year,objects);
+    Plots p(r,Q_NULLPTR,Plots::DIA_TYPE::BAR_GRAPH);
     //TO-DO: create plot
     presentationWindow->showPlot(p);
 }
 
-void SettingsWindow::makePartyPlot(QList<RecordObject>& objects)
+QList<RecordObject>& SettingsWindow::makePartyPlot()
 {
+    QList<RecordObject> objects;
     Logger::log << L_DEBUG << "Making plot for parties\n";
     for(QListWidgetItem *item : ui->partyList->selectedItems())
     {
@@ -60,10 +64,12 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& objects)
                 objects.push_back(ro);
             }
     }
+    return objects;
 }
 
-void SettingsWindow::makeCandidatePlot(QList<RecordObject>& objects)
+QList<RecordObject>& SettingsWindow::makeCandidatePlot()
 {
+    QList<RecordObject> objects;
     Logger::log << L_DEBUG << "Making plot for candidates\n";
     for(QListWidgetItem *item : ui->candidatesList->selectedItems())
     {
@@ -81,6 +87,7 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject>& objects)
             }
         }
     }
+    return objects;
 }
 
 void SettingsWindow::init()
@@ -129,8 +136,8 @@ void SettingsWindow::buildConnects()
     });
 
     //Show plot, when showButton is pressed.
-    connect(ui->showButton,&QPushButton::pressed,this,&SettingsWindow::showPlot); //Direktkandidaten-Anzeige-Button
-    connect(ui->pushButton,&QPushButton::pressed,this,&SettingsWindow::showPlot); //Partein-Anzeige-Button
+    //connect(ui->showButton,&QPushButton::pressed,this,&SettingsWindow::showPlot); //Direktkandidaten-Anzeige-Button
+    //connect(ui->pushButton,&QPushButton::pressed,this,&SettingsWindow::showPlot); //Partein-Anzeige-Button
 
     connect(ui->actionquerys, &QAction::triggered,
             queryDialog, &QueryDialog::show);

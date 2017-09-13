@@ -2,16 +2,8 @@
 <ui version="4.0">
  <class>SettingsWindow</class>
  <widget class="QMainWindow" name="SettingsWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>1203</width>
-    <height>728</height>
-   </rect>
-  </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -27,7 +19,7 @@
   </widget>
   <widget class="QDockWidget" name="lastPlots">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -45,7 +37,7 @@
   </widget>
   <widget class="QDockWidget" name="createPlot">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -63,14 +55,26 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_11">
-    <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <widget class="QWidget" name="verticalWidget" native="true">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>30</y>
-       <width>611</width>
-       <height>631</height>
+       <y>-20</y>
+       <width>791</width>
+       <height>661</height>
       </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="sizeConstraint">
@@ -78,8 +82,14 @@
       </property>
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="compareParties">
          <attribute name="title">
@@ -90,13 +100,19 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>591</width>
-            <height>541</height>
+            <width>791</width>
+            <height>271</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
            <property name="sizeConstraint">
             <enum>QLayout::SetMaximumSize</enum>
+           </property>
+           <property name="horizontalSpacing">
+            <number>0</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>0</number>
            </property>
            <item row="0" column="0">
             <widget class="QLabel" name="allPartiesLabel">
@@ -115,47 +131,33 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="diagrammtypAuswHlenLabel">
-             <property name="text">
-              <string>Diagrammtyp auswählen</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QTabWidget" name="diagrammtypAuswHlenTabWidget">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <widget class="QWidget" name="pieChart">
-              <attribute name="title">
-               <string>Kreisdiagramm</string>
-              </attribute>
-             </widget>
-             <widget class="QWidget" name="barchart">
-              <attribute name="title">
-               <string>Säulendiagramm</string>
-              </attribute>
-             </widget>
-             <widget class="QWidget" name="bargraph">
-              <attribute name="title">
-               <string>Balkendiagramm</string>
-              </attribute>
-             </widget>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel">
-             <property name="text">
-              <string>Anzuzeigende Daten auswählen</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QComboBox" name="anzuzeigendeDatenAuswHlenComboBox"/>
-           </item>
            <item row="1" column="1">
-            <widget class="QListWidget" name="partyList"/>
+            <widget class="QListWidget" name="partyList">
+             <property name="autoScrollMargin">
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QCheckBox" name="checkBox">
+             <property name="text">
+              <string>Kandidaten mitanzeigen</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -182,8 +184,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>590</width>
-            <height>491</height>
+            <width>791</width>
+            <height>521</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_2">
@@ -201,82 +203,23 @@
             <widget class="QCheckBox" name="selectAllCandidatesCheckBox"/>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>zugehörige Partei anzeigen</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QCheckBox" name="showAssociatedParty">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
             <widget class="QLabel" name="zuVerwendendeKandidatenAuswHlenLabel">
              <property name="text">
               <string>Zu verwendende Kandidaten auswählen</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="1" column="1">
             <widget class="QListWidget" name="candidatesList"/>
            </item>
-           <item row="3" column="1">
-            <widget class="QTabWidget" name="diagrammtypAuswHlenTabWidget_2">
-             <property name="currentIndex">
-              <number>1</number>
-             </property>
-             <widget class="QWidget" name="pieChart_2">
-              <attribute name="title">
-               <string>Kreisdiagramm</string>
-              </attribute>
-             </widget>
-             <widget class="QWidget" name="barchart_2">
-              <attribute name="title">
-               <string>Säulendiagramm</string>
-              </attribute>
-             </widget>
-             <widget class="QWidget" name="bargraph_2">
-              <attribute name="title">
-               <string>Balkendiagramm</string>
-              </attribute>
-             </widget>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel_2">
+           <item row="2" column="1">
+            <widget class="QCheckBox" name="checkBox_2">
              <property name="text">
-              <string>Anzuzeigende Daten auswählen</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <widget class="QComboBox" name="anzuzeigendeDatenAuswHlenComboBox_2"/>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="diagrammtypAuswHlenLabel_2">
-             <property name="text">
-              <string>Diagrammtyp auswählen</string>
+              <string>Parteien mitanzeigen</string>
              </property>
             </widget>
            </item>
           </layout>
-         </widget>
-         <widget class="QPushButton" name="showButton">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>500</y>
-            <width>88</width>
-            <height>34</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>Anzeigen</string>
-          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="compareElections">
@@ -286,21 +229,68 @@
         </widget>
        </widget>
       </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout_3">
+        <property name="leftMargin">
+         <number>24</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel_2">
+          <property name="text">
+           <string>Beschreibung</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineEdit_2"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="bottomMargin">
+         <number>15</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>Aktualisieren</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_3">
+          <property name="text">
+           <string>Anzeigen</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>8</x>
-       <y>0</y>
-       <width>861</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Wählen Sie eine Vorlage aus.</string>
-     </property>
-    </widget>
+    <zorder>verticalWidget</zorder>
+    <zorder>pushButton</zorder>
+    <zorder>verticalLayoutWidget</zorder>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -308,7 +298,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1203</width>
+     <width>1512</width>
      <height>25</height>
     </rect>
    </property>

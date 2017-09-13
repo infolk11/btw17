@@ -68,8 +68,8 @@ private:
      */
     void refreshData(Database *db);
 
-    void makeCandidatePlot(QList<RecordObject>& objects);
-    void makePartyPlot(QList<RecordObject>& objects);
+    QList<RecordObject>& makePartyPlot();
+    QList<RecordObject>& makeCandidatePlot();
 
 
 protected:
