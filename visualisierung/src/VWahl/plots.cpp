@@ -1,6 +1,6 @@
 #include "plots.h"
 
-Plots::getDiaType(QString name)
+Plots::DIA_TYPE Plots::getDiaType(QString name)
 {
     if(name == "Balkendiagramm")
         return DIA_TYPE::BAR_GRAPH;
@@ -8,7 +8,7 @@ Plots::getDiaType(QString name)
         return DIA_TYPE::BAR_CHART;
     if(name == "Kreisdiagramm")
         return DIA_TYPE::PIE_CHART;
-    throw VWahlException("Specified dia type " << name << " not known");
+    throw VWahlException("Specified dia type " + name + " not known");
 }
 
 void Plots::buildPlot()

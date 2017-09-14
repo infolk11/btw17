@@ -69,8 +69,6 @@ private:
      */
     void refreshData(Database *db);
 
-    Plots::DIA_TYPE getDiaType();
-
    void makePartyPlot(QList<QList<RecordObject>>& objects);
     QList<RecordObject>& makeCandidatePlot();
 

@@ -21,7 +21,7 @@ public:
     Plots(Record& rec, QCustomPlot* plot, DIA_TYPE tp) : record(rec), type(tp), customPlot(plot) {buildPlot();}
 
     auto getPlot() -> QWidget;
-    static auto getDiaType(QString name);
+    static DIA_TYPE getDiaType(QString name);
 private:
     void buildPlot();
     void buildPieChartPlot();

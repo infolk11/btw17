@@ -6,6 +6,7 @@
 #include "database.h"
 
 #include <QSettings>
+#include <QApplication>
 #include <QCoreApplication>
 #include <QVector>
 
