@@ -2,6 +2,8 @@
 #include "kandidat.h"
 #include "partei.h"
 
+
+//functions
 Database::Database(const QString& ty, const QString& st, const int y) : type(ty), state(st), year(y)
 {
 
@@ -24,7 +26,7 @@ auto Database::connect() -> int
         return EXIT_FAILURE;
 
     if (db.open()) {
-        Logger::log << L_INFO<< "successfull connected to database!";
+        Logger::log << L_INFO<< "successfull connected to database!\n";
         return EXIT_SUCCESS;
     }
     else {
@@ -71,6 +73,12 @@ int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStation
 int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
 {
     int votes = 0;
+    if(party.getP_id() == getIGNORED_PARTY())
+    {
+        Logger::log << L_DEBUG << "Silently ignoring party " << party.getDescription() << "\n";
+        return 0;
+    }
+
     try
     {
         for(PollingStation p : pollingStations)
@@ -82,7 +90,7 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
             voteQuery.bindValue(":w",QVariant(p.getId()));
             voteQuery.exec();
             if(! voteQuery.exec() || !voteQuery.next())
-                throw VWahlException("Failed to execute query " + voteQuery.executedQuery());
+                throw VWahlException("Failed to execute query " + voteQuery.executedQuery() + " with error " + lastError().text());
             int v = voteQuery.value("2Anzahl").toInt();
             votes += v;
         }
@@ -95,6 +103,25 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
 
     return votes;
 
+}
+
+Kandidat Database::getCandidateForParty(Partei p)
+{
+    if(p.getP_id() == getIGNORED_PARTY())
+        throw CandidateNotFoundException("Party " + p.getDescription() + " will be silently ignored.");
+
+    QString queryString = VWahl::settings->value("querys/BestimmterKandidatUndPartei").toString();
+    QSqlQuery query(db);
+    query.prepare(queryString);
+    query.bindValue(":pk",QVariant(p.getP_id()));
+    if(!query.exec() || !query.next())
+        throw VWahlException("Failed to receive Candidate for party " + p.getDescription() +
+                             " with query " + query.executedQuery() + " with error " + lastError().text());
+    int d_id = query.value("D_ID").toInt();
+    for(Kandidat k : candidates)
+        if(k.getId() == d_id)
+            return k;
+    throw new CandidateNotFoundException("Couldn't find a candidate for party " + p.getDescription());
 }
 
 QString Database::getNamingScheme(QString type, QString state, int year)
@@ -120,11 +147,15 @@ int Database::initByDatabaseSettings()
     if(db.isOpen())
         db.close();
 
+    IGNORED_PARTY = VWahl::settings->value("database/ignoredParty").toInt();
+
     QString hostname = VWahl::settings->value("database/hostname").toString();
     QString user = VWahl::settings->value("database/user").toString();
     QString password = VWahl::settings->value("database/password").toString();
     QString databaseName = getNamingScheme(type,state,year);
+
     Logger::log << L_INFO << "Connecting to database " << databaseName << " on host " << hostname << " with user " << user << " and password " << password << "\n";
+    Logger::log << L_INFO << "Ignoring parties with id " << IGNORED_PARTY << "\n";
 
     db.setDatabaseName(databaseName);
     db.setHostName(hostname);
@@ -138,6 +169,11 @@ int Database::initByDatabaseSettings()
 QList<Partei> Database::getParties() const
 {
     return parties;
+}
+
+int Database::getIGNORED_PARTY() const
+{
+    return IGNORED_PARTY;
 }
 
 void Database::updateData()

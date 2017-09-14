@@ -41,6 +41,7 @@ public:
 
     int getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations);
     int getVotesParty(Partei party, QList<PollingStation> pollingStations);
+    Kandidat getCandidateForParty(Partei p);
     void updateData();
 
     //Static functions
@@ -61,7 +62,11 @@ public:
     QList<PollingStation> getPollingStations() const;
     QList<Partei> getParties() const;
 
+    int getIGNORED_PARTY() const;
+
 private:
+
+    int IGNORED_PARTY;
     //auto getSize(QSqlQuery &quey) -> int;
 
 

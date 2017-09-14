@@ -18,4 +18,17 @@ private:
     QString errorMsg;
 };
 
+class CandidateNotFoundException : std::exception
+{
+public:
+    CandidateNotFoundException();
+    CandidateNotFoundException(QString error) :errorMsg(error) {}
+    CandidateNotFoundException(std::string error) : errorMsg(QString::fromStdString(error)) {}
+    const char* what();
+
+private:
+    QString errorMsg;
+};
+
+
 #endif // VWAHLEXCEPTION_H

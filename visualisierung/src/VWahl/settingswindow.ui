@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>SettingsWindow</class>
  <widget class="QMainWindow" name="SettingsWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>935</width>
+    <height>713</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
@@ -146,7 +154,7 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="showCandidatesAlso">
              <property name="text">
               <string>Kandidaten mitanzeigen</string>
              </property>
@@ -245,7 +253,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="lineEdit_2"/>
+         <widget class="QLineEdit" name="descriptionEdit"/>
         </item>
        </layout>
       </item>
@@ -255,7 +263,7 @@
          <number>15</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="refreshButton">
           <property name="text">
            <string>Aktualisieren</string>
           </property>
@@ -278,7 +286,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="showButton">
           <property name="text">
            <string>Anzeigen</string>
           </property>
@@ -288,9 +296,6 @@
       </item>
      </layout>
     </widget>
-    <zorder>verticalWidget</zorder>
-    <zorder>pushButton</zorder>
-    <zorder>verticalLayoutWidget</zorder>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -298,7 +303,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1512</width>
+     <width>935</width>
      <height>25</height>
     </rect>
    </property>
