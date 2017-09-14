@@ -69,12 +69,16 @@ private:
      */
     void refreshData(Database *db);
 
+    Plots::DIA_TYPE getDiaType();
+
    void makePartyPlot(QList<QList<RecordObject>>& objects);
     QList<RecordObject>& makeCandidatePlot();
 
 
 protected:
     void closeEvent(QCloseEvent *event);
+
+
 };
 
 #endif // SETTINGSWINDOW_H

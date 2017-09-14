@@ -40,7 +40,9 @@ void SettingsWindow::showPlot()
     }
 
     int year = VWahl::settings->value("database/year").toInt();
-    Record r("Beschreibung",year,objects);
+    QString description = ui->descriptionEdit->text();
+    Plots::DIA_TYPE diaType = getDiaType();
+    Record r(description,year,objects);
     Plots p(r,Q_NULLPTR,Plots::DIA_TYPE::BAR_GRAPH);
     //TO-DO: create plot
     presentationWindow->showPlot(p);
@@ -196,6 +198,11 @@ void SettingsWindow::refreshData(Database *db)
     ui->partyList->clear();
     for(Partei p : db->getParties())
         new QListWidgetItem(QStringLiteral("%1").arg(p.getP_id()) + ", " + p.getDescription(), ui->partyList);
+}
+
+Plots::DIA_TYPE SettingsWindow::getDiaType()
+{
+    return Plots::getDiaType(ui->plotTypeCombo->currentText());
 }
 
 
