@@ -137,6 +137,12 @@ void SettingsWindow::init()
     ui->partyList->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->candidatesList->setSelectionMode(QAbstractItemView::MultiSelection);
 
+
+    //add chosing options for diagrams.
+    ui->plotTypeCombo->addItem("Balkendiagramm");
+    ui->plotTypeCombo->addItem("Kreisdiagramm");
+    ui->plotTypeCombo->addItem("Säulendiagramm");
+
     refreshData(VWahl::db);
 
 }
