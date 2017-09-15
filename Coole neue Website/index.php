@@ -1,39 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-<body>
-	<h3>Login</h3>
-
-	<form action="/index.php method="post">	
-		<label>Benutzer</label>
-		<input type="text" placeholder="" name="benutzer" required>
-		<input type="password" placeholder="" name="password" required>
-		<button type="submit">Login </button>
-	</form>
-
 <?php
-
-session_start();
-
-$login_true = false;
-
-//sql zeugs
-$servername = "";
-$username = "";
-$password = "";
-
-$conn = mysqli_connect($servername, $username, $password);
-if (!$conn) {
-	die("Connection failed");
-else {
-	$statement = conn->prepare();
-}
-
-
-
+    session_start();
 ?>
 
+<!DOCTYPE <html>
+<html>
 
+<head>
+    <meta charset = "UTF-8">
+    <title>index</title>
+
+</head>
+
+<body>
+
+<?php
+    if (!isset($_SESSION['id'])) {
+        //keine session id
+        echo '  <form action="login.php" method="POST">
+                    <input type="text" name="username" maxlength="256" placeholder="Benutzername"> <br>
+                    <input type="password" name="pwd" placeholder="Passwort"> <br>
+                    <button type="submit">Einloggen</button>
+                </form>';
+    }
+    else {
+        //login erfolgreich
+        echo '  login erfolgreich <br>
+                <form action="logout.php">
+                    <button>logout</button>
+                </form>';
+    }
+?>
 </body>
 </html>
