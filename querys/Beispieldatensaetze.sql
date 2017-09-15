@@ -1,17 +1,3 @@
--- direktkandidaten
-INSERT INTO `Direktkandidaten` (`D_ID`, `Vorname`, `Name`, `Farbe`) VALUES
-(1, 'Kirsten', 'Tackmann', '#cd1076'),
-(2, 'Dagmar', 'Ziegler', '#cd0000'),
-(3, 'Sebastian', 'Steineke', '#000000'),
-(4, 'Jens-Dieter', 'Engelgardt', '#ffff00 	'),
-(5, 'Kathrin Anke', 'Boleslawsky', '#00cd00'),
-(6, 'Peter', 'Börs', '#8b4513'),
-(7, 'Michael', 'Polte', '#ff8c00'),
-(8, 'Hans-Gregor ', 'Rieger', ''),
-(9, 'Mathias', 'Krebs', ''),
-(10, 'Jonas', 'Kayser', '');
-
-
 -- partei
 INSERT INTO `Partei` (`P_ID`, `P_Bezeichnung`, `Farbe`, `Listenplaetze`) VALUES
 (1, 'DIE LINKE', '#cd1076', 1),
@@ -27,6 +13,19 @@ INSERT INTO `Partei` (`P_ID`, `P_Bezeichnung`, `Farbe`, `Listenplaetze`) VALUES
 (11, 'pro Deutschland', '#87ceff', 12),
 (12, 'FREIE WAEHLER', '#000080', 12),
 (13, 'parteilos', '0', 0);
+
+-- direktkandidaten
+INSERT INTO `Direktkandidaten` (`D_ID`,`P_ID`, `Vorname`, `Name`, `Farbe`) VALUES
+(1,1,'Kirsten', 'Tackmann', '#cd1076'),
+(2,2, 'Dagmar', 'Ziegler', '#cd0000'),
+(3,3, 'Sebastian', 'Steineke', '#000000'),
+(4,4, 'Jens-Dieter', 'Engelgardt', '#ffff00 	'),
+(5,5, 'Kathrin Anke', 'Boleslawsky', '#00cd00'),
+(6,6, 'Peter', 'Börs', '#8b4513'),
+(7,7, 'Michael', 'Polte', '#ff8c00'),
+(8,8, 'Hans-Gregor ', 'Rieger', ''),
+(9,9, 'Mathias', 'Krebs', ''),
+(10,10, 'Jonas', 'Kayser', '');
 
 -- Daten für Tabelle `wahllokal`
 INSERT INTO `Wahllokal` (`W_ID`, `W_Bezeichnung`, `PLZ`, `Straße`, `Wahlberechtigte`, `Wahlbeteiligung`) VALUES
@@ -463,28 +462,7 @@ INSERT INTO `1stimme` (`W_ID`, `D_ID`, `1Anzahl`) VALUES
 (1038, 7, 1),
 (1038, 8, 4),
 (1038, 9, 0),
-(1038, 10, 1),
-(9001, 1, 286),
-(9001, 2, 494),
-(9001, 3, 402),
-(9001, 4, 19),
-(9001, 5, 71),
-(9001, 6, 11),
-(9001, 7, 25),
-(9001, 8, 31),
-(9001, 9, 16),
-(9001, 10, 4),
-(9002, 1, 319),
-(9002, 2, 412),
-(9002, 3, 404),
-(9002, 4, 12),
-(9002, 5, 56),
-(9002, 6, 16),
-(9002, 7, 40),
-(9002, 8, 18),
-(9002, 9, 18),
-(9002, 10, 4);
--- 2stimme
+(1038, 10, 1);
 
 INSERT INTO `2stimme` (`W_ID`, `P_ID`, `2Anzahl`) VALUES
 (1001, 1, 102),
@@ -942,28 +920,4 @@ INSERT INTO `2stimme` (`W_ID`, `P_ID`, `2Anzahl`) VALUES
 (1038, 9, 0),
 (1038, 10, 16),
 (1038, 11, 0),
-(1038, 12, 1),
-(9001, 1, 265),
-(9001, 2, 426),
-(9001, 3, 430),
-(9001, 4, 44),
-(9001, 5, 102),
-(9001, 6, 7),
-(9001, 7, 17),
-(9001, 8, 2),
-(9001, 9, 3),
-(9001, 10, 54),
-(9001, 11, 8),
-(9001, 12, 5),
-(9002, 1, 297),
-(9002, 2, 350),
-(9002, 3, 439),
-(9002, 4, 33),
-(9002, 5, 77),
-(9002, 6, 19),
-(9002, 7, 19),
-(9002, 8, 0),
-(9002, 9, 0),
-(9002, 10, 57),
-(9002, 11, 2),
-(9002, 12, 10);
+(1038, 12, 1);
