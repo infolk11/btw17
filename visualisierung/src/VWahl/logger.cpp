@@ -34,6 +34,12 @@ void Logger::init() {
     ts = new QTextStream(outFile);
     sts = new QTextStream(outSaveFile);
 
+    debug   = 0;
+    info    = true;
+    warning = true;
+    error   = true;
+
+
 }
 
 Logger &operator << (Logger &l, const char * a)
@@ -41,6 +47,7 @@ Logger &operator << (Logger &l, const char * a)
     QString str;
 
     str.sprintf("%s",a);
+
     l.send(str);
 
     return l;
@@ -77,6 +84,11 @@ Logger &operator << (Logger &l, int a)
 void Logger::send(QString str)
 {
     QString LogTime;
+    //priority = 0;
+    if((str == "INFO     " and info == true) or (str == "ERROR    " and error == true) or (str == "WARNING  " and warning == true) or (str == "DEBUG    " and debug == true))
+    {
+        Logger::priority = true;
+    }
 
     Logger::value.append(str);
     int endcounter = Logger::value.count("\n");
@@ -92,13 +104,17 @@ void Logger::send(QString str)
 
         LogTime.append(value);
 
-        qDebug().noquote()  << LogTime;
+        if (priority == true)
+        {
+            qDebug().noquote()  << LogTime;
 
 
-        *Logger::ts         << LogTime<< "\n";
-        Logger::ts->flush();
-        *Logger::sts         << LogTime<< "\n";
-        Logger::sts->flush();
+            *Logger::ts         << LogTime<< "\n";
+            Logger::ts->flush();
+            *Logger::sts         << LogTime<< "\n";
+            Logger::sts->flush();
+            Logger::priority = 0;
+        }
         Logger::value.clear();
     }
 

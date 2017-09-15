@@ -51,6 +51,11 @@ class Logger
     QFile        *outSaveFile;
     QTextStream  *ts;
     QTextStream  *sts;
+    bool         priority;
+    bool         error;
+    bool         warning;
+    bool         info;
+    bool         debug;
     void         TimerFflush();
 
     friend Logger &operator << (Logger& l, const char * a);
