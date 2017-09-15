@@ -27,13 +27,13 @@ docker run --network btw17 \
 	--name phpApache \
         -v www_src:/var/www/html \
         -v php-apache_config:/usr/local/etc/php \
-        own-php-apache:latest                                                                                                                                
-                                                                                                                                                             
-#last but not least                                                                                                                                          
-docker run --network btw17 \                                                                                                                                    
-        -d \                                                                                                                                                 
-        -p 8080:80 \                                                                                                                                         
+        own-php-apache:latest
+
+#last but not least
+docker run --network btw17 \
+        -d \
+        -p 8080:80 \
 	--name phpmyadmin \
-        -e PMA_HOST=mysql \                                                                                                                                  
-        --restart=unless-stopped \                                                                                                                           
+        -e PMA_HOST=mysql \
+        --restart=unless-stopped \
         phpmyadmin/phpmyadmin 
