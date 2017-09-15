@@ -68,6 +68,9 @@ private:
      */
     void refreshData(Database *db);
 
+    void makeCandidatePlot(QList<RecordObject>& objects);
+    void makePartyPlot(QList<RecordObject>& objects);
+
 
 protected:
     void closeEvent(QCloseEvent *event);
