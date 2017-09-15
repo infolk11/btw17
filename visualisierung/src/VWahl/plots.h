@@ -35,4 +35,14 @@ private:
 
 };
 
+class VWwahlBars : public QCPBars
+{
+public:
+    VWwahlBars(QCPAxis* baseAxis, QCPAxis* valueAxis,QVector<QColor> cl) : QCPBars(baseAxis,valueAxis),colors(cl) {}
+    void setColors(QVector<QColor> colors);
+protected:
+    void draw(QCPPainter* painter) override;
+    QVector<QColor> colors;
+};
+
 #endif // PLOTS_H

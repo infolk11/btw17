@@ -60,33 +60,107 @@ void Plots::buildBarGraphPlot()
 
 void Plots::buildBarChartPlot()
 {
-    //Create bar charts
+    //Determine group size. Must be always the same!
+    int groupSize = record.getObjects().at(0).size();
+
+    //Initialize variables
+    QVector<VWwahlBars*> bars(groupSize);
+    QVector<QVector<double>> value(groupSize);
+    QVector<double> keys,ticks;
+    QVector<QString> desc;
+    QVector<QVector<QColor>> colors(groupSize);
+
+    int i = 0;
     for(QList<RecordObject> objects : record.getObjects())
     {
-        QCPBarsGroup* group = new QCPBarsGroup(customPlot);
-        QVector<QString> labels;
-
         for(RecordObject ro : objects)
         {
-            //create empty bar objects
-            QVector<double> votes,keys;
-            labels << ro.getDescription();
-            votes << ro.getVotes();
-            keys << 1;
-
-            QCPBars* bar = new QCPBars(customPlot->xAxis,customPlot->yAxis);
-            bar->setBrush(ro.getColor());
-            bar->setPen(ro.getColor().lighter(150));
-            bar->setAntialiased(false);
-            bar->setName(ro.getDescription());
-            bar->setData(keys,votes);
-            bar->setBarsGroup(group);
+            value[i] << ro.getVotes();
+            desc << ro.getDescription();
+            colors[i] << ro.getColor();
+            int tmp = 0;
+            if(ticks.isEmpty())
+                tmp = 1;
+            else
+                tmp = (ticks.at(i)+1);
+            ticks << tmp;
         }
-
+        keys << i;
+        ++i;
     }
+
+    //set bars
+    QCPBarsGroup *group = new QCPBarsGroup(customPlot);
+    for(int i = 0; i < groupSize; ++i)
+    {
+        bars[i] = new VWwahlBars(customPlot->xAxis,customPlot->yAxis,colors[i]);
+        bars[i]->setData(keys,value[i]);
+        bars[i]->setBarsGroup(group);
+    }
+
+    //set x-axis
+    QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
+    textTicker->setTicks(ticks,desc);
+    customPlot->xAxis->setPadding(5);
+    customPlot->xAxis->setLabel(record.getElection());
+    customPlot->xAxis->setSubTicks(true);
     customPlot->rescaleAxes();
     customPlot->replot();
+
 }
 
 
+
+
+void VWwahlBars::draw(QCPPainter *painter)
+{
+
+    if (!mKeyAxis || !mValueAxis) { qDebug() << Q_FUNC_INFO << "invalid key or value axis"; return; }
+    if (mDataContainer->isEmpty()) return;
+
+    QCPBarsDataContainer::const_iterator visibleBegin, visibleEnd;
+    getVisibleDataBounds(visibleBegin, visibleEnd);
+
+    // loop over and draw segments of unselected/selected data:
+    QList<QCPDataRange> selectedSegments, unselectedSegments, allSegments;
+    getDataSegments(selectedSegments, unselectedSegments);
+    allSegments << unselectedSegments << selectedSegments;
+
+    int ci =0;
+    for (int i=0; i<allSegments.size(); ++i)
+    {
+        bool isSelectedSegment = i >= unselectedSegments.size();
+        QCPBarsDataContainer::const_iterator begin = visibleBegin;
+        QCPBarsDataContainer::const_iterator end = visibleEnd;
+        mDataContainer->limitIteratorsToDataRange(begin, end, allSegments.at(i));
+        if (begin == end)
+            continue;
+
+        for (QCPBarsDataContainer::const_iterator it=begin; it!=end; ++it)
+        {
+            // draw bar:
+
+            //Set individual color
+            painter->setBrush(colors.at(ci));
+            painter->setPen(colors.at(ci).lighter(150));
+            ++ci;
+
+            if (isSelectedSegment && mSelectionDecorator)
+            {
+                mSelectionDecorator->applyBrush(painter);
+                mSelectionDecorator->applyPen(painter);
+            } else
+            {
+                //painter->setBrush(mBrush);
+                //painter->setPen(mPen);
+            }
+            applyDefaultAntialiasingHint(painter);
+            painter->drawPolygon(getBarRect(it->key, it->value));
+        }
+    }
+
+    // draw other selection decoration that isn't just line/scatter pens and brushes:
+    if (mSelectionDecorator)
+        mSelectionDecorator->drawDecoration(painter, selection());
+}
 
