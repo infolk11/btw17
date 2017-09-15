@@ -16,7 +16,7 @@ Database::Database(const QString& ty, const QString& st, const int y) : type(ty)
 Database::~Database()
 {
     db.close();
-    Logger::log << L_INFO << "closed Database" << databaseName().toStdString();
+    Logger::log << L_INFO << "closed Database" << databaseName().toStdString()<< "\n";
 }
 
 //connects class-object to database
@@ -26,11 +26,11 @@ auto Database::connect() -> int
         return EXIT_FAILURE;
 
     if (db.open()) {
-        Logger::log << L_INFO<< "successfull connected to database!\n";
+        Logger::log << L_INFO<< "successfull connected to database!"<< "\n";
         return EXIT_SUCCESS;
     }
     else {
-        Logger::log << L_DEBUG << db.lastError().text().toStdString();
+        Logger::log << L_DEBUG << db.lastError().text().toStdString()<< "\n";
         return EXIT_FAILURE;
     }
 }
@@ -134,7 +134,7 @@ int Database::reloadSettings()
     db.close();
     initByDatabaseSettings();
     if(connect() == EXIT_FAILURE){
-        Logger::log << L_ERROR << db.lastError().text().toStdString();
+        Logger::log << L_ERROR << db.lastError().text().toStdString()<< "\n";
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
@@ -186,7 +186,6 @@ void Database::updateData()
     if(! candidatesQuery.exec())
     {
         Logger::log << L_ERROR << "Failed to execute the query " << candidatesQuery.executedQuery().toStdString()<< "\n";
-        Logger::log << L_ERROR << "The candidates cache couldn't be refreshed.\n";
         return;
     }
     while(candidatesQuery.next())
