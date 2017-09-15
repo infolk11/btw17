@@ -37,6 +37,7 @@ public:
     ~SettingsWindow();
 public slots:
     void showPlot();
+    void refreshSlot();
 private:
     Ui::SettingsWindow *ui;
     PresentationWindow *presentationWindow;
@@ -68,9 +69,14 @@ private:
      */
     void refreshData(Database *db);
 
+   void makePartyPlot(QList<QList<RecordObject>>& objects);
+    QList<RecordObject>& makeCandidatePlot();
+
 
 protected:
     void closeEvent(QCloseEvent *event);
+
+
 };
 
 #endif // SETTINGSWINDOW_H

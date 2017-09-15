@@ -18,7 +18,7 @@
  */
 int main(int argc, char *argv[])
 {
-    QApplication app(argc,argv);
+    VWahl::VWahlApplication app(argc,argv);
     VWahl::run(app);
     return EXIT_SUCCESS;
     //app.exec();
@@ -60,6 +60,7 @@ void run(QApplication& app)
     {
         //TO-DO: Advanced exception handling...
         Logger::log << L_ERROR << "A fatal error has occured!" << "\n";
+        QMessageBox::warning(Q_NULLPTR,"Fehler!","Ein schwerer Fehler ist aufgetreten. Das Prog ramm wird beendet.",QMessageBox::Ok);
     }
     VWahl::shutdown();
 }

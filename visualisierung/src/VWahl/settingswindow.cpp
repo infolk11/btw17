@@ -24,10 +24,108 @@ SettingsWindow::~SettingsWindow()
 void SettingsWindow::showPlot()
 {
     Logger::log << L_INFO << "Plot changed" << "\n";
-    Plots p;
+    QList<QList<RecordObject>> objects;
+    Logger::log << L_DEBUG << "Selected tab: " << ui->tabWidget->currentIndex() << "\n";
 
-    //TO-DO: create plot
-    presentationWindow->showPlot(p);
+    switch(ui->tabWidget->currentIndex())
+    {
+    case 0: //Parteien
+        makePartyPlot(objects);
+        break;
+    case 1: //Kandidaten
+        objects.push_back(makeCandidatePlot());
+        break;
+    default:
+        Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
+    }
+
+    //Parsing data
+    int year = VWahl::settings->value("database/year").toInt();
+    QString description = ui->descriptionEdit->text();
+    Plots::DIA_TYPE diaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
+    Record r(description,year,objects);
+    Plots p(r,presentationWindow->getCustomPlot(),diaType);
+
+    //Showing the new plot
+    try {p.buildPlot();
+        presentationWindow->showPlot(p);}catch(VWahlException e)
+    {Logger::log << L_ERROR << e.what() << "\n";QMessageBox::warning(this,"Fehler!",e.what());}
+
+}
+
+void SettingsWindow::refreshSlot()
+{
+    refreshData(VWahl::db);
+    QMessageBox::information(this,"Aktualisierung","Die Aktualisierung wurde abgeschlossen",QMessageBox::Ok);
+}
+
+void SettingsWindow::makePartyPlot(QList<QList<RecordObject>>& objects)
+{
+    Logger::log << L_DEBUG << "Making plot for parties\n";
+
+    if(ui->partyList->selectedItems().size()<= 0)
+    {
+        Logger::log << L_WARN << "User requested plot for no parties!\n";
+        QMessageBox::information(this,"Fehler!","Es wurde keine Partei ausgewählt.",QMessageBox::Ok);
+        return;
+    }
+    try
+    {
+        for(QListWidgetItem *item : ui->partyList->selectedItems())
+        {
+            int index = QString(item->text().split(",").at(0)).toInt();
+            Logger::log << L_DEBUG << "Selected party: " << index << "\n";
+            for(Partei p : VWahl::db->getParties())
+                if(p.getP_id() == index && index != VWahl::db->getIGNORED_PARTY())
+                {
+                    QList<RecordObject> subObjects;
+                    Logger::log  << L_DEBUG << "Description: " << p.getDescription() << "\n";
+                    int votes = VWahl::db->getVotesParty(p,VWahl::db->getPollingStations());
+                    Logger::log << L_DEBUG << "Votes: " << votes << "\n";
+                    RecordObject ro(p.getDescription(),votes,p.getColor());
+                    subObjects.push_back(ro);
+                    if(ui->showCandidatesAlso->isChecked())
+                    {
+                        Kandidat k;
+                        try { k = VWahl::db->getCandidateForParty(p); }
+                        catch(CandidateNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
+
+                        int k_votes = VWahl::db->getVotesCandidate(k,VWahl::db->getPollingStations());
+                        Logger::log << L_DEBUG << "Also showing candidate " << k.getDescription() << " with " << k_votes << " votes.\n";
+                        RecordObject k_ro(k.getDescription(),k_votes,k.getColor());
+                        subObjects.push_back(k_ro);
+                    }
+                    objects.push_back(subObjects);
+                }
+        }
+    }catch(VWahlException e)
+    {
+        Logger::log << L_ERROR << QString("Error while making party plot ") + e.what() << "\n";
+        QMessageBox::warning(this,"Fehler!",e.what(),QMessageBox::Ok);
+    }
+}
+
+QList<RecordObject>& SettingsWindow::makeCandidatePlot()
+{
+    QList<RecordObject> objects;
+    Logger::log << L_DEBUG << "Making plot for candidates\n";
+    for(QListWidgetItem *item : ui->candidatesList->selectedItems())
+    {
+        int index = QString(item->text().split(",").at(0)).toInt();
+        Logger::log << L_DEBUG << "Selected candidate: " << index << "\n";
+        for(Kandidat k : VWahl::db->getCandidates())
+        {
+            if(k.getId() == index)
+            {
+                Logger::log << L_DEBUG << "Description: " << k.getDescription() << "\n";
+                int votes = VWahl::db->getVotesCandidate(k,VWahl::db->getPollingStations());
+                Logger::log << L_DEBUG << "Votes: " << votes << "\n";
+                RecordObject ro(k.getDescription(),votes,k.getColor());
+                objects.push_back(ro);
+            }
+        }
+    }
+    return objects;
 }
 
 void SettingsWindow::init()
@@ -45,6 +143,12 @@ void SettingsWindow::init()
     //it should be possible to select multiple items
     ui->partyList->setSelectionMode(QAbstractItemView::MultiSelection);
     ui->candidatesList->setSelectionMode(QAbstractItemView::MultiSelection);
+
+
+    //add chosing options for diagrams.
+    ui->plotTypeCombo->addItem("Balkendiagramm");
+    ui->plotTypeCombo->addItem("Kreisdiagramm");
+    ui->plotTypeCombo->addItem("Säulendiagramm");
 
     refreshData(VWahl::db);
 
@@ -78,6 +182,9 @@ void SettingsWindow::buildConnects()
     //Show plot, when showButton is pressed.
     connect(ui->showButton,&QPushButton::pressed,this,&SettingsWindow::showPlot);
 
+    //refresh data with refresh button
+    connect(ui->refreshButton,&QPushButton::pressed,this,&SettingsWindow::refreshSlot);
+
     connect(ui->actionquerys, &QAction::triggered,
             queryDialog, &QueryDialog::show);
 }
@@ -97,6 +204,7 @@ void SettingsWindow::refreshData(Database *db)
     for(Partei p : db->getParties())
         new QListWidgetItem(QStringLiteral("%1").arg(p.getP_id()) + ", " + p.getDescription(), ui->partyList);
 }
+
 
 
 

@@ -18,6 +18,7 @@ class PresentationWindow : public QMainWindow
 public:
     explicit PresentationWindow(QWidget *parent = 0);
     void showPlot(Plots p);
+    QCustomPlot* getCustomPlot();
     ~PresentationWindow();
 
 private:

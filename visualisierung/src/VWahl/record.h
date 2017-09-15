@@ -20,6 +20,8 @@ class RecordObject
     int getVotes() const;
     QColor getColor() const;
 
+    void setVotes(int value);
+
 private:
     QString description;
     int votes;
@@ -35,7 +37,7 @@ private:
 class Record
 {
 public:
-    Record(QString s, unsigned short y, QList<RecordObject> o) : objects(o), election(s), year(y) {}
+    Record(QString s, unsigned short y, QList<QList<RecordObject>> o) : objects(o), election(s), year(y) {}
     Record() = default;
     unsigned short getYear() const;
     void setYear(unsigned short value);
@@ -43,11 +45,11 @@ public:
     QString getElection() const;
     void setElection(const QString &value);
 
-    QList<RecordObject> getObjects() const;
-    void setObjects(const QList<RecordObject> &value);
+    QList<QList<RecordObject> > getObjects() const;
+    void setObjects(const QList<QList<RecordObject> > &value);
 
 private:
-    QList<RecordObject> objects;
+    QList<QList<RecordObject>> objects;
     QString election;
     unsigned short year;
 };
