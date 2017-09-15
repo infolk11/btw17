@@ -65,45 +65,47 @@ void Plots::buildBarChartPlot()
 
     //Initialize variables
     QVector<VWwahlBars*> bars(groupSize);
-    QVector<QVector<double>> value(groupSize);
-    QVector<double> keys,ticks;
+    QVector<double> value;
+    QVector<double> ticks;
     QVector<QString> desc;
-    QVector<QVector<QColor>> colors(groupSize);
+    QVector<QColor> colors;
 
-    int i = 0;
     for(QList<RecordObject> objects : record.getObjects())
     {
         for(RecordObject ro : objects)
         {
-            value[i] << ro.getVotes();
+            value << ro.getVotes();
             desc << ro.getDescription();
-            colors[i] << ro.getColor();
+            colors << ro.getColor();
             int tmp = 0;
             if(ticks.isEmpty())
                 tmp = 1;
             else
-                tmp = (ticks.at(i)+1);
+                tmp = (ticks.at(ticks.size()-1)+1);
             ticks << tmp;
         }
-        keys << i;
-        ++i;
     }
 
-    //set bars
-    QCPBarsGroup *group = new QCPBarsGroup(customPlot);
-    for(int i = 0; i < groupSize; ++i)
+    for(int i = 0; i < 1; ++i)
     {
-        bars[i] = new VWwahlBars(customPlot->xAxis,customPlot->yAxis,colors[i]);
-        bars[i]->setData(keys,value[i]);
-        bars[i]->setBarsGroup(group);
+        bars[i] = new VWwahlBars(customPlot->xAxis,customPlot->yAxis,colors);
+        bars[i]->setData(ticks,value);
+        bars[i]->setWidth(0.2);
     }
 
     //set x-axis
     QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
     textTicker->setTicks(ticks,desc);
-    customPlot->xAxis->setPadding(5);
+    customPlot->xAxis->setPadding(10);
+    customPlot->xAxis->setTicker(textTicker);
+    customPlot->xAxis->grid()->setVisible(true);
     customPlot->xAxis->setLabel(record.getElection());
     customPlot->xAxis->setSubTicks(true);
+
+
+    //set y-axis
+    customPlot->yAxis->setPadding(10);
+
     customPlot->rescaleAxes();
     customPlot->replot();
 

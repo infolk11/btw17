@@ -100,7 +100,7 @@ void SettingsWindow::makePartyPlot(QList<QList<RecordObject>>& objects)
         }
     }catch(VWahlException e)
     {
-        Logger::log << L_ERROR << e.what() << "\n";
+        Logger::log << L_ERROR << QString("Error while making party plot ") + e.what() << "\n";
         QMessageBox::warning(this,"Fehler!",e.what(),QMessageBox::Ok);
     }
 }
