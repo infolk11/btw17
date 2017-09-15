@@ -20,13 +20,13 @@ docker run --network btw17 \
         mysql:latest
 
 #2nd one is php-apache                                                                                                                                       
-docker run --network btw17 \                                                                                                                                    
-        -d \                                                                                                                                                 
-        -p 80:80 \                                                                                                                                           
-        --restart=unless-stopped \                                                                                                                           
+docker run --network btw17 \
+        -d \
+        -p 80:80 \
+        --restart=unless-stopped \
 	--name phpApache \
-        -v www_src:/var/www/html \                                                                                                                           
-        -v php-apache_config:/usr/local/etc/php \                                                                                                            
+        -v www_src:/var/www/html \
+        -v php-apache_config:/usr/local/etc/php \
         own-php-apache:latest                                                                                                                                
                                                                                                                                                              
 #last but not least                                                                                                                                          
