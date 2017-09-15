@@ -9,10 +9,3 @@ const char* VWahlException::what()
     return ca;
 }
 
-
-const char *CandidateNotFoundException::what()
-{
-    QByteArray ba = errorMsg.toLatin1();
-    const char* ca = ba.data();
-    return ca;
-}

@@ -15,6 +15,11 @@ void PresentationWindow::showPlot(Plots p)
     Logger::log << L_INFO << "Showing the new plot." << "\n";
 }
 
+QCustomPlot *PresentationWindow::getCustomPlot()
+{
+    return ui->centralwidget;
+}
+
 PresentationWindow::~PresentationWindow()
 {
     delete ui;

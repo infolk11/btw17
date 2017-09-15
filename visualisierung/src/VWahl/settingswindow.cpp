@@ -39,13 +39,18 @@ void SettingsWindow::showPlot()
         Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
     }
 
+    //Parsing data
     int year = VWahl::settings->value("database/year").toInt();
     QString description = ui->descriptionEdit->text();
     Plots::DIA_TYPE diaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
     Record r(description,year,objects);
-    Plots p(r,Q_NULLPTR,Plots::DIA_TYPE::BAR_GRAPH);
-    //TO-DO: create plot
-    presentationWindow->showPlot(p);
+    Plots p(r,presentationWindow->getCustomPlot(),diaType);
+
+    //Showing the new plot
+    try {p.buildPlot();
+        presentationWindow->showPlot(p);}catch(VWahlException e)
+    {Logger::log << L_ERROR << e.what() << "\n";QMessageBox::warning(this,"Fehler!",e.what());}
+
 }
 
 void SettingsWindow::refreshSlot()
@@ -74,7 +79,6 @@ void SettingsWindow::makePartyPlot(QList<QList<RecordObject>>& objects)
                 if(p.getP_id() == index && index != VWahl::db->getIGNORED_PARTY())
                 {
                     QList<RecordObject> subObjects;
-                    objects.push_back(subObjects);
                     Logger::log  << L_DEBUG << "Description: " << p.getDescription() << "\n";
                     int votes = VWahl::db->getVotesParty(p,VWahl::db->getPollingStations());
                     Logger::log << L_DEBUG << "Votes: " << votes << "\n";
@@ -91,6 +95,7 @@ void SettingsWindow::makePartyPlot(QList<QList<RecordObject>>& objects)
                         RecordObject k_ro(k.getDescription(),k_votes,k.getColor());
                         subObjects.push_back(k_ro);
                     }
+                    objects.push_back(subObjects);
                 }
         }
     }catch(VWahlException e)

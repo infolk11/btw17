@@ -18,11 +18,18 @@ void Plots::buildPlot()
         buildBarGraphPlot();
         return;
     }
+
+    if(type == DIA_TYPE::BAR_CHART)
+    {
+        buildBarChartPlot();
+        return;
+    }
     if(type == DIA_TYPE::PIE_CHART)
     {
         buildPieChartPlot();
         return;
     }
+    throw PlottingException(QString("Chosen dia type actually not supported!"));
 }
 
 void Plots::buildPieChartPlot()
@@ -48,7 +55,37 @@ void Plots::buildPieChartPlot()
 
 void Plots::buildBarGraphPlot()
 {
-    //Not implemented yet
+    throw PlottingException(QString("Bar graphs are actually not supported!"));
+}
+
+void Plots::buildBarChartPlot()
+{
+    //Create bar charts
+    for(QList<RecordObject> objects : record.getObjects())
+    {
+        QCPBarsGroup* group = new QCPBarsGroup(customPlot);
+        QVector<QString> labels;
+
+        for(RecordObject ro : objects)
+        {
+            //create empty bar objects
+            QVector<double> votes,keys;
+            labels << ro.getDescription();
+            votes << ro.getVotes();
+            keys << 1;
+
+            QCPBars* bar = new QCPBars(customPlot->xAxis,customPlot->yAxis);
+            bar->setBrush(ro.getColor());
+            bar->setPen(ro.getColor().lighter(150));
+            bar->setAntialiased(false);
+            bar->setName(ro.getDescription());
+            bar->setData(keys,votes);
+            bar->setBarsGroup(group);
+        }
+
+    }
+    customPlot->rescaleAxes();
+    customPlot->replot();
 }
 
 

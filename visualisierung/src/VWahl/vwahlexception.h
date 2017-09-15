@@ -6,10 +6,10 @@
 
 #include <QString>
 
-class VWahlException : std::exception
+class VWahlException : public std::exception
 {
 public:
-    VWahlException();
+    VWahlException() = default;
     VWahlException(QString error) :errorMsg(error) {}
     VWahlException(std::string error) : errorMsg(QString::fromStdString(error)) {}
     const char* what();
@@ -18,16 +18,20 @@ private:
     QString errorMsg;
 };
 
-class CandidateNotFoundException : std::exception
+class CandidateNotFoundException : public VWahlException
 {
 public:
-    CandidateNotFoundException();
-    CandidateNotFoundException(QString error) :errorMsg(error) {}
-    CandidateNotFoundException(std::string error) : errorMsg(QString::fromStdString(error)) {}
-    const char* what();
+    CandidateNotFoundException() = default;
+    CandidateNotFoundException(QString error) : VWahlException(error) {}
+    CandidateNotFoundException(std::string error) : VWahlException(error) {}
+};
 
-private:
-    QString errorMsg;
+class PlottingException : public VWahlException
+{
+public:
+    PlottingException() = default;
+    PlottingException(QString error) : VWahlException(error) {}
+    PlottingException(std::string error) : VWahlException(error) {}
 };
 
 
