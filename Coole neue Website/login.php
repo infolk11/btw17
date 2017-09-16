@@ -21,7 +21,7 @@ while($stmt->fetch()) {
         $conn->close();
     }
 }
-  die('<h1>Benutzername oder Passwort ungültig!</h1> <br>
+  die('<h4>Benutzername oder Passwort ungültig!</h4> <br>
       Bitte erneut <a href="index.php"> einloggen</a>');
   //die("Error number".$stmt->errno." : ".$stmt->error);
   $stmt->close();
