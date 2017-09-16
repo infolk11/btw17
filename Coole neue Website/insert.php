@@ -100,4 +100,9 @@
 			</body>
 		<html>';
 		
+	if ($_SESSION['debug']) {
+		echo ("Error number ".$conn->errno." : ".$conn->error);
+	}
+	
+	$conn->close();
 ?>

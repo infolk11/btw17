@@ -89,5 +89,10 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 			</body>
 		<html>';
 		
+	if ($_SESSION['debug']) {
+		echo ("Error number ".$conn->errno." : ".$conn->error);
+	}
+	
+	$conn->close();
 
 ?>

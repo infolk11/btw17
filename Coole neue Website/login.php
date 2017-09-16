@@ -11,11 +11,12 @@ $stmt->execute();
 $stmt->bind_result($fetched_id, $fetched_username, $fetched_pwd);
 //$result = $stmt->get_result();
 //$row = $result->fetch_assoc();
-$stmt->fetch();
+
 while($stmt->fetch()) {
     if (password_verify($pwd, $fetched_pwd)) {
         //login erfolgreich
         $_SESSION['id'] = $fetched_id;
+        $_SESSION['debug'] = $_POST['debug'];
         header("Location: index.php");
         $stmt->close();
         $conn->close();

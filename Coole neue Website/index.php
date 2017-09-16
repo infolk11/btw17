@@ -19,13 +19,16 @@
         echo '  <form action="login.php" method="POST">
                     <input type="text" name="username" maxlength="256" placeholder="Benutzername"> <br>
                     <input type="password" name="pwd" placeholder="Passwort"> <br>
-                    <input type="checkbox" name="debug">Debug <br>
+                    <input type="checkbox" name="debug" value="true">Debug <br>
                     <button type="reset">reset</button> <br>
                     <br>
                     <button type="submit">Einloggen</button>
                 </form>';
     }
     else {
+        if($_SESSION['debug']) {
+            echo '<h1> Debugmodus aktiviert </h1>';
+        }
         //login erfolgreich
         echo '  <h4>Login erfolgreich!</h4>
                 Ergebnisse <a href="parteiauswahl.php">eingeben</a><br>

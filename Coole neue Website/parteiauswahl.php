@@ -77,5 +77,10 @@
 	}else {
 		echo "Keine Parteien gefunden <br>";
 	}
+
+	if ($_SESSION['debug']) {
+		echo ("Error number ".$conn->errno." : ".$conn->error);
+	}
+
 	$conn->close();	
 ?>
