@@ -1,8 +1,8 @@
 <?php
 
-$servername = "";
-$username = "";
-$password = "";
+$servername = "172.18.0.4";
+$username = "website";
+$password = "cebit17";
 $database = "_wp_BTW_DE_17";
 
 $conn = new mysqli($servername, $username, $password, $database);

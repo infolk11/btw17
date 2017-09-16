@@ -1,8 +1,8 @@
 <?php
 
-$servername = "";
-$username = "";
-$password = "";
+$servername = "172.18.0.4";
+$username = "website";
+$password = "cebit17";
 $database = "login";
 
 $conn = new mysqli($servername, $username, $password, $database);
