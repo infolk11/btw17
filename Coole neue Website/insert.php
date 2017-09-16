@@ -1,8 +1,9 @@
 <?php
-	$servername = "localhost";
-	$username = "root";
+	$servername = "";
+	$username = "";
 	$password = "";
-	$dbname= "btw_17";
+	$database = "_wp_BTW_DE_17";
+	
 
 	$wl = $_POST['wahllokal'];
 	

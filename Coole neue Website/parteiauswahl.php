@@ -1,8 +1,9 @@
 <?php
-	$servername = "localhost";
-	$username = "root";
+	$servername = "";
+	$username = "";
 	$password = "";
-	$dbname= "btw_17";
+	$database = "_wp_BTW_DE_17";
+	
 
 	#$wl = $_REQUEST['wahllokal'];
 		
@@ -29,7 +30,7 @@
 		}
 		echo'				</select>';
 	}else {
-		echo "Keine Wahllokale gefunden";
+		echo "Keine Wahllokale gefunden <br>";
 	}
 	
 	$sql = "SELECT P_Bezeichnung, P_ID FROM Partei";
@@ -48,7 +49,7 @@
 		}
 		echo'				</table>';
 	}else {
-		echo "Keine Parteien gefunden";
+		echo "Keine Parteien gefunden <br>";
 	}
 	
 	$sql = "SELECT Vorname, Name, D_ID FROM Direktkandidaten";
@@ -71,7 +72,7 @@
 					</body>
 				<html>';
 	}else {
-		echo "Keine Parteien gefunden";
+		echo "Keine Parteien gefunden <br>";
 	}
 	$conn->close();	
 ?>
