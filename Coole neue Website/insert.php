@@ -2,10 +2,7 @@
 	
 	include 'protected.php';
 	
-	$servername = "";
-	$username = "";
-	$password = "";
-	$database = "_wp_BTW_DE_17";
+	include 'btw.php';
 	
 
 	$wl = $_POST['wahllokal'];
@@ -13,11 +10,6 @@
 	$parteien = $_POST['partei'];
 	$kandidaten = $_POST['kandidat'];
 	
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	if ($conn->connect_error) {
-		die("Connection failed".$conn->connect_error);
-	
-	}
 	//sql parteien abfragen
 	$sql = "SELECT P_ID FROM Partei";
 	$result = mysqli_query($conn, $sql);

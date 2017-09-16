@@ -2,10 +2,7 @@
 	
 	include 'protected.php';
 	
-	$servername = "";
-	$username = "";
-	$password = "";
-	$database = "_wp_BTW_DE_17";
+	include 'btw.php';
 	
 
 	$wl = $_POST['wahllokal'];
@@ -15,12 +12,6 @@
 	$pok = $_POST['pok'];
 	
 
-	
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	if ($conn->connect_error) {
-		die("Connection failed".$conn->connect_error);
-	
-	}
 	if ($pok == 0 ){
 		$sql = "UPDATE 2stimme
 				SET 2Anzahl ='".$stimmen."'

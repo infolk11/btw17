@@ -2,18 +2,12 @@
 	
 	include 'protected.php';
 	
-	$servername = "";
-	$username = "";
-	$password = "";
-	$database = "_wp_BTW_DE_17";
+	include 'btw.php';
 	
 
 	#$wl = $_REQUEST['wahllokal'];
 		
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	if ($conn->connect_error) {
-		die("Connection failed".$conn->connect_error);
-	}
+	
 	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal ORDER BY W_Bezeichnung";
 	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
