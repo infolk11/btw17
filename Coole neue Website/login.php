@@ -7,8 +7,8 @@ include 'dbh.php';
 $username = $_POST['username'];
 $pwd = $_POST['pwd'];
 
-$stmt = $conn->prepare("SELECT * FROM `user` WHERE `username` = (?) AND `password` = (?) ");
-$stmt->bind_param("ss", $username, $pwd);
+$stmt = $conn->prepare("SELECT * FROM `user` WHERE `username` = (?)");
+$stmt->bind_param("s", $username);
 
 
 //execute
@@ -17,7 +17,7 @@ $stmt->execute();
 $stmt->bind_result($fetched_id, $fetched_username, $fetched_pwd);
 //$result = $stmt->get_result();
 //$row = $result->fetch_assoc();
-$stmt->fetch();
+//$stmt->fetch();
 
 while($stmt->fetch()) {
     if (password_verify($pwd, $fetched_pwd)) {
@@ -30,12 +30,10 @@ while($stmt->fetch()) {
 }
 
 
-  //die('<h1>Benutzername oder Passwort ungültig!</h1> <br>
-  //    Bitte erneut <a href="index.php"> einloggen</a>');
-  die("Error: ".$stmt->error);
-
+  die('<h4>Benutzername oder Passwort ungültig!</h4> <br>
+      Bitte erneut <a href="index.php"> einloggen</a>');
+  //die("Error number ".$stmt->errno." : ".$stmt->error);
   $stmt->close();
-  
   $conn->close();
 
 ?>

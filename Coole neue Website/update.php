@@ -1,4 +1,7 @@
 <?php
+	
+	include 'protected.php';
+	
 	$servername = "";
 	$username = "";
 	$password = "";

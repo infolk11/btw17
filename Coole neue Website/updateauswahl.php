@@ -1,4 +1,7 @@
 <?php
+	
+	include 'protected.php';
+	
 	$servername = "";
 	$username = "";
 	$password = "";
@@ -30,7 +33,7 @@
 		}
 		echo'				</select><br><br>';
 	}else {
-		echo "Keine Wahllokale gefunden";
+		echo "Keine Wahllokale gefunden <br>";
 	}
 		echo '				<label for="pok">Möchten sie eine Partei oder einen Kandidaten updaten?</label>
 							<select name="pok" width="100px">
@@ -48,7 +51,7 @@
 		}
 		echo'				</select><br><br>';
 	}else {
-		echo "Keine Parteien gefunden";
+		echo "Keine Parteien gefunden <br>";
 	}
 	
 	$sql = "SELECT Vorname, Name, D_ID FROM Direktkandidaten";
@@ -67,7 +70,7 @@
 					</body>
 				<html>';
 	}else {
-		echo "Keine Kandidaten gefunden";
+		echo "Keine Kandidaten gefunden <br>";
 	}
 
 				
