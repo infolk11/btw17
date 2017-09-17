@@ -15,7 +15,7 @@ void Plots::buildPlot()
 {
     if(type == DIA_TYPE::BAR_GRAPH)
     {
-        buildBarGraphPlot();
+        buildBarChartPlot(true);
         return;
     }
 
@@ -53,12 +53,7 @@ void Plots::buildPieChartPlot()
     customPlot->replot();
 }
 
-void Plots::buildBarGraphPlot()
-{
-    throw PlottingException(QString("Bar graphs are actually not supported!"));
-}
-
-void Plots::buildBarChartPlot()
+void Plots::buildBarChartPlot(bool invertAxes)
 {
     //Determine group size. Must be always the same!
     int groupSize = record.getObjects().at(0).size();
@@ -88,7 +83,11 @@ void Plots::buildBarChartPlot()
 
     for(int i = 0; i < 1; ++i)
     {
-        bars[i] = new VWwahlBars(customPlot->xAxis,customPlot->yAxis,colors);
+        if(invertAxes)
+            bars[i] = new VWwahlBars(customPlot->yAxis,customPlot->xAxis,colors);
+        else
+            bars[i] = new VWwahlBars(customPlot->xAxis,customPlot->yAxis,colors);
+
         bars[i]->setData(ticks,value);
         bars[i]->setWidth(0.2);
     }
@@ -97,14 +96,20 @@ void Plots::buildBarChartPlot()
     QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
     textTicker->setTicks(ticks,desc);
     customPlot->xAxis->setPadding(10);
-    customPlot->xAxis->setTicker(textTicker);
-    customPlot->xAxis->grid()->setVisible(true);
+
+    if(!invertAxes)
+        customPlot->xAxis->setTicker(textTicker);
+
+    customPlot->xAxis->grid()->setVisible(false);
     customPlot->xAxis->setLabel(record.getElection());
     customPlot->xAxis->setSubTicks(true);
 
 
     //set y-axis
     customPlot->yAxis->setPadding(10);
+
+    if(invertAxes)
+        customPlot->yAxis->setTicker(textTicker);
 
     customPlot->rescaleAxes();
     customPlot->replot();

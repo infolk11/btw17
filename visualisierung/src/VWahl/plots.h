@@ -26,8 +26,7 @@ public:
     static DIA_TYPE getDiaType(QString name);
 private:
     void buildPieChartPlot();
-    void buildBarGraphPlot();
-    void buildBarChartPlot();
+    void buildBarChartPlot(bool invertAxes=false);
 
     Record record;
     DIA_TYPE type;
