@@ -18,8 +18,10 @@ class PresentationWindow : public QMainWindow
 
 public:
     explicit PresentationWindow(QWidget *parent = 0);
-    void showPlot(Plots p);
-    QChartView* getCustomPlot();
+    QChartView *singleChart();
+    QChartView *two_firstChart();
+    QChartView *two_secondChart();
+    void showPageForPlots(int plots);
     ~PresentationWindow();
 
 private:

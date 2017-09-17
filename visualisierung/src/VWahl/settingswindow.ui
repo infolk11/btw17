@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>935</width>
-    <height>713</height>
+    <width>994</width>
+    <height>763</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -97,7 +97,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="compareParties">
          <attribute name="title">
@@ -146,14 +146,14 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="label_3">
              <property name="text">
               <string/>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="3" column="1">
             <widget class="QCheckBox" name="showCandidatesAlso">
              <property name="text">
               <string>Kandidaten mitanzeigen</string>
@@ -165,6 +165,30 @@
              <property name="text">
               <string/>
              </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QComboBox" name="candidatesAlsoShownPlotType">
+             <item>
+              <property name="text">
+               <string>Ein Diagramm</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Säulendiagramm</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Kreisdiagramm</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Balkendiagramm</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>
@@ -225,6 +249,30 @@
              <property name="text">
               <string>Parteien mitanzeigen</string>
              </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="partiesAlsoShownPlotTypeComboBox">
+             <item>
+              <property name="text">
+               <string>Ein Diagramm</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Balkendiagramm</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Säulendiagramm</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Kreisdiagramm</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>
@@ -317,7 +365,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>935</width>
+     <width>994</width>
      <height>25</height>
     </rect>
    </property>
@@ -329,7 +377,15 @@
     <addaction name="actionDatabaseSettings"/>
     <addaction name="actionquerys"/>
    </widget>
+   <widget class="QMenu" name="menuHilfe">
+    <property name="title">
+     <string>Hilfe</string>
+    </property>
+    <addaction name="action_about"/>
+    <addaction name="actionLizenz"/>
+   </widget>
    <addaction name="menuDatei"/>
+   <addaction name="menuHilfe"/>
   </widget>
   <action name="actionBeenden">
    <property name="text">
@@ -344,6 +400,16 @@
   <action name="actionquerys">
    <property name="text">
     <string>querys</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>Über</string>
+   </property>
+  </action>
+  <action name="actionLizenz">
+   <property name="text">
+    <string>Lizenz</string>
    </property>
   </action>
  </widget>

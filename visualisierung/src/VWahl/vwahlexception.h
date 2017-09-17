@@ -34,6 +34,14 @@ public:
     PartyNotFoundException(std::string error) : VWahlException(error) {}
 };
 
+class PollingStationNotFoundException : public VWahlException
+{
+public:
+    PollingStationNotFoundException() = default;
+    PollingStationNotFoundException(QString error) : VWahlException(error) {}
+    PollingStationNotFoundException(std::string error) : VWahlException(error) {}
+};
+
 class PlottingException : public VWahlException
 {
 public:

@@ -69,8 +69,12 @@ private:
      */
     void refreshData(Database *db);
 
-   void makePartyPlot(QList<QList<RecordObject>>& objects);
-   void makeCandidatePlot( QList<QList<RecordObject>>& objects);
+    void makePartyPlot(QList<RecordObject>& partiesList,QList<RecordObject>&candidatesList,
+                                       Plots::DIA_TYPE& partiesDiaType,Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
+   void makeCandidatePlot((QList<RecordObject>& partiesList,QList<RecordObject>&candidatesList,
+                           Plots::DIA_TYPE& partiesDiaType,Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
+
+   QList<PollingStation> getSelectedPollingStations();
 
 
 protected:
