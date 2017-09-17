@@ -137,7 +137,7 @@ Kandidat Database::getCandidateForParty(Partei p)
     try
     {
         return getCandidate(d_id);
-    }catch(VWahlException e)
+    }catch(CandidateNotFoundException e)
     {
         throw e;
     }
@@ -156,7 +156,7 @@ Partei Database::getPartyForCandidate(Kandidat k)
     try
     {
         return getParty(p_id);
-    }catch(VWahlException e)
+    }catch(PartyNotFoundException e)
     {
         throw e;
     }
