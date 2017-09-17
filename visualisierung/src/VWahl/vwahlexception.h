@@ -26,6 +26,14 @@ public:
     CandidateNotFoundException(std::string error) : VWahlException(error) {}
 };
 
+class PartyNotFoundException : public VWahlException
+{
+public:
+    PartyNotFoundException() = default;
+    PartyNotFoundException(QString error) : VWahlException(error) {}
+    PartyNotFoundException(std::string error) : VWahlException(error) {}
+};
+
 class PlottingException : public VWahlException
 {
 public:

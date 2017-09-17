@@ -70,7 +70,7 @@ private:
     void refreshData(Database *db);
 
    void makePartyPlot(QList<QList<RecordObject>>& objects);
-    QList<RecordObject>& makeCandidatePlot();
+   void makeCandidatePlot( QList<QList<RecordObject>>& objects);
 
 
 protected:

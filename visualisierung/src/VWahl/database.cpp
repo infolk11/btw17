@@ -105,6 +105,22 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
 
 }
 
+Kandidat Database::getCandidate(int index)
+{
+    for(Kandidat k : candidates)
+        if(k.getId() == index)
+            return k;
+    throw CandidateNotFoundException(QString("Couldn't find a candidate with id ") + index);
+}
+
+Partei Database::getParty(int index)
+{
+    for(Partei p : parties)
+        if(p.getP_id() == index)
+            return p;
+    throw PartyNotFoundException(QString("Couldn't find a party with id ") + index);
+}
+
 Kandidat Database::getCandidateForParty(Partei p)
 {
     if(p.getP_id() == getIGNORED_PARTY())
@@ -116,12 +132,34 @@ Kandidat Database::getCandidateForParty(Partei p)
     query.bindValue(":pk",QVariant(p.getP_id()));
     if(!query.exec() || !query.next())
         throw VWahlException("Failed to receive Candidate for party " + p.getDescription() +
-                             " with query " + query.executedQuery() + " with error " + lastError().text());
+                             " with query " + query.executedQuery() + " and error " + lastError().text());
     int d_id = query.value("D_ID").toInt();
-    for(Kandidat k : candidates)
-        if(k.getId() == d_id)
-            return k;
-    throw new CandidateNotFoundException("Couldn't find a candidate for party " + p.getDescription());
+    try
+    {
+        return getCandidate(d_id);
+    }catch(VWahlException e)
+    {
+        throw e;
+    }
+}
+
+Partei Database::getPartyForCandidate(Kandidat k)
+{
+    QString queryString = VWahl::settings->value("querys/BestimmteParteiUndKandidat").toString();
+    QSqlQuery query(db);
+    query.prepare(queryString);
+    query.bindValue(":k",QVariant(k.getId()));
+    if(!query.exec() || !query.next())
+        throw VWahlException("Failed to receive Party for candidate " + k.getDescription() +
+                             " with query " + query.executedQuery() + " and error " + lastError().text());
+    int p_id = query.value("P_ID").toInt();
+    try
+    {
+        return getParty(p_id);
+    }catch(VWahlException e)
+    {
+        throw e;
+    }
 }
 
 QString Database::getNamingScheme(QString type, QString state, int year)
