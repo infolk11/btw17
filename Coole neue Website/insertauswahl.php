@@ -4,10 +4,8 @@
 	
 	include 'btw.php';
 	
-
-	#$wl = $_REQUEST['wahllokal'];
 		
-	header ('content-type: charset=utf-8');
+	header ('content-type: text/html charset=utf-8');
 	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal ORDER BY W_Bezeichnung";
 	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
@@ -39,12 +37,18 @@
 									<th> </th>
 								</tr>';
 		while($row = $result->fetch_assoc()) {
-			echo "<tr>
+			#parteilos
+			if ($row["P_Bezeichnung"] == "parteilos") {
+			}
+			else{
+			echo
+				"<tr>
 					<td>".$row["P_Bezeichnung"]."</td>
-					<td> <input type='number' name='partei[".$row["P_ID"]."]'> </td> 
+					<td> <input type='number' min='0' name='partei[".$row["P_ID"]."]'> </td> 
 				 </tr>";
+			}
 		}
-		echo'				</table>';
+		echo'				</table><br>';
 	}else {
 		echo "Keine Parteien gefunden <br>";
 	}
@@ -60,7 +64,7 @@
 		while($row = $result->fetch_assoc()) {
 			echo "<tr>
 					<td>".$row["Vorname"]." ".$row['Name']."</td>
-					<td> <input type='number' name='kandidat[".$row["D_ID"]."]'> </td> 
+					<td> <input type='number' min='0' name='kandidat[".$row["D_ID"]."]'> </td> 
 				 </tr>";
 		}
 		echo'				</table>
