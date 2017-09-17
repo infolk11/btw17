@@ -33,7 +33,7 @@ void SettingsWindow::showPlot()
         makePartyPlot(objects);
         break;
     case 1: //Kandidaten
-        objects.push_back(makeCandidatePlot());
+        makeCandidatePlot(objects);
         break;
     default:
         Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
@@ -66,7 +66,7 @@ void SettingsWindow::makePartyPlot(QList<QList<RecordObject>>& objects)
     if(ui->partyList->selectedItems().size()<= 0)
     {
         Logger::log << L_WARN << "User requested plot for no parties!\n";
-        QMessageBox::information(this,"Fehler!","Es wurde keine Partei ausgewählt.",QMessageBox::Ok);
+        QMessageBox::warning(this,"Fehler!","Es wurde keine Partei ausgewählt.",QMessageBox::Ok);
         return;
     }
     try
@@ -105,27 +105,48 @@ void SettingsWindow::makePartyPlot(QList<QList<RecordObject>>& objects)
     }
 }
 
-QList<RecordObject>& SettingsWindow::makeCandidatePlot()
+void SettingsWindow::makeCandidatePlot( QList<QList<RecordObject>>& objects)
 {
-    QList<RecordObject> objects;
     Logger::log << L_DEBUG << "Making plot for candidates\n";
-    for(QListWidgetItem *item : ui->candidatesList->selectedItems())
+
+    if(ui->candidatesList->selectedItems().size()<= 0)
     {
-        int index = QString(item->text().split(",").at(0)).toInt();
-        Logger::log << L_DEBUG << "Selected candidate: " << index << "\n";
-        for(Kandidat k : VWahl::db->getCandidates())
-        {
-            if(k.getId() == index)
-            {
-                Logger::log << L_DEBUG << "Description: " << k.getDescription() << "\n";
-                int votes = VWahl::db->getVotesCandidate(k,VWahl::db->getPollingStations());
-                Logger::log << L_DEBUG << "Votes: " << votes << "\n";
-                RecordObject ro(k.getDescription(),votes,k.getColor());
-                objects.push_back(ro);
-            }
-        }
+        Logger::log << L_WARN << "User requested plot for no candidates!\n";
+        QMessageBox::warning(this,"Fehler!","Es wurde kein Kandidat ausgewählt.",QMessageBox::Ok);
+        return;
     }
-    return objects;
+    try
+    {
+        for(QListWidgetItem *item : ui->candidatesList->selectedItems())
+        {
+            int index = QString(item->text().split(",").at(0)).toInt();
+            Logger::log << L_DEBUG << "Selected candidate: " << index << "\n";
+            QList<RecordObject> subObjects;
+            Kandidat k = VWahl::db->getCandidate(index);
+
+            Logger::log  << L_DEBUG << "Description: " << k.getDescription() << "\n";
+            int votes = VWahl::db->getVotesCandidate(k,VWahl::db->getPollingStations());
+            Logger::log << L_DEBUG << "Votes: " << votes << "\n";
+            RecordObject ro(k.getDescription(),votes,k.getColor());
+            subObjects.push_back(ro);
+            if(ui->showPartiesAlso->isChecked())
+            {
+                Partei p;
+                try { p = VWahl::db->getPartyForCandidate(k); }
+                catch(PartyNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
+
+                int p_votes = VWahl::db->getVotesParty(p,VWahl::db->getPollingStations());
+                Logger::log << L_DEBUG << "Also showing party " << p.getDescription() << " with " << p_votes << " votes.\n";
+                RecordObject p_ro(p.getDescription(),p_votes,p.getColor());
+                subObjects.push_back(p_ro);
+            }
+            objects.push_back(subObjects);
+        }
+    }catch(VWahlException e)
+    {
+        Logger::log << L_ERROR << QString("Error while making candidates plot ") + e.what() << "\n";
+        QMessageBox::warning(this,"Fehler!",e.what(),QMessageBox::Ok);
+    }
 }
 
 void SettingsWindow::init()

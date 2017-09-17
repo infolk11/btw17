@@ -15,7 +15,7 @@ void PresentationWindow::showPlot(Plots p)
     Logger::log << L_INFO << "Showing the new plot." << "\n";
 }
 
-QCustomPlot *PresentationWindow::getCustomPlot()
+QChartView *PresentationWindow::getCustomPlot()
 {
     return ui->centralwidget;
 }

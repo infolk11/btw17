@@ -1,5 +1,10 @@
 #include "plots.h"
 
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QPieSlice>
+#include <QtCharts>
+
 Plots::DIA_TYPE Plots::getDiaType(QString name)
 {
     if(name == "Balkendiagramm")
@@ -15,7 +20,7 @@ void Plots::buildPlot()
 {
     if(type == DIA_TYPE::BAR_GRAPH)
     {
-        buildBarGraphPlot();
+        buildHorizontalBarChartPlot();
         return;
     }
 
@@ -34,135 +39,105 @@ void Plots::buildPlot()
 
 void Plots::buildPieChartPlot()
 {
-    // generate some data:
-    QVector<double> x(101), y(101); // initialize with entries 0..100
-    for (int i=0; i<101; ++i)
-    {
-        x[i] = i/50.0 - 1; // x goes from -1 to 1
-        y[i] = x[i]*x[i]; // let's plot a quadratic function
-    }
-    // create graph and assign data to it:
-    customPlot->addGraph();
-    customPlot->graph(0)->setData(x, y);
-    // give the axes some labels:
-    customPlot->xAxis->setLabel("x");
-    customPlot->yAxis->setLabel("y");
-    // set axes ranges, so we see all data:
-    customPlot->xAxis->setRange(-1, 1);
-    customPlot->yAxis->setRange(0, 1);
-    customPlot->replot();
-}
-
-void Plots::buildBarGraphPlot()
-{
-    throw PlottingException(QString("Bar graphs are actually not supported!"));
-}
-
-void Plots::buildBarChartPlot()
-{
     //Determine group size. Must be always the same!
     int groupSize = record.getObjects().at(0).size();
+    if(groupSize != 1)
+        throw PlottingException(QString("Pie charts only support one dimensional data"));
 
-    //Initialize variables
-    QVector<VWwahlBars*> bars(groupSize);
-    QVector<double> value;
-    QVector<double> ticks;
-    QVector<QString> desc;
-    QVector<QColor> colors;
-
+    QPieSeries *series = new QPieSeries();
     for(QList<RecordObject> objects : record.getObjects())
     {
         for(RecordObject ro : objects)
         {
-            value << ro.getVotes();
+            QPieSlice *slice = new QPieSlice(ro.getDescription(),ro.getVotes());
+            slice->setPen(ro.getColor());
+            slice->setBrush(ro.getColor().lighter(150));
+            slice->setLabelVisible(true);
+            series->append(slice);
+        }
+    }
+    QChart *chart = new QChart();
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+    chart->addSeries(series);
+    chart->setTitle(record.getElection());
+    chart->legend()->show();
+    customPlot->setChart(chart);
+    customPlot->repaint();
+}
+
+void Plots::buildBarChartPlot()
+{
+    QBarSeries *series = new QBarSeries();
+    QStringList desc;
+    for(QList<RecordObject> objects : record.getObjects())
+    {
+        for(RecordObject ro : objects)
+        {
+            QBarSet *set = new QBarSet(ro.getDescription());
             desc << ro.getDescription();
-            colors << ro.getColor();
-            int tmp = 0;
-            if(ticks.isEmpty())
-                tmp = 1;
-            else
-                tmp = (ticks.at(ticks.size()-1)+1);
-            ticks << tmp;
+
+            *set << ro.getVotes();
+            set->setPen(ro.getColor());
+            set->setBrush(ro.getColor().lighter(BRUSH_LIGHTING));
+
+            series->append(set);
         }
     }
 
-    for(int i = 0; i < 1; ++i)
-    {
-        bars[i] = new VWwahlBars(customPlot->xAxis,customPlot->yAxis,colors);
-        bars[i]->setData(ticks,value);
-        bars[i]->setWidth(0.2);
-    }
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle(record.getElection());
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+    QBarCategoryAxis *axis = new QBarCategoryAxis();
+    chart->createDefaultAxes();
 
-    //set x-axis
-    QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
-    textTicker->setTicks(ticks,desc);
-    customPlot->xAxis->setPadding(10);
-    customPlot->xAxis->setTicker(textTicker);
-    customPlot->xAxis->grid()->setVisible(true);
-    customPlot->xAxis->setLabel(record.getElection());
-    customPlot->xAxis->setSubTicks(true);
+    chart->setAxisX(axis,series);
 
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
 
-    //set y-axis
-    customPlot->yAxis->setPadding(10);
-
-    customPlot->rescaleAxes();
-    customPlot->replot();
+    customPlot->setChart(chart);
+    customPlot->repaint();
 
 }
 
-
-
-
-void VWwahlBars::draw(QCPPainter *painter)
+void Plots::buildHorizontalBarChartPlot()
 {
 
-    if (!mKeyAxis || !mValueAxis) { qDebug() << Q_FUNC_INFO << "invalid key or value axis"; return; }
-    if (mDataContainer->isEmpty()) return;
-
-    QCPBarsDataContainer::const_iterator visibleBegin, visibleEnd;
-    getVisibleDataBounds(visibleBegin, visibleEnd);
-
-    // loop over and draw segments of unselected/selected data:
-    QList<QCPDataRange> selectedSegments, unselectedSegments, allSegments;
-    getDataSegments(selectedSegments, unselectedSegments);
-    allSegments << unselectedSegments << selectedSegments;
-
-    int ci =0;
-    for (int i=0; i<allSegments.size(); ++i)
+    QHorizontalBarSeries *series = new QHorizontalBarSeries();
+    QStringList desc;
+    for(QList<RecordObject> objects : record.getObjects())
     {
-        bool isSelectedSegment = i >= unselectedSegments.size();
-        QCPBarsDataContainer::const_iterator begin = visibleBegin;
-        QCPBarsDataContainer::const_iterator end = visibleEnd;
-        mDataContainer->limitIteratorsToDataRange(begin, end, allSegments.at(i));
-        if (begin == end)
-            continue;
-
-        for (QCPBarsDataContainer::const_iterator it=begin; it!=end; ++it)
+        for(RecordObject ro : objects)
         {
-            // draw bar:
+            QBarSet *set = new QBarSet(ro.getDescription());
+            desc << ro.getDescription();
 
-            //Set individual color
-            painter->setBrush(colors.at(ci));
-            painter->setPen(colors.at(ci).lighter(150));
-            ++ci;
+            *set << ro.getVotes();
+            set->setPen(ro.getColor());
+            set->setBrush(ro.getColor().lighter(BRUSH_LIGHTING));
 
-            if (isSelectedSegment && mSelectionDecorator)
-            {
-                mSelectionDecorator->applyBrush(painter);
-                mSelectionDecorator->applyPen(painter);
-            } else
-            {
-                //painter->setBrush(mBrush);
-                //painter->setPen(mPen);
-            }
-            applyDefaultAntialiasingHint(painter);
-            painter->drawPolygon(getBarRect(it->key, it->value));
+            series->append(set);
         }
     }
 
-    // draw other selection decoration that isn't just line/scatter pens and brushes:
-    if (mSelectionDecorator)
-        mSelectionDecorator->drawDecoration(painter, selection());
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle(record.getElection());
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QBarCategoryAxis *axisY = new QBarCategoryAxis();
+    chart->setAxisY(axisY,series);
+
+    QValueAxis *axisX = new QValueAxis();
+    chart->setAxisX(axisX,series);
+    axisX->applyNiceNumbers();
+
+
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+
+    customPlot->setChart(chart);
+    customPlot->repaint();
 }
 

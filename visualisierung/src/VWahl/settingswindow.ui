@@ -97,7 +97,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="compareParties">
          <attribute name="title">
@@ -221,7 +221,7 @@
             <widget class="QListWidget" name="candidatesList"/>
            </item>
            <item row="2" column="1">
-            <widget class="QCheckBox" name="checkBox_2">
+            <widget class="QCheckBox" name="showPartiesAlso">
              <property name="text">
               <string>Parteien mitanzeigen</string>
              </property>

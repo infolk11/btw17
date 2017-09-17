@@ -6,7 +6,6 @@
 #include <QScreen>
 
 #include "main.h"
-#include "plottest.h"
 
 /**
  * Main

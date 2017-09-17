@@ -41,7 +41,10 @@ public:
 
     int getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations);
     int getVotesParty(Partei party, QList<PollingStation> pollingStations);
+    Kandidat getCandidate(int index);
+    Partei getParty(int index);
     Kandidat getCandidateForParty(Partei p);
+    Partei getPartyForCandidate(Kandidat k);
     void updateData();
 
     //Static functions
