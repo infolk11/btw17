@@ -29,10 +29,24 @@ using namespace std;
  */
 class Logger
 {
-  public:
+public:
     void init();
     void init(int LoggerLevel);
     static Logger       log;
+
+    enum LoggerOutput{None  = 0,
+                      Error  = 8,
+                      Warn   = 4,
+                      Info   = 2,
+                      Debug  = 1,
+                      All    = 15,
+                      Level1 = LoggerOutput::Error,
+                      Level2 = LoggerOutput::Error | LoggerOutput::Warn,
+                      Level3 = LoggerOutput::Error | LoggerOutput::Warn | LoggerOutput::Info,
+                      Level4 = LoggerOutput::All
+                     };
+
+private:
     void         send(QString str);
     QString      value;
     QFile        *outFile;
@@ -51,17 +65,6 @@ class Logger
     friend Logger &operator << (Logger& l, QString a);
     friend Logger &operator << (Logger& l, int a);
 
-    enum LoggerOutput{None  = 0,
-                  Error  = 8,
-                  Warn   = 4,
-                  Info   = 2,
-                  Debug  = 1,
-                  All    = 15,
-                  Level1 = LoggerOutput::Error,
-                  Level2 = LoggerOutput::Error | LoggerOutput::Warn,
-                  Level3 = LoggerOutput::Error | LoggerOutput::Warn | LoggerOutput::Info,
-                  Level4 = LoggerOutput::All
-    };
     //None	= keine Ausgabe
     //Error	= nur Error
     //Warn	= nur Warning
@@ -74,9 +77,8 @@ class Logger
     //Level4	= alle werden ausgegeben
 
 
-    private:
-        Logger() = default;
-        ~Logger();
+    Logger() = default;
+    ~Logger();
 };
 
 #endif // QT_LOGGER_H
