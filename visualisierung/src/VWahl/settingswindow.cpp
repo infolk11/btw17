@@ -217,7 +217,7 @@ QList<PollingStation> SettingsWindow::getSelectedPollingStations()
 void SettingsWindow::init()
 {
     error = new QErrorMessage(this);
-    presentationWindow = new PresentationWindow();
+    presentationWindow = new PresentationWindow(this);
     presentationWindow->show();
 
     //set shortcuts
@@ -317,7 +317,6 @@ void SettingsWindow::closeEvent(QCloseEvent *event)
     if(QMessageBox::Yes == res)
     {
         Logger::log << L_DEBUG << "User confirmed close event" << "\n";
-        presentationWindow->close();
         event->accept();
     }
     else

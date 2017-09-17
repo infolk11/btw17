@@ -2,6 +2,7 @@
 #define PRESENTATIONWINDOW_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include <QtCharts>
 #include <QtCharts/QChartView>
 
@@ -25,6 +26,9 @@ public:
 
 private:
     Ui::PresentationWindow *ui;
+
+protected:
+    void closeEvent(QCloseEvent* event);
 };
 
 #endif // PRESENTATIONWINDOW_H

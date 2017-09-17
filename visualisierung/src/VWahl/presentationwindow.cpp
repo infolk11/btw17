@@ -37,3 +37,8 @@ PresentationWindow::~PresentationWindow()
 {
     delete ui;
 }
+
+void PresentationWindow::closeEvent(QCloseEvent *event)
+{
+     event->setAccepted(false);
+}
