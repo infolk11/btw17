@@ -87,7 +87,7 @@ int init()
 {
     //Initializing the logger
 
-    Logger::log.init();
+    Logger::log.init(Logger::All);
 
     //Initializing the settings
     if(initSettings()!= EXIT_SUCCESS)
