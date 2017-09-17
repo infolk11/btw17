@@ -3,8 +3,9 @@
 
 #include "main.h"
 #include "record.h"
-#include "qcustomplot.h"
 #include <QWidget>
+
+#define BRUSH_LIGHTING 150
 
 /**
  * Renders the plots
@@ -18,7 +19,7 @@ public:
     enum DIA_TYPE{ PIE_CHART, BAR_GRAPH, BAR_CHART};
 
     Plots() = default;
-    Plots(Record& rec, QCustomPlot* plot, DIA_TYPE tp) : record(rec), type(tp), customPlot(plot) {}
+    Plots(Record& rec, QChartView* plot, DIA_TYPE tp) : record(rec), type(tp), customPlot(plot) {}
 
     auto getPlot() -> QWidget;
     void buildPlot();
@@ -30,18 +31,18 @@ private:
 
     Record record;
     DIA_TYPE type;
-    QCustomPlot *customPlot;
+    QChartView *customPlot;
 
 };
 
-class VWwahlBars : public QCPBars
-{
-public:
-    VWwahlBars(QCPAxis* baseAxis, QCPAxis* valueAxis,QVector<QColor> cl) : QCPBars(baseAxis,valueAxis),colors(cl) {}
-    void setColors(QVector<QColor> colors);
-protected:
-    void draw(QCPPainter* painter) override;
-    QVector<QColor> colors;
-};
+//class VWwahlBars : public QCPBars
+//{
+//public:
+//    VWwahlBars(QCPAxis* baseAxis, QCPAxis* valueAxis,QVector<QColor> cl) : QCPBars(baseAxis,valueAxis),colors(cl) {}
+//    void setColors(QVector<QColor> colors);
+//protected:
+//    void draw(QCPPainter* painter) override;
+//    QVector<QColor> colors;
+//};
 
 #endif // PLOTS_H

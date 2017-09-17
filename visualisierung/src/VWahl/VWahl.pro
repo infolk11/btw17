@@ -4,7 +4,7 @@ r#-------------------------------------------------
 #
 #-------------------------------------------------
 
-QT       += core gui sql widgets
+QT       += core gui sql widgets charts
 CONFIG += c++11
 
 QMAKE_RPATHDIR += /usr/lib
@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     database.cpp \
     plots.cpp \
     record.cpp \
-    qcustomplot.cpp \
     plottest.cpp \
     settingswindow.cpp \
     databasedialog.cpp \
@@ -41,7 +40,6 @@ HEADERS  += partei.h \
     database.h \
     plots.h \
     record.h \
-    qcustomplot.h \
     plottest.h \
     settingswindow.h \
     databasedialog.h \
