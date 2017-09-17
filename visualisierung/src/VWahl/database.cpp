@@ -1,7 +1,4 @@
 #include "database.h"
-#include "kandidat.h"
-#include "partei.h"
-
 
 //functions
 Database::Database(const QString& ty, const QString& st, const int y) : type(ty), state(st), year(y)
@@ -205,6 +202,7 @@ Partei Database::getPartyForCandidate(Kandidat k)
         throw VWahlException("Failed to receive Party for candidate " + k.getDescription() +
                              " with query " + query.executedQuery() + " and error " + lastError().text());
     int p_id = query.value("P_ID").toInt();
+
     if(getIGNORED_PARTY() == p_id)
         throw CandidateNotFoundException(QString("Silently ignoring party with id ") + getIGNORED_PARTY());
     try

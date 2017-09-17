@@ -32,10 +32,6 @@ void PresentationWindow::showPageForPlots(int plots)
         ui->stackedWidget->setCurrentWidget(ui->twoCharts);
 }
 
-QChartView *PresentationWindow::getCustomPlot()
-{
-    return ui->centralwidget;
-}
 
 PresentationWindow::~PresentationWindow()
 {

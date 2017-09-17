@@ -2,7 +2,7 @@
 #include "ui_databasedialog.h"
 
 DatabaseDialog::DatabaseDialog(QWidget *parent) :
-    QDialog(VWahl::settingsWindow),
+    QDialog(parent),
     ui(new Ui::DatabaseDialog)
 {
     ui->setupUi(this);

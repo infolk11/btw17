@@ -1,10 +1,12 @@
 #ifndef SETTINGSWINDOW_H
 #define SETTINGSWINDOW_H
 
+#include "plots.h"
 #include "database.h"
 #include "main.h"
 #include "databasedialog.h"
 #include "querydialog.h"
+#include "pollingstation.h"
 
 #include <QMainWindow>
 #include <QErrorMessage>
@@ -69,12 +71,14 @@ private:
      */
     void refreshData(Database *db);
 
-    void makePartyPlot(QList<RecordObject>& partiesList,QList<RecordObject>&candidatesList,
-                                       Plots::DIA_TYPE& partiesDiaType,Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
-   void makeCandidatePlot((QList<RecordObject>& partiesList,QList<RecordObject>&candidatesList,
-                           Plots::DIA_TYPE& partiesDiaType,Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
+    void makePartyPlot(QList<RecordObject>& partiesList, QList<RecordObject>&candidatesList, QList<PollingStation> &pollingStations,
+                       Plots::DIA_TYPE& partiesDiaType, Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
+    void makeCandidatePlot(QList<RecordObject>& partiesList, QList<RecordObject>&candidatesList, QList<PollingStation> &pollingStations,
+                           Plots::DIA_TYPE& partiesDiaType, Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
 
-   QList<PollingStation> getSelectedPollingStations();
+    void makePlot(QList<Plots> &objects);
+
+    QList<PollingStation> getSelectedPollingStations();
 
 
 protected:

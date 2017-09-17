@@ -29,7 +29,7 @@ void SettingsWindow::showPlot()
     makePlot(plots);
 
     //Showing the new plot
-    try {Plots::buildPlots(plots);}catch(VWahlException e)
+    try {Plots::buildPlots(plots,presentationWindow);}catch(VWahlException e)
     {Logger::log << L_ERROR << e.what() << "\n";QMessageBox::warning(this,"Fehler!",e.what());}
 
 }
@@ -40,12 +40,12 @@ void SettingsWindow::refreshSlot()
     QMessageBox::information(this,"Aktualisierung","Die Aktualisierung wurde abgeschlossen",QMessageBox::Ok);
 }
 
-void SettingsWindow::makePartyPlot(QList<RecordObject>& partiesList,QList<RecordObject>&candidatesList,
+void SettingsWindow::makePartyPlot(QList<RecordObject>& partiesList,QList<RecordObject>&candidatesList,QList<PollingStation>& pollingStations,
                                    Plots::DIA_TYPE& partiesDiaType,Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes)
 {
     if(ui->partyList->selectedItems().size()<= 0)
     {
-        throw VWahlException("User requested plot for no parties!");
+        throw VWahlException(QString("User requested plot for no parties!"));
     }
     try
     {
@@ -66,7 +66,7 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& partiesList,QList<Record
 
             //Votes
             int rawVotes = VWahl::db->getVotesParty(p,getSelectedPollingStations());
-            int votes = all2Votes / rawVotes;
+            int votes = all2votes / rawVotes;
             Logger::log << L_DEBUG << "Votes: " << votes << "\n";
 
             //Construction
@@ -81,8 +81,8 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& partiesList,QList<Record
                 catch(CandidateNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
                 int k_rawVotes = VWahl::db->getVotesCandidate(k,pollingStations);
-                int k_votes = all1Votes / k_rawVotes;
-                RecordObject k_ro(k.getDescription(),k.getColor(),k_votes);
+                int k_votes = all1votes / k_rawVotes;
+                RecordObject k_ro(k.getDescription(),k_votes, k.getColor());
                 if(candidatesDiaType == Plots::DIA_TYPE::ONE_PLOT )
                     partiesList.push_back(k_ro);
                 else
@@ -116,10 +116,10 @@ void SettingsWindow::makePlot(QList<Plots> &objects)
         switch(ui->tabWidget->currentIndex())
         {
         case 0: //Parteien
-            makePartyPlot(partiesList,candidatesList,partiesDiaType,candidatesDiaType,all2Votes,all1Votes);
+            makePartyPlot(partiesList,candidatesList,pollingStations,partiesDiaType,candidatesDiaType,all2Votes,all1Votes);
             break;
         case 1: //Kandidaten
-            makeCandidatePlot(partiesList,candidatesList,partiesDiaType,candidatesDiaType,all2Votes,all1Votes);
+            makeCandidatePlot(partiesList,candidatesList,pollingStations,partiesDiaType,candidatesDiaType,all2Votes,all1Votes);
             break;
         default:
             Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
@@ -147,7 +147,7 @@ void SettingsWindow::makePlot(QList<Plots> &objects)
     }
 }
 
-void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<RecordObject> &candidatesList, Plots::DIA_TYPE &partiesDiaType, Plots::DIA_TYPE &candidatesDiaType, int all2votes, int all1votes)
+void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<RecordObject> &candidatesList, QList<PollingStation>& pollingStations,Plots::DIA_TYPE &partiesDiaType, Plots::DIA_TYPE &candidatesDiaType, int all2votes, int all1votes)
 {
     Logger::log << L_DEBUG << "Making plot for candidates\n";
 
@@ -166,11 +166,11 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
 
             //Description
             Kandidat k = VWahl::db->getCandidate(index);
-            Logger::log  << L_DEBUG << "Description: " << p.getDescription() << "\n";
+            Logger::log  << L_DEBUG << "Description: " << k.getDescription() << "\n";
 
             //Votes
-            int rawVotes = VWahl::db->getVotesParty(k,getSelectedPollingStations());
-            int votes = all1Votes / rawVotes;
+            int rawVotes = VWahl::db->getVotesCandidate(k,getSelectedPollingStations());
+            int votes = all1votes / rawVotes;
             Logger::log << L_DEBUG << "Votes: " << votes << "\n";
 
             //Construction
@@ -184,9 +184,9 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
                 try { p = VWahl::db->getPartyForCandidate(k); }
                 catch(CandidateNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
-                int p_rawVotes = VWahl::db->getVotesCandidate(k,pollingStations);
-                int p_votes = all2Votes / p_rawVotes;
-                RecordObject p_ro(p.getDescription(),p.getColor(),p_votes);
+                int p_rawVotes = VWahl::db->getVotesParty(p,pollingStations);
+                int p_votes = all2votes / p_rawVotes;
+                RecordObject p_ro(p.getDescription(),p_votes, p.getColor());
 
                 if(partiesDiaType == Plots::DIA_TYPE::ONE_PLOT )
                     candidatesList.push_back(p_ro);
@@ -208,7 +208,7 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
 QList<PollingStation> SettingsWindow::getSelectedPollingStations()
 {
     QList<PollingStation> pollingStations;
-    for(QListWidgetItem item : ui->pollingStationList->selectedItems())
+    for(QListWidgetItem* item : ui->pollingStationList->selectedItems())
     {
         int id = QString(item->text().split(",").at(0)).toInt();
         pollingStations.push_back(VWahl::db->getPollingStation(id));

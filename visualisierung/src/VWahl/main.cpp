@@ -4,8 +4,11 @@
 #include <iostream>
 #include <QWindow>
 #include <QScreen>
+#include <QMessageBox>
 
 #include "main.h"
+#include "settingswindow.h"
+
 
 /**
  * Main
@@ -28,8 +31,6 @@ namespace VWahl {
 
 //Variables
 QSettings *settings;
-PresentationWindow *presentationWindow;
-SettingsWindow *settingsWindow;
 QVector<Database> *dbs;
 Logger *log;
 Database *db;
@@ -71,8 +72,7 @@ void run(QApplication& app)
  */
 void showGui()
 {
-    PresentationWindow* window = new PresentationWindow();
-    SettingsWindow *settingswindow = new SettingsWindow(window);
+    SettingsWindow *settingswindow = new SettingsWindow();
     settingswindow->showMaximized();
 }
 
@@ -138,9 +138,6 @@ int shutdown()
     else
         Logger::log << L_INFO << "wrote the settings to" << VWahl::settings->fileName().toStdString() << "\n";
 
-    //Cleaning up memory
-    delete settingsWindow;
-    delete presentationWindow;
     delete settings;
 
     return EXIT_SUCCESS;

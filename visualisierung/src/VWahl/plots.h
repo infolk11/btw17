@@ -3,9 +3,16 @@
 
 #include "main.h"
 #include "record.h"
+#include "presentationwindow.h"
+
+#include <QtCharts>
+#include <QtCharts/QChartView>
+
 #include <QWidget>
 
 #define BRUSH_LIGHTING 150
+
+
 
 /**
  * Renders the plots
@@ -21,14 +28,14 @@ public:
     Plots() = default;
     Plots(Record& rec, PresentationWindow* pw, DIA_TYPE tp) : record(rec), type(tp) {}
 
-    void buildPlot(QChart *chart);
-    static void buildPlots(QList<Plots>& plots);
+    void buildPlot(QChartView *chart);
+    static void buildPlots(QList<Plots>& plots,PresentationWindow *window);
 
     static DIA_TYPE getDiaType(QString name);
 private:
-    void buildPieChartPlot(QChart *chart);
-    void buildBarChartPlot(QChart *chart);
-    void buildHorizontalBarChartPlot(QChart *chart);
+    void buildPieChartPlot(QChartView *chart);
+    void buildBarChartPlot(QChartView *chart);
+    void buildHorizontalBarChartPlot(QChartView *chartView);
 
     Record record;
     DIA_TYPE type;

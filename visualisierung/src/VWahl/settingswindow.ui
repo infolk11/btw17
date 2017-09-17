@@ -25,27 +25,9 @@
    </property>
    <layout class="QGridLayout" name="gridLayout_2"/>
   </widget>
-  <widget class="QDockWidget" name="lastPlots">
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="floating">
-    <bool>false</bool>
-   </property>
-   <property name="windowTitle">
-    <string>&amp;last plots</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_10"/>
-  </widget>
   <widget class="QDockWidget" name="createPlot">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -73,9 +55,9 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>-20</y>
-       <width>791</width>
-       <height>661</height>
+       <y>-4</y>
+       <width>961</width>
+       <height>671</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -108,8 +90,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>791</width>
-            <height>271</height>
+            <width>961</width>
+            <height>251</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -216,8 +198,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>791</width>
-            <height>521</height>
+            <width>931</width>
+            <height>251</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout_2">
@@ -293,26 +275,6 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Diagrammtyp auswählen</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel_2">
-          <property name="text">
-           <string>Beschreibung</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="descriptionEdit"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QComboBox" name="plotTypeCombo"/>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
@@ -332,6 +294,46 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Diagrammtyp auswählen</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="plotTypeCombo"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="anzuzeigendeDatenAuswHlenLabel_2">
+          <property name="text">
+           <string>Beschreibung</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="descriptionEdit"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="wahllokaleLabel">
+          <property name="text">
+           <string>Wahllokale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QListWidget" name="pollingStationList"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="alleWahllokaleAuswHlenLabel">
+          <property name="text">
+           <string>Alle Wahllokale auswählen</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QCheckBox" name="alleWahllokaleAuswHlenCheckBox"/>
         </item>
        </layout>
       </item>
