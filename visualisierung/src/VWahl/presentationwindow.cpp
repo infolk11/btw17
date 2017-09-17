@@ -9,18 +9,36 @@ PresentationWindow::PresentationWindow(QWidget *parent) :
     ui->setupUi(this);
 }
 
-void PresentationWindow::showPlot(Plots p)
+QChartView *PresentationWindow::singleChart()
 {
-    //Will later show the plot
-    Logger::log << L_INFO << "Showing the new plot." << "\n";
+    return ui->oneChart;
 }
 
-QChartView *PresentationWindow::getCustomPlot()
+QChartView *PresentationWindow::two_firstChart()
 {
-    return ui->centralwidget;
+    return ui->chart2_1;
 }
+
+QChartView *PresentationWindow::two_secondChart()
+{
+    return ui->chart2_2;
+}
+
+void PresentationWindow::showPageForPlots(int plots)
+{
+    if(1 == plots)
+        ui->superStack->setCurrentWidget(ui->oneChart);
+    if(2 == plots)
+        ui->superStack->setCurrentWidget(ui->twoCharts);
+}
+
 
 PresentationWindow::~PresentationWindow()
 {
     delete ui;
+}
+
+void PresentationWindow::closeEvent(QCloseEvent *event)
+{
+     event->setAccepted(false);
 }

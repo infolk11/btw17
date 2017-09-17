@@ -2,10 +2,10 @@
 #define PRESENTATIONWINDOW_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include <QtCharts>
 #include <QtCharts/QChartView>
 
-#include "plots.h"
 
 namespace Ui {
 class PresentationWindow;
@@ -18,12 +18,17 @@ class PresentationWindow : public QMainWindow
 
 public:
     explicit PresentationWindow(QWidget *parent = 0);
-    void showPlot(Plots p);
-    QChartView* getCustomPlot();
+    QChartView *singleChart();
+    QChartView *two_firstChart();
+    QChartView *two_secondChart();
+    void showPageForPlots(int plots);
     ~PresentationWindow();
 
 private:
     Ui::PresentationWindow *ui;
+
+protected:
+    void closeEvent(QCloseEvent* event);
 };
 
 #endif // PRESENTATIONWINDOW_H

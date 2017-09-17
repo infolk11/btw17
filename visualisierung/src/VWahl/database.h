@@ -43,6 +43,11 @@ public:
     int getVotesParty(Partei party, QList<PollingStation> pollingStations);
     Kandidat getCandidate(int index);
     Partei getParty(int index);
+    PollingStation getPollingStation(int index);
+    int getVote2Count(PollingStation p);
+    int getVote2Count(QList<PollingStation> ps);
+    int getVote1Count(PollingStation p);
+    int getVote1Count(QList<PollingStation> ps);
     Kandidat getCandidateForParty(Partei p);
     Partei getPartyForCandidate(Kandidat k);
     void updateData();

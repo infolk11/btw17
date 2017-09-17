@@ -13,36 +13,52 @@ Plots::DIA_TYPE Plots::getDiaType(QString name)
         return DIA_TYPE::BAR_CHART;
     if(name == "Kreisdiagramm")
         return DIA_TYPE::PIE_CHART;
+    if(name == "Ein Diagramm")
+        return DIA_TYPE::ONE_PLOT;
     throw VWahlException("Specified dia type " + name + " not known");
 }
 
-void Plots::buildPlot()
+void Plots::buildPlot(QChartView *chart)
 {
     if(type == DIA_TYPE::BAR_GRAPH)
     {
-        buildHorizontalBarChartPlot();
+        buildHorizontalBarChartPlot(chart);
         return;
     }
 
     if(type == DIA_TYPE::BAR_CHART)
     {
-        buildBarChartPlot();
+        buildBarChartPlot(chart);
         return;
     }
     if(type == DIA_TYPE::PIE_CHART)
     {
-        buildPieChartPlot();
+        buildPieChartPlot(chart);
         return;
     }
     throw PlottingException(QString("Chosen dia type actually not supported!"));
 }
 
-void Plots::buildPieChartPlot()
+void Plots::buildPlots(QList<Plots> &plots, PresentationWindow *window)
 {
-    //Determine group size. Must be always the same!
-    int groupSize = record.getObjects().at(0).size();
-    if(groupSize != 1)
-        throw PlottingException(QString("Pie charts only support one dimensional data"));
+        int plotsSize = plots.size();
+        if(1 > plotsSize || 2 < plotsSize)
+            throw PlottingException(QString("Invalid plots size: " + plotsSize));
+        if(1 == plotsSize)
+        {
+            window->showPageForPlots(1);
+            plots[0].buildPlot(window->singleChart());
+        }
+        if(2 == plotsSize)
+        {
+            window->showPageForPlots(2);
+            plots[0].buildPlot(window->two_firstChart());
+            plots[1].buildPlot(window->two_secondChart());
+        }
+}
+
+void Plots::buildPieChartPlot(QChartView *chartView)
+{
 
     QPieSeries *series = new QPieSeries();
     for(QList<RecordObject> objects : record.getObjects())
@@ -56,16 +72,17 @@ void Plots::buildPieChartPlot()
             series->append(slice);
         }
     }
+
     QChart *chart = new QChart();
     chart->setAnimationOptions(QChart::SeriesAnimations);
     chart->addSeries(series);
     chart->setTitle(record.getElection());
-    chart->legend()->show();
-    customPlot->setChart(chart);
-    customPlot->repaint();
+    chart->legend()->hide();
+    chartView->setChart(chart);
+    chartView->repaint();
 }
 
-void Plots::buildBarChartPlot()
+void Plots::buildBarChartPlot(QChartView *chartView)
 {
     QBarSeries *series = new QBarSeries();
     QStringList desc;
@@ -84,7 +101,7 @@ void Plots::buildBarChartPlot()
         }
     }
 
-    QChart *chart = new QChart();
+    QChart* chart = new QChart();
     chart->addSeries(series);
     chart->setTitle(record.getElection());
     chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -96,12 +113,12 @@ void Plots::buildBarChartPlot()
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
 
-    customPlot->setChart(chart);
-    customPlot->repaint();
+    chartView->setChart(chart);
+    chartView->repaint();
 
 }
 
-void Plots::buildHorizontalBarChartPlot()
+void Plots::buildHorizontalBarChartPlot(QChartView *chartView)
 {
 
     QHorizontalBarSeries *series = new QHorizontalBarSeries();
@@ -120,8 +137,7 @@ void Plots::buildHorizontalBarChartPlot()
             series->append(set);
         }
     }
-
-    QChart *chart = new QChart();
+    QChart* chart = new QChart();
     chart->addSeries(series);
     chart->setTitle(record.getElection());
     chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -137,7 +153,7 @@ void Plots::buildHorizontalBarChartPlot()
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
 
-    customPlot->setChart(chart);
-    customPlot->repaint();
+    chartView->setChart(chart);
+    chartView->repaint();
 }
 

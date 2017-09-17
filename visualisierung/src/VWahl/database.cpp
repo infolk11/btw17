@@ -1,7 +1,4 @@
 #include "database.h"
-#include "kandidat.h"
-#include "partei.h"
-
 
 //functions
 Database::Database(const QString& ty, const QString& st, const int y) : type(ty), state(st), year(y)
@@ -121,6 +118,58 @@ Partei Database::getParty(int index)
     throw PartyNotFoundException(QString("Couldn't find a party with id ") + index);
 }
 
+PollingStation Database::getPollingStation(int index)
+{
+    for(PollingStation p : pollingStations)
+        if(p.getId() == index)
+            return p;
+    throw PollingStationNotFoundException(QString("Couldn't find a polling station with id " + index));
+}
+
+int Database::getVote2Count(PollingStation p)
+{
+    QString queryString = VWahl::settings->value("querys/Anzahl2StimmenWahllokal").toString();
+    QSqlQuery query(db);
+    query.prepare(queryString);
+    query.bindValue(":w",p.getId());
+    if(!query.exec() || !query.next())
+        throw VWahlException("Failed to receive all votes in polling station " + p.getDescription() + " with query " +
+                             query.executedQuery() + " and error " + lastError().text());
+    int count = query.value("count").toInt();
+    return count;
+
+}
+
+int Database::getVote1Count(PollingStation p)
+{
+    QString queryString = VWahl::settings->value("querys/Anzahl1StimmenWahllokal").toString();
+    QSqlQuery query(db);
+    query.prepare(queryString);
+    query.bindValue(":w",p.getId());
+    if(!query.exec() || !query.next())
+        throw VWahlException("Failed to receive all votes in polling station " + p.getDescription() + " with query " +
+                             query.executedQuery() + " and error " + lastError().text());
+    int count = query.value("count").toInt();
+    return count;
+
+}
+
+int Database::getVote1Count(QList<PollingStation> ps)
+{
+    int vc = 0;
+    for(PollingStation p : ps)
+        vc += getVote1Count(p);
+    return vc;
+}
+
+int Database::getVote2Count(QList<PollingStation> ps)
+{
+    int vc = 0;
+    for(PollingStation p : ps)
+        vc += getVote2Count(p);
+    return vc;
+}
+
 Kandidat Database::getCandidateForParty(Partei p)
 {
     if(p.getP_id() == getIGNORED_PARTY())
@@ -137,7 +186,7 @@ Kandidat Database::getCandidateForParty(Partei p)
     try
     {
         return getCandidate(d_id);
-    }catch(VWahlException e)
+    }catch(CandidateNotFoundException e)
     {
         throw e;
     }
@@ -153,10 +202,13 @@ Partei Database::getPartyForCandidate(Kandidat k)
         throw VWahlException("Failed to receive Party for candidate " + k.getDescription() +
                              " with query " + query.executedQuery() + " and error " + lastError().text());
     int p_id = query.value("P_ID").toInt();
+
+    if(getIGNORED_PARTY() == p_id)
+        throw CandidateNotFoundException(QString("Silently ignoring party with id ") + getIGNORED_PARTY());
     try
     {
         return getParty(p_id);
-    }catch(VWahlException e)
+    }catch(PartyNotFoundException e)
     {
         throw e;
     }
