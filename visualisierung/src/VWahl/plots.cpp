@@ -59,10 +59,6 @@ void Plots::buildPlots(QList<Plots> &plots, PresentationWindow *window)
 
 void Plots::buildPieChartPlot(QChartView *chartView)
 {
-    //Determine group size. Must be always the same!
-    int groupSize = record.getObjects().at(0).size();
-    if(groupSize != 1)
-        throw PlottingException(QString("Pie charts only support one dimensional data"));
 
     QPieSeries *series = new QPieSeries();
     for(QList<RecordObject> objects : record.getObjects())

@@ -27,9 +27,9 @@ QChartView *PresentationWindow::two_secondChart()
 void PresentationWindow::showPageForPlots(int plots)
 {
     if(1 == plots)
-        ui->stackedWidget->setCurrentWidget(ui->oneChart);
+        ui->superStack->setCurrentWidget(ui->oneChart);
     if(2 == plots)
-        ui->stackedWidget->setCurrentWidget(ui->twoCharts);
+        ui->superStack->setCurrentWidget(ui->twoCharts);
 }
 
 

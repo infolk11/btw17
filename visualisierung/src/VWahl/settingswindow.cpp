@@ -65,8 +65,8 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& partiesList,QList<Record
             Logger::log  << L_DEBUG << "Description: " << p.getDescription() << "\n";
 
             //Votes
-            int rawVotes = VWahl::db->getVotesParty(p,getSelectedPollingStations());
-            int votes = all2votes / rawVotes;
+            double rawVotes = VWahl::db->getVotesParty(p,getSelectedPollingStations());
+            int votes = (rawVotes / all2votes * 1.0) * 100;
             Logger::log << L_DEBUG << "Votes: " << votes << "\n";
 
             //Construction
@@ -80,8 +80,8 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& partiesList,QList<Record
                 try { k = VWahl::db->getCandidateForParty(p); }
                 catch(CandidateNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
-                int k_rawVotes = VWahl::db->getVotesCandidate(k,pollingStations);
-                int k_votes = all1votes / k_rawVotes;
+                double k_rawVotes = VWahl::db->getVotesCandidate(k,pollingStations);
+                int k_votes = (k_rawVotes / all1votes) *100;
                 RecordObject k_ro(k.getDescription(),k_votes, k.getColor());
                 if(candidatesDiaType == Plots::DIA_TYPE::ONE_PLOT )
                     partiesList.push_back(k_ro);
@@ -159,6 +159,7 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
         partiesDiaType = Plots::getDiaType(ui->partiesAlsoShownPlotTypeComboBox->currentText());
         candidatesDiaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
 
+
         for(QListWidgetItem *item : ui->candidatesList->selectedItems())
         {
             int index = QString(item->text().split(",").at(0)).toInt();
@@ -169,8 +170,8 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
             Logger::log  << L_DEBUG << "Description: " << k.getDescription() << "\n";
 
             //Votes
-            int rawVotes = VWahl::db->getVotesCandidate(k,getSelectedPollingStations());
-            int votes = all1votes / rawVotes;
+            double rawVotes = VWahl::db->getVotesCandidate(k,getSelectedPollingStations());
+            int votes = (rawVotes/ all1votes) *100;
             Logger::log << L_DEBUG << "Votes: " << votes << "\n";
 
             //Construction
@@ -184,8 +185,8 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
                 try { p = VWahl::db->getPartyForCandidate(k); }
                 catch(CandidateNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
-                int p_rawVotes = VWahl::db->getVotesParty(p,pollingStations);
-                int p_votes = all2votes / p_rawVotes;
+                double p_rawVotes = VWahl::db->getVotesParty(p,pollingStations);
+                int p_votes = (p_rawVotes / all2votes) * 100;
                 RecordObject p_ro(p.getDescription(),p_votes, p.getColor());
 
                 if(partiesDiaType == Plots::DIA_TYPE::ONE_PLOT )
@@ -194,9 +195,6 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
                     partiesList.push_back(p_ro);
             }
         }
-
-        partiesDiaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
-        candidatesDiaType = Plots::getDiaType(ui->candidatesAlsoShownPlotType->currentText());
 
     }catch(VWahlException e)
     {
