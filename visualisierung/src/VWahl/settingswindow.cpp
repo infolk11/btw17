@@ -179,7 +179,7 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
             candidatesList.push_back(ro);
 
             //Party
-            if(ui->showCandidatesAlso->isChecked())
+            if(ui->showPartiesAlso->isChecked())
             {
                 Partei p;
                 try { p = VWahl::db->getPartyForCandidate(k); }
