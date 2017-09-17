@@ -10,7 +10,7 @@
 	$partei = $_POST['partei'];
 	$kandidat = $_POST['kandidat'];
 	$pok = $_POST['pok'];
-	
+	header ("content-type: text/html charset=utf-8");
 
 	if ($pok == 0 ){
 		$sql = "UPDATE 2stimme
@@ -47,7 +47,7 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 			</style>
 			</head>
 			<body>
-			Sie haben folgende Daten eingegeben (Bitte überprüfen sie diese nochmal):<br>
+			Sie haben folgende Daten eingegeben (Bitte &uuml;berpr&uuml;fen sie diese nochmal):<br>
 				<table>
 				 <tr>
 					<th>Parteien</th>
@@ -76,7 +76,8 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 	
 	echo ' 	</table>
 			<br>
-			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 				
+			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 
+			 <a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a>
 			</body>
 		<html>';
 		
