@@ -7,20 +7,20 @@
 
 	#$wl = $_REQUEST['wahllokal'];
 		
-	
+	header ('content-type: charset=utf-8');
 	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal ORDER BY W_Bezeichnung";
 	$result = mysqli_query($conn, $sql);
 	if($result->num_rows>0) {
 		echo '<!DOCTYPE html>
 				<html>
-					<!-- <meta charset="utf-8"/> -->
 					<head>
 						
 						<title> Wahllokalauswahl </title>
 					</head>
 					<body>
+						<a href="updateauswahl.php" style="font-size:17px;">Weiter zum Daten updaten!</a> <br><br>
 						<form action = "insert.php" method="post">
-							<label for="wahllokal">Wählen sie ein Wahllokal aus:</label>
+							<label for="wahllokal">W&auml;hlen sie ein Wahllokal aus:</label>
 							<select name="wahllokal" width="100px">';
 		while($row = $result->fetch_assoc()) {
 			echo "<option value = ".$row['W_ID'].">".$row["W_Bezeichnung"]."</option>";
