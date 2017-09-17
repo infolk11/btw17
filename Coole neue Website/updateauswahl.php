@@ -4,8 +4,6 @@
 	
 	include 'btw.php';
 	
-
-	#$wl = $_REQUEST['wahllokal'];
 		
 	header ("content-type: text/html charset=utf-8");	
 	$sql = "SELECT W_Bezeichnung, W_ID FROM Wahllokal ORDER BY W_Bezeichnung";
@@ -29,7 +27,7 @@
 	}else {
 		echo "Keine Wahllokale gefunden <br>";
 	}
-		echo '				<label for="pok">M%ouml;chten sie eine Partei oder einen Kandidaten updaten?</label>
+		echo '				<label for="pok">M&ouml;chten sie eine Partei oder einen Kandidaten updaten?</label>
 							<select name="pok" width="100px">
 							    <option value= 1>Kandidat updaten</option>
 								<option value= 0>Partei updaten</option>
@@ -41,8 +39,11 @@
 		echo '		 		<label for="partei">W&auml;hlen sie eine Partei aus:</label>
 							<select name="partei" width="100px">';
 		while($row = $result->fetch_assoc()) {
-			echo "<option value = ".$row['P_ID'].">".$row["P_Bezeichnung"]."</option>";
-		}
+			if($row["P_Bezeichnung"] == "parteilos"){}
+			else{
+				echo "<option value = ".$row['P_ID'].">".$row["P_Bezeichnung"]."</option>";
+			}
+		}	
 		echo'				</select><br><br>';
 	}else {
 		echo "Keine Parteien gefunden <br>";
