@@ -62,6 +62,9 @@
 							<input type="number" min="0" name="stimmen"><br><br>
 							<button type ="submit" name="submit">Absenden</button>
 						</form>
+						<form action="logout.php">
+							<button>logout</button>
+						</form>
 					</body>
 				<html>';
 	}else {

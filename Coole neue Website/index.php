@@ -29,9 +29,13 @@
         if($_SESSION['debug']) {
             echo '<h1> Debugmodus aktiviert </h1>';
         }
+
+        if($_SESSION['id'] == 1) {
+            echo 'Benutzer <a href="admin.php">hinzufügen</a><br>';
+        }
         //login erfolgreich
         echo '  <h4>Login erfolgreich!</h4>
-                Ergebnisse <a href="parteiauswahl.php">eingeben</a><br>
+                Ergebnisse <a href="insertauswahl.php">eingeben</a><br>
                 Eingaben <a href="updateauswahl.php">korrigieren</a><br>
                 <br>
                 <form action="logout.php">

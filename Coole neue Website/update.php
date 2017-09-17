@@ -78,7 +78,10 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 			<br>
 			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 
 			 <a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a>
-			</body>
+			 <form action="logout.php">
+			 	<button>logout</button>
+		 	</form>
+			 </body>
 		<html>';
 		
 	if ($_SESSION['debug']) {

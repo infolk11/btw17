@@ -69,12 +69,16 @@
 		}
 		echo'				</table>
 							<button type ="submit" name="submit">Absenden</button>
-						</form>
-					</body>
-				<html>';
+						</form>';
 	}else {
 		echo "Keine Parteien gefunden <br>";
 	}
+
+	echo '	<form action="logout.php">
+				<button>logout</button>
+			</form>
+			</body>
+			</html>';
 
 	if ($_SESSION['debug']) {
 		echo ("Error number ".$conn->errno." : ".$conn->error);

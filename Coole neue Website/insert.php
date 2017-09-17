@@ -109,7 +109,11 @@
 	echo ' 	</table>
 			<br>
 			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> <br> 
-			 <a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a>
+			 <a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a><br>
+			
+			<form action="logout.php">
+				<button>logout</button>
+			</form>
 			</body>
 		<html>';
 		
