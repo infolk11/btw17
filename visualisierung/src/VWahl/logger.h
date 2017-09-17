@@ -15,19 +15,6 @@
 
 using namespace std;
 
-/*
-typedef enum {EMERG  = 0,
-              FATAL  = 0,
-              ALERT  = 100,
-              CRIT   = 200,
-              ERROR  = 300,
-              WARN   = 400,
-              NOTICE = 500,
-              INFO   = 600,
-              DEBUG  = 700,
-              NOTSET = 800
-} PriorityLevel;
-*/
 
 #define L_ERROR "ERROR    "
 #define L_WARN  "WARNING  "
@@ -44,6 +31,7 @@ class Logger
 {
   public:
     void init();
+    void init(int LoggerLevel);
     static Logger       log;
     void         send(QString str);
     QString      value;
@@ -51,6 +39,11 @@ class Logger
     QFile        *outSaveFile;
     QTextStream  *ts;
     QTextStream  *sts;
+    bool         sending_permission;
+    bool         error;
+    bool         warning;
+    bool         info;
+    bool         debug;
     void         TimerFflush();
 
     friend Logger &operator << (Logger& l, const char * a);
@@ -58,6 +51,27 @@ class Logger
     friend Logger &operator << (Logger& l, QString a);
     friend Logger &operator << (Logger& l, int a);
 
+    enum LoggerOutput{None  = 0,
+                  Error  = 8,
+                  Warn   = 4,
+                  Info   = 2,
+                  Debug  = 1,
+                  All    = 15,
+                  Level1 = LoggerOutput::Error,
+                  Level2 = LoggerOutput::Error | LoggerOutput::Warn,
+                  Level3 = LoggerOutput::Error | LoggerOutput::Warn | LoggerOutput::Info,
+                  Level4 = LoggerOutput::All
+    };
+    //None	= keine Ausgabe
+    //Error	= nur Error
+    //Warn	= nur Warning
+    //Info	= nur Info
+    //Debug	= nur Debug
+    //All		= alle werden ausgegeben
+    //Level1	= nur Error
+    //Level2	= Error und Warning,
+    //Level3	= Error, Warning und Info,
+    //Level4	= alle werden ausgegeben
 
 
     private:
