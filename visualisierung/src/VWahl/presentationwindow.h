@@ -6,7 +6,6 @@
 #include <QtCharts/QChartView>
 
 #include "plots.h"
-#include "qcustomplot.h"
 
 namespace Ui {
 class PresentationWindow;

@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     database.cpp \
     plots.cpp \
     record.cpp \
-    plottest.cpp \
     settingswindow.cpp \
     databasedialog.cpp \
     querydialog.cpp \
@@ -40,7 +39,6 @@ HEADERS  += partei.h \
     database.h \
     plots.h \
     record.h \
-    plottest.h \
     settingswindow.h \
     databasedialog.h \
     querydialog.h \
