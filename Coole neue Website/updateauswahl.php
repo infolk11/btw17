@@ -18,6 +18,7 @@
 						<title> Wahllokalauswahl </title>
 					</head>
 					<body>
+						<a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a><br><br>
 						<form action = "update.php" method="post">
 							<label for="wahllokal">W&auml;hlen sie ein Wahllokal aus:</label>
 							<select name="wahllokal" width="100px">';
