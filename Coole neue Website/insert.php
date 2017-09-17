@@ -6,7 +6,7 @@
 	
 
 	$wl = $_POST['wahllokal'];
-	
+	header ('content-type: charset=utf-8');
 	$parteien = $_POST['partei'];
 	$kandidaten = $_POST['kandidat'];
 	
@@ -59,7 +59,7 @@
 			</head>
 			<body>
 			Eingabe erfolgreich! :D <br>
-			Sie haben folgende Daten eingegeben (Bitte überprüfen sie diese nochmal):<br>
+			Sie haben folgende Daten eingegeben (Bitte &uuml;berpr&uuml;fen sie diese nochmal):<br>
 				<table>
 				 <tr>
 					<th>Parteien</th>
@@ -88,7 +88,8 @@
 	
 	echo ' 	</table>
 			<br>
-			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 				
+			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 
+			 <a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a>
 			</body>
 		<html>';
 		
