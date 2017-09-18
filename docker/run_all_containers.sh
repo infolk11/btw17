@@ -26,7 +26,7 @@ docker run --network btw17 \
         -p 127.0.0.1:3306:3306 \
         mysql:latest
 
-#2nd one is php-apache                                                                                                                                       
+#3rd one is php-apache                                                                                                                                       
 docker run --network btw17 \
         -d \
         -e VIRTUAL_HOST=btw.localhost \
