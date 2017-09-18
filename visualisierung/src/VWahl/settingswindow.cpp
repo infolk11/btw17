@@ -142,7 +142,7 @@ void SettingsWindow::makePlot(QList<Plots> &objects)
 
     }catch(VWahlException e)
     {
-        Logger::log << L_ERROR << QString("Error while creating the new plot ") + e.what() << "\n";
+        Logger::log << L_ERROR << "Error while creating the new plot: " << e.what() << "\n";
         QMessageBox::warning(this,"Fehler!",e.what(),QMessageBox::Ok);
     }
 }
@@ -198,7 +198,7 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
 
     }catch(VWahlException e)
     {
-        Logger::log << L_ERROR << QString("Error while making candidates plot ") + e.what() << "\n";
+        Logger::log << L_ERROR << "Error while making candidates plot: " << e.what() << "\n";
         QMessageBox::warning(this,"Fehler!",e.what(),QMessageBox::Ok);
     }
 }
