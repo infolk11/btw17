@@ -69,12 +69,23 @@ void Plots::buildPlots(QList<Plots> &plots, PresentationWindow *window)
 
 void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
 {
+    QList<RecordObject> ignoredObjects;
+    int ignoredVotes = 0;
+    QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
+    int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
 
     QPieSeries *series = new QPieSeries();
     for(QList<RecordObject> objects : record.getObjects())
     {
         for(RecordObject ro : objects)
         {
+            if(ro.getVotes()< minPercent)
+            {
+                ignoredObjects.push_back(ro);
+                ignoredVotes += ro.getVotes();
+                continue;
+            }
+
             QPieSlice *slice = new QPieSlice(ro.getDescription(),ro.getVotes());
             slice->setPen(ro.getColor());
             slice->setBrush(ro.getColor().lighter(150));
@@ -82,6 +93,11 @@ void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
             series->append(slice);
         }
     }
+    QPieSlice *others = new QPieSlice("Andere",ignoredVotes);
+    others->setPen(othersColor);
+    others->setBrush(othersColor.lighter(BRUSH_LIGHTING));
+    others->setLabelVisible(true);
+    series->append(others);
 
     QChart *chart = new QChart();
     chart->setAnimationOptions(QChart::SeriesAnimations);
