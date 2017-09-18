@@ -79,7 +79,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="compareParties">
          <attribute name="title">
@@ -252,7 +252,7 @@
         </widget>
         <widget class="QWidget" name="compareElections">
          <attribute name="title">
-          <string>Vergleich Wahlen</string>
+          <string>Vergleich 1/2Stimme</string>
          </attribute>
         </widget>
        </widget>
