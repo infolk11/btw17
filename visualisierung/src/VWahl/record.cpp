@@ -22,6 +22,9 @@ void RecordObject::setVotes(int value)
 
 bool RecordObject::operator==(const RecordObject l)
 {
+    if(this == &l)
+        return true;
+
     if(l.getDescription() != getDescription())
         return false;
     if(l.getVotes() != getVotes())

@@ -69,13 +69,17 @@ void Plots::buildPlots(QList<Plots> &plots, PresentationWindow *window)
 
 void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
 {
+    Logger::log << L_DEBUG << "Creating pie chart..\n";
+
     QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
     int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
     int minInFull = VWahl::settings->value("gfx/minChosenRecords").toInt();
-    int ignoredVotes;
+    int ignoredVotes = 0;
     QList<RecordObject> ignoredParties,selectedParties;
     selectedParties = record.recordsAsOneList();
     filterObjects(selectedParties,ignoredParties,minPercent,minInFull,ignoredVotes);
+
+    Logger::log << L_DEBUG << selectedParties.size() << " records will be shown. " << ignoredVotes << " are 'others'\n";
 
     QPieSeries *series = new QPieSeries();
     for(RecordObject ro : selectedParties)
@@ -112,21 +116,35 @@ void Plots::buildBarChartPlot(QChartView *chart)
 
 void Plots::buildBarChartPlot(QChartView *chartView, Record& record)
 {
+    Logger::log << L_DEBUG << "Creating bar chart...\n";
+    QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
+    int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
+    int minInFull = VWahl::settings->value("gfx/minChosenRecords").toInt();
+    int ignoredVotes = 0;
+    QList<RecordObject> ignoredParties,selectedParties;
+    selectedParties = record.recordsAsOneList();
+    filterObjects(selectedParties,ignoredParties,minPercent,minInFull,ignoredVotes);
+    Logger::log << L_DEBUG << selectedParties.size() << " records will be shown. " << ignoredVotes << " are 'others'\n";
+
     QBarSeries *series = new QBarSeries();
-    QStringList desc;
-    for(QList<RecordObject> objects : record.getObjects())
+    for(RecordObject ro : selectedParties)
     {
-        for(RecordObject ro : objects)
-        {
-            QBarSet *set = new QBarSet(ro.getDescription());
-            desc << ro.getDescription();
+        QBarSet *set = new QBarSet(ro.getDescription());
 
-            *set << ro.getVotes();
-            set->setPen(ro.getColor());
-            set->setBrush(ro.getColor().lighter(BRUSH_LIGHTING));
+        *set << ro.getVotes();
+        set->setPen(ro.getColor());
+        set->setBrush(ro.getColor().lighter(BRUSH_LIGHTING));
 
-            series->append(set);
-        }
+        series->append(set);
+    }
+
+    if(ignoredVotes>0)
+    {
+        QBarSet *set = new QBarSet("Andere");
+        *set << ignoredVotes;
+        set->setPen(othersColor);
+        set->setBrush(othersColor.lighter(BRUSH_LIGHTING));
+        series->append(set);
     }
 
     QChart* chart = new QChart();
@@ -144,6 +162,8 @@ void Plots::buildBarChartPlot(QChartView *chartView, Record& record)
     chartView->setChart(chart);
     chartView->repaint();
 
+    Logger::log << L_DEBUG << "Creation successfull.\n";
+
 }
 
 void Plots::buildHorizontalBarChartPlot(QChartView *chartView)
@@ -153,23 +173,37 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView)
 
 void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
 {
-
+    Logger::log << L_DEBUG << "Creating horizontal bar chart...\n";
     QHorizontalBarSeries *series = new QHorizontalBarSeries();
-    QStringList desc;
-    for(QList<RecordObject> objects : record.getObjects())
+    QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
+    int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
+    int minInFull = VWahl::settings->value("gfx/minChosenRecords").toInt();
+    int ignoredVotes = 0;
+    QList<RecordObject> ignoredParties,selectedParties;
+    selectedParties = record.recordsAsOneList();
+    filterObjects(selectedParties,ignoredParties,minPercent,minInFull,ignoredVotes);
+    Logger::log << L_DEBUG << selectedParties.size() << " records will be shown. " << ignoredVotes << " are 'others'\n";
+
+    for(RecordObject ro : selectedParties)
     {
-        for(RecordObject ro : objects)
-        {
-            QBarSet *set = new QBarSet(ro.getDescription());
-            desc << ro.getDescription();
+        QBarSet *set = new QBarSet(ro.getDescription());
 
-            *set << ro.getVotes();
-            set->setPen(ro.getColor());
-            set->setBrush(ro.getColor().lighter(BRUSH_LIGHTING));
+        *set << ro.getVotes();
+        set->setPen(ro.getColor());
+        set->setBrush(ro.getColor().lighter(BRUSH_LIGHTING));
 
-            series->append(set);
-        }
+        series->append(set);
     }
+
+    if(ignoredVotes>0)
+    {
+        QBarSet *set = new QBarSet("Andere");
+        *set << ignoredVotes;
+        set->setPen(othersColor);
+        set->setBrush(othersColor.lighter(BRUSH_LIGHTING));
+        series->append(set);
+    }
+
     QChart* chart = new QChart();
     chart->addSeries(series);
     chart->setTitle(record.getElection());
@@ -188,17 +222,23 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
 
     chartView->setChart(chart);
     chartView->repaint();
+    Logger::log << L_DEBUG << "Creation successfull.\n";
 }
 
 void Plots::filterObjects(QList<RecordObject> &full, QList<RecordObject> &filtered, int minPercent, int minInFull, int& ignoredVotes)
 {
-    for(RecordObject ro : full)
-    {
-        if(ro.getVotes() >= minPercent)
-            continue;
+    Logger::log << L_INFO << "Filtering recordObject...\n";
+    Logger::log << L_DEBUG << "Min percent: " << minPercent << "\n";
+    Logger::log << L_DEBUG << "minInFull: " << minInFull << "\n";
 
-        filtered.push_back(ro);
-        full.removeOne(ro);
+    for(int i = 0; i < full.size(); ++i)
+    {
+        if(full.at(i).getVotes() < minPercent)
+        {
+            filtered.push_back(full.at(i));
+            full.removeAt(i);
+            i=0;
+        }
     }
     if(full.size()<minInFull)
     {
@@ -215,5 +255,6 @@ void Plots::filterObjects(QList<RecordObject> &full, QList<RecordObject> &filter
     }
     for(RecordObject ro : filtered)
         ignoredVotes += ro.getVotes();
+    Logger::log << L_INFO << "Filterd objects successfully. " << ignoredVotes << " votes have been ignored.\n";
 }
 

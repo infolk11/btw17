@@ -78,15 +78,13 @@ void SettingsWindow::makePartyPlot(QList<RecordObject>& partiesList,QList<Record
             {
                 Kandidat k;
                 try { k = VWahl::db->getCandidateForParty(p); }
-                catch(CandidateNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
+                catch(VWahlException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
                 double k_rawVotes = VWahl::db->getVotesCandidate(k,pollingStations);
                 int k_votes = (k_rawVotes / all1votes) *100;
                 RecordObject k_ro(k.getDescription(),k_votes, k.getColor());
-                if(candidatesDiaType == Plots::DIA_TYPE::ONE_PLOT )
-                    partiesList.push_back(k_ro);
-                else
-                    candidatesList.push_back(k_ro);
+                Logger::log << L_DEBUG << "Also showing candidate " << k.getDescription() << " with " << k_votes << " votes.\n";
+                candidatesList.push_back(k_ro);
             }
         }
 
@@ -135,10 +133,11 @@ void SettingsWindow::makePlot(QList<Plots> &objects)
         Record candidatesRecord(description,year,candidatesRecordList);
         Plots candidatePlot(candidatesRecord,presentationWindow,candidatesDiaType);
 
-        if(candidatesList.size()>0)
-            objects.push_back(candidatePlot);
         if(partiesList.size()>0)
             objects.push_back(partyPlot);
+
+        if(candidatesList.size()>0)
+            objects.push_back(candidatePlot);
 
     }catch(VWahlException e)
     {
@@ -183,16 +182,12 @@ void SettingsWindow::makeCandidatePlot(QList<RecordObject> &partiesList, QList<R
             {
                 Partei p;
                 try { p = VWahl::db->getPartyForCandidate(k); }
-                catch(CandidateNotFoundException e){Logger::log << L_WARN << e.what() << "\n";continue;}
+                catch(VWahlException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
                 double p_rawVotes = VWahl::db->getVotesParty(p,pollingStations);
                 int p_votes = (p_rawVotes / all2votes) * 100;
                 RecordObject p_ro(p.getDescription(),p_votes, p.getColor());
-
-                if(partiesDiaType == Plots::DIA_TYPE::ONE_PLOT )
-                    candidatesList.push_back(p_ro);
-                else
-                    partiesList.push_back(p_ro);
+                partiesList.push_back(p_ro);
             }
         }
 
