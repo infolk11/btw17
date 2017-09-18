@@ -18,25 +18,35 @@ Plots::DIA_TYPE Plots::getDiaType(QString name)
     throw VWahlException("Specified dia type " + name + " not known");
 }
 
-void Plots::buildPlot(QChartView *chart)
+void Plots::buildPieChartPlot(QChartView *chart)
 {
-    if(type == DIA_TYPE::BAR_GRAPH)
+    buildPieChartPlot(chart,record);
+}
+
+void Plots::buildPlot(QChartView *chart, DIA_TYPE ty, Record &record)
+{
+    if(ty == DIA_TYPE::BAR_GRAPH)
     {
-        buildHorizontalBarChartPlot(chart);
+        buildHorizontalBarChartPlot(chart,record);
         return;
     }
 
-    if(type == DIA_TYPE::BAR_CHART)
+    if(ty == DIA_TYPE::BAR_CHART)
     {
-        buildBarChartPlot(chart);
+        buildBarChartPlot(chart,record);
         return;
     }
-    if(type == DIA_TYPE::PIE_CHART)
+    if(ty == DIA_TYPE::PIE_CHART)
     {
-        buildPieChartPlot(chart);
+        buildPieChartPlot(chart,record);
         return;
     }
     throw PlottingException(QString("Chosen dia type actually not supported!"));
+}
+
+void Plots::buildPlot(QChartView *chart)
+{
+    buildPlot(chart,type,record);
 }
 
 void Plots::buildPlots(QList<Plots> &plots, PresentationWindow *window)
@@ -57,7 +67,7 @@ void Plots::buildPlots(QList<Plots> &plots, PresentationWindow *window)
         }
 }
 
-void Plots::buildPieChartPlot(QChartView *chartView)
+void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
 {
 
     QPieSeries *series = new QPieSeries();
@@ -82,7 +92,12 @@ void Plots::buildPieChartPlot(QChartView *chartView)
     chartView->repaint();
 }
 
-void Plots::buildBarChartPlot(QChartView *chartView)
+void Plots::buildBarChartPlot(QChartView *chart)
+{
+    buildBarChartPlot(chart,record);
+}
+
+void Plots::buildBarChartPlot(QChartView *chartView, Record& record)
 {
     QBarSeries *series = new QBarSeries();
     QStringList desc;
@@ -119,6 +134,11 @@ void Plots::buildBarChartPlot(QChartView *chartView)
 }
 
 void Plots::buildHorizontalBarChartPlot(QChartView *chartView)
+{
+    buildHorizontalBarChartPlot(chartView,record);
+}
+
+void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
 {
 
     QHorizontalBarSeries *series = new QHorizontalBarSeries();
