@@ -51,54 +51,51 @@ void Plots::buildPlot(QChartView *chart)
 
 void Plots::buildPlots(QList<Plots> &plots, PresentationWindow *window)
 {
-        int plotsSize = plots.size();
-        if(1 > plotsSize || 2 < plotsSize)
-            throw PlottingException(QString("Invalid plots size: " + plotsSize));
-        if(1 == plotsSize)
-        {
-            window->showPageForPlots(1);
-            plots[0].buildPlot(window->singleChart());
-        }
-        if(2 == plotsSize)
-        {
-            window->showPageForPlots(2);
-            plots[0].buildPlot(window->two_firstChart());
-            plots[1].buildPlot(window->two_secondChart());
-        }
+    int plotsSize = plots.size();
+    if(1 > plotsSize || 2 < plotsSize)
+        throw PlottingException(QString("Invalid plots size: " + plotsSize));
+    if(1 == plotsSize)
+    {
+        window->showPageForPlots(1);
+        plots[0].buildPlot(window->singleChart());
+    }
+    if(2 == plotsSize)
+    {
+        window->showPageForPlots(2);
+        plots[0].buildPlot(window->two_firstChart());
+        plots[1].buildPlot(window->two_secondChart());
+    }
 }
 
 void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
 {
-    QList<RecordObject> ignoredObjects;
-    int ignoredVotes = 0;
     QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
     int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
+    int minInFull = VWahl::settings->value("gfx/minChosenRecords").toInt();
+    int ignoredVotes;
+    QList<RecordObject> ignoredParties,selectedParties;
+    selectedParties = record.recordsAsOneList();
+    filterObjects(selectedParties,ignoredParties,minPercent,minInFull,ignoredVotes);
 
     QPieSeries *series = new QPieSeries();
-    for(QList<RecordObject> objects : record.getObjects())
+    for(RecordObject ro : selectedParties)
     {
-        for(RecordObject ro : objects)
-        {
-            if(ro.getVotes()< minPercent)
-            {
-                ignoredObjects.push_back(ro);
-                ignoredVotes += ro.getVotes();
-                continue;
-            }
 
-            QPieSlice *slice = new QPieSlice(ro.getDescription(),ro.getVotes());
-            slice->setPen(ro.getColor());
-            slice->setBrush(ro.getColor().lighter(150));
-            slice->setLabelVisible(true);
-            series->append(slice);
-        }
+        QPieSlice *slice = new QPieSlice(ro.getDescription(),ro.getVotes());
+        slice->setPen(ro.getColor());
+        slice->setBrush(ro.getColor().lighter(150));
+        slice->setLabelVisible(true);
+        series->append(slice);
     }
-    QPieSlice *others = new QPieSlice("Andere",ignoredVotes);
-    others->setPen(othersColor);
-    others->setBrush(othersColor.lighter(BRUSH_LIGHTING));
-    others->setLabelVisible(true);
-    series->append(others);
 
+    if(ignoredVotes>0)
+    {
+        QPieSlice *others = new QPieSlice("Andere",ignoredVotes);
+        others->setPen(othersColor);
+        others->setBrush(othersColor.lighter(BRUSH_LIGHTING));
+        others->setLabelVisible(true);
+        series->append(others);
+    }
     QChart *chart = new QChart();
     chart->setAnimationOptions(QChart::SeriesAnimations);
     chart->addSeries(series);
@@ -191,5 +188,32 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
 
     chartView->setChart(chart);
     chartView->repaint();
+}
+
+void Plots::filterObjects(QList<RecordObject> &full, QList<RecordObject> &filtered, int minPercent, int minInFull, int& ignoredVotes)
+{
+    for(RecordObject ro : full)
+    {
+        if(ro.getVotes() >= minPercent)
+            continue;
+
+        filtered.push_back(ro);
+        full.removeOne(ro);
+    }
+    if(full.size()<minInFull)
+    {
+        qSort(filtered.begin(),filtered.end(),[](const RecordObject a, const RecordObject b) -> bool {
+            return a.getVotes() > b.getVotes();
+        });
+        int diff = minInFull - full.size();
+        for(int i = 0; i<diff && 0<filtered.size();++i)
+        {
+            full.push_back(filtered.at(0));
+            filtered.removeFirst();
+        }
+
+    }
+    for(RecordObject ro : filtered)
+        ignoredVotes += ro.getVotes();
 }
 

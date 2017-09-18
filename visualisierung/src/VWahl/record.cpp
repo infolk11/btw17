@@ -20,6 +20,15 @@ void RecordObject::setVotes(int value)
     votes = value;
 }
 
+bool RecordObject::operator==(const RecordObject l)
+{
+    if(l.getDescription() != getDescription())
+        return false;
+    if(l.getVotes() != getVotes())
+        return false;
+    return true;
+}
+
 unsigned short Record::getYear() const
 {
     return year;
@@ -48,5 +57,13 @@ QList<QList<RecordObject> > Record::getObjects() const
 void Record::setObjects(const QList<QList<RecordObject> > &value)
 {
     objects = value;
+}
+
+QList<RecordObject> Record::recordsAsOneList()
+{
+   QList<RecordObject> oneList;
+   for(QList<RecordObject> objs : objects)
+       oneList += objs;
+   return oneList;
 }
 
