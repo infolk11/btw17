@@ -140,6 +140,9 @@ int shutdown()
 
     delete settings;
 
+    db->close();
+    delete db;
+
     return EXIT_SUCCESS;
 }
 

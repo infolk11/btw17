@@ -38,6 +38,7 @@ public:
     ~Database();
     auto connect() -> int;
     auto exec(const QString queryString) -> QSqlQuery;
+    void close();
 
     int getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations);
     int getVotesParty(Partei party, QList<PollingStation> pollingStations);

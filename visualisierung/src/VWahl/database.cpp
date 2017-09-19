@@ -41,6 +41,11 @@ auto Database::exec(const QString queryString) -> QSqlQuery
     return query;
 }
 
+void Database::close()
+{
+    db.close();
+}
+
 int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations)
 {
     int votes = 0;
