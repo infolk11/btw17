@@ -14,9 +14,8 @@
 	$sql = "SELECT P_ID, P_Bezeichnung FROM Partei";
 	$result = mysqli_query($conn, $sql);
 	//Löschen der Stimmen die schon vorhanden sind
-	$stmnt = $conn->prepare("DELETE FROM 2stimme WHERE W_ID = ?");
-	$stmnt->bind_param("i", $wl);
-	$stmnt->execute();
+	$stmnt = $conn->prepare("DELETE FROM 2stimme WHERE W_ID = ? AND P_ID = ?");
+	$stmnt->bind_param("ii", $wl, $tmp_p_id);
 	
 	$stmt = $conn->prepare("INSERT INTO 2stimme(W_ID, P_ID, 2Anzahl) VALUES (?, ?, ?)");
 	$stmt->bind_param("iii", $wl, $tmp_p_id, $tmp_parteien);
@@ -33,15 +32,15 @@
 			$tmp_parteien = $parteien[$r["P_ID"]];
 			if ($tmp_parteien == null) {
 			}else{
-			$stmt->execute();
+				$stmnt->execute();
+				$stmt->execute();
 			}
 		}
 	}
 	unset ($r);
 	//Löschen der Stimmen die schon vorhanden sind
-	$stmnt = $conn->prepare("DELETE FROM 1stimme WHERE W_ID = ?");
-	$stmnt->bind_param("i", $wl);
-	$stmnt->execute();
+	$stmnt = $conn->prepare("DELETE FROM 1stimme WHERE W_ID = ? AND D_ID = ?");
+	$stmnt->bind_param("ii", $wl, $tmp_d_id);
 	
 	$stmt = $conn->prepare("INSERT INTO 1stimme(W_ID, D_ID, 1Anzahl) VALUES (?, ?, ?)");
 	$stmt->bind_param("iii", $wl, $tmp_d_id, $tmp_kandidaten);
@@ -56,7 +55,8 @@
 		if ($tmp_kandidaten == null) {
 		}
 		else{
-		$stmt->execute();
+			$stmnt->execute();
+			$stmt->execute();
 		}
 	} 
 	$e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
