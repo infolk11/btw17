@@ -10,7 +10,7 @@
  */
 class RecordObject
 {
-   public:
+public:
     RecordObject() = default;
     RecordObject(QString desc) : description(desc) {}
     RecordObject(QString desc, QColor col) : description(desc),color(col) {}
@@ -21,6 +21,8 @@ class RecordObject
     QColor getColor() const;
 
     void setVotes(int value);
+
+    bool operator==(const RecordObject l);
 
 private:
     QString description;
@@ -47,6 +49,8 @@ public:
 
     QList<QList<RecordObject> > getObjects() const;
     void setObjects(const QList<QList<RecordObject> > &value);
+
+    QList<RecordObject> recordsAsOneList();
 
 private:
     QList<QList<RecordObject>> objects;

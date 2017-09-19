@@ -79,7 +79,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="compareParties">
          <attribute name="title">
@@ -151,11 +151,6 @@
            </item>
            <item row="5" column="1">
             <widget class="QComboBox" name="candidatesAlsoShownPlotType">
-             <item>
-              <property name="text">
-               <string>Ein Diagramm</string>
-              </property>
-             </item>
              <item>
               <property name="text">
                <string>Säulendiagramm</string>
@@ -237,11 +232,6 @@
             <widget class="QComboBox" name="partiesAlsoShownPlotTypeComboBox">
              <item>
               <property name="text">
-               <string>Ein Diagramm</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
                <string>Balkendiagramm</string>
               </property>
              </item>
@@ -262,7 +252,7 @@
         </widget>
         <widget class="QWidget" name="compareElections">
          <attribute name="title">
-          <string>Vergleich Wahlen</string>
+          <string>Vergleich 1/2Stimme</string>
          </attribute>
         </widget>
        </widget>
