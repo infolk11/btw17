@@ -72,6 +72,8 @@ public:
 
     int getIGNORED_PARTY() const;
 
+    static int getVotesSingleParty(QSqlDatabase db, Partei party, PollingStation station);
+    unsigned long connectionCounter = 0;
 private:
 
     int IGNORED_PARTY;
