@@ -3,7 +3,7 @@
 $servername = "172.18.0.3";
 $username = "website";
 $password = "cebit17";
-$database = "login";
+$database = "website";
 
 $conn = new mysqli($servername, $username, $password, $database);
 

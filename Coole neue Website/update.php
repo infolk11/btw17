@@ -90,4 +90,16 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 	
 	$conn->close();
 
+	include 'dbh.php';
+	
+		$stmnt = $conn->prepare("INSERT INTO `changelog` (`user_id`, `W_ID`) VALUES (?, ?)");
+		$stmnt->bind_param("ii", $_SESSION['id'], $wl);
+		$stmnt->execute();
+	
+		if ($_SESSION['debug']) {
+			echo ("Error number ".$conn->errno." : ".$conn->error);
+		}
+	
+		$conn->close();
+
 ?>
