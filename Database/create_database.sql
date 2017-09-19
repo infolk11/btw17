@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS _wp_BTW_DE_2017;
+USE _wp_BTW_DE_2017;
+
 --
 -- Tabellenstruktur für Tabelle `direktkandidaten`
 --
