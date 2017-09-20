@@ -80,6 +80,9 @@
 			<body>
 			Eingabe erfolgreich! :D <br>
 			Sie haben folgende Daten eingegeben (Bitte &uuml;berpr&uuml;fen sie diese nochmal):<br>
+			Sollten Sie aus Versehen Daten vergessen haben, so klicken Sie bitte  
+			<a href='insertauswahl.php' style= 'font-size:17px;'>hier</a><br>
+                        <font color='red'>ACHTUNG:</font> Bitte geben sie NUR die Daten ein, den Sie vergessen haben!
 				<table>
 				 <tr>
 					<th>Parteien</th>
@@ -108,8 +111,8 @@
 	
 	echo ' 	</table>
 			<br>
-			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> <br> 
-			 <a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a><br>
+			 <a href="updateauswahl.php" style="font-size:20px;">Daten falsch eingegeben?</a> <br> 
+			 <a href="insertauswahl.php" style="font-size:17px;">Neue Daten eintragen?</a><br><br>
 			
 			<form action="logout.php">
 				<button>logout</button>
