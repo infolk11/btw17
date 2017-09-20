@@ -16,7 +16,8 @@
 						<title> Wahllokalauswahl </title>
 					</head>
 					<body>
-						<a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a><br><br>
+						<a href="insertauswahl.php" style="font-size:17px;">Daten vergessen oder neue Daten eintragen?</a>
+						<br><br>
 						<form action = "update.php" method="post">
 							<label for="wahllokal">W&auml;hlen sie ein Wahllokal aus:</label>
 							<select name="wahllokal" width="100px">';
@@ -60,7 +61,7 @@
 		echo'				</select><br><br>
 							<label for="stimmen">Stimmenanzahl:</label>
 							<input type="number" min="0" name="stimmen"><br><br>
-							<button type ="submit" name="submit">Absenden</button>
+							<button type ="submit" name="submit">Absenden</button><br><br>
 						</form>
 						<form action="logout.php">
 							<button>logout</button>
