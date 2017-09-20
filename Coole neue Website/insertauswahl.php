@@ -16,7 +16,7 @@
 						<title> Wahllokalauswahl </title>
 					</head>
 					<body>
-						<a href="updateauswahl.php" style="font-size:17px;">Weiter zum Daten updaten!</a> <br><br>
+						<a href="updateauswahl.php" style="font-size:17px;">Daten falsch eingegeben?</a> <br><br>
 						<form action = "insert.php" method="post">
 							<label for="wahllokal">W&auml;hlen sie ein Wahllokal aus:</label>
 							<select name="wahllokal" width="100px">';
