@@ -1,6 +1,6 @@
 <?php
 
-$servername = "172.18.0.3";
+$servername = "172.18.0.4";
 $username = "website";
 $password = "cebit17";
 $database = "_wp_BTW_DE_2017";
