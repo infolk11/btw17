@@ -48,6 +48,9 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 			</head>
 			<body>
 			Sie haben folgende Daten eingegeben (Bitte &uuml;berpr&uuml;fen sie diese nochmal):<br>
+			Sollten Sie aus Versehen Daten vergessen haben, so klicken Sie bitte  
+			<a href='insertauswahl.php' style= 'font-size:17px;'>hier</a>
+			<br><font color='red'>ACHTUNG:</font>Bitte geben sie NUR die Datensätze ein, die Sie vergessen haben!
 				<table>
 				 <tr>
 					<th>Parteien</th>
@@ -76,8 +79,8 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 	
 	echo ' 	</table>
 			<br>
-			 <a href="updateauswahl.php" style="font-size:20px;">Fehler gemacht?</a> 
-			 <a href="insertauswahl.php" style="font-size:17px;">Weiter zum Daten eintragen!</a>
+			 <a href="updateauswahl.php" style="font-size:20px;">Daten falsch eingegeben?</a> <br>			 
+			 <a href="insertauswahl.php" style="font-size:17px;">Daten vergessen oder neue Daten eintragen?</a><br><br>
 			 <form action="logout.php">
 			 	<button>logout</button>
 		 	</form>
