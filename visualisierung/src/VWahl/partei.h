@@ -19,6 +19,8 @@ public:
     int getListenplaetze() const;
     void setListenplaetze(int value);
 
+    static QList<RecordObject> convertToRecordList(QList<Partei> parties);
+
 private:
     int p_id;
     int listenplaetze;

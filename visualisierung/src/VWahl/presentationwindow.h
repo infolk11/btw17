@@ -5,12 +5,18 @@
 #include <QCloseEvent>
 #include <QtCharts>
 #include <QtCharts/QChartView>
+#include <QImage>
+#include <QtGui/QMovie>
+#include <qmediaplayer.h>
+
+#include "main.h"
 
 
 namespace Ui {
 class PresentationWindow;
 }
 
+class QUrl;
 class Plots;
 class PresentationWindow : public QMainWindow
 {
@@ -22,10 +28,18 @@ public:
     QChartView *two_firstChart();
     QChartView *two_secondChart();
     void showPageForPlots(int plots);
+    void showLoadingScreen();
     ~PresentationWindow();
 
 private:
     Ui::PresentationWindow *ui;
+    void init();
+
+    QImage welcomeImage;
+    QMediaPlayer mediaPlayer;
+    QUrl loadingSreenUrl;
+private slots:
+    void repeatLoadingScreenLoop();
 
 protected:
     void closeEvent(QCloseEvent* event);

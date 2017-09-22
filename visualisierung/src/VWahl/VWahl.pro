@@ -4,7 +4,7 @@ r#-------------------------------------------------
 #
 #-------------------------------------------------
 
-QT       += core gui sql widgets charts
+QT       += core gui sql widgets charts multimedia multimediawidgets
 CONFIG += c++11
 
 QMAKE_RPATHDIR += /usr/lib

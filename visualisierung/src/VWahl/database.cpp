@@ -1,14 +1,30 @@
 #include "database.h"
 
 #include <future>
+
+//static variables
+unsigned long Database::connectionCounter =0;
+std::mutex Database::connectionCounterMutex;
+
 //functions
 Database::Database(const QString& ty, const QString& st, const int y) : type(ty), state(st), year(y)
 {
 
-    db = QSqlDatabase::addDatabase(VWahl::settings->value("database/databaseType").toString(),getNamingScheme(type,state,year));
+    db = QSqlDatabase::addDatabase(VWahl::settings->value("database/databaseType").toString(),getConnectionName(type,state,year));
 
     Logger::log << L_INFO << "Adding connection " << db.connectionName() << " from type "
                 <<  db.driverName() << "\n";
+}
+
+Database::Database(const Database &other)
+{
+    type = other.type;
+    state = other.state;
+    year = other.year;
+    db = QSqlDatabase::cloneDatabase(other.db,getConnectionName(type,state,year));
+    candidates = QList<Kandidat>(other.candidates);
+    parties = QList<Partei>(other.parties);
+    pollingStations = QList<PollingStation>(other.pollingStations);
 }
 
 Database::~Database()
@@ -62,6 +78,18 @@ int Database::getVotesSingleCandidate(QSqlDatabase db, Kandidat k, PollingStatio
     return v;
 }
 
+unsigned long Database::getRawConnectionCounter()
+{
+    std::lock_guard<std::mutex> lock_guard(connectionCounterMutex);
+    ++connectionCounter;
+    return connectionCounter;
+}
+
+QString Database::getConnectionCounter()
+{
+    return QStringLiteral("%1").arg(getRawConnectionCounter());
+}
+
 int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations)
 {
     int votes = 0;
@@ -72,9 +100,9 @@ int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStation
         for(PollingStation p : pollingStations)
         {
             threads.push_back(std::async(std::launch::async,getVotesSingleCandidate,
-                                         QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))
+                                         QSqlDatabase::cloneDatabase(db,getConnectionName(type,state,year))
                                          ,k,p));
-            ++connectionCounter;
+
         }
         for(int i = 0; i< threads.size(); ++i)
             votes += threads[i].get();
@@ -90,7 +118,10 @@ int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStation
 
 int Database::getVotesSingleParty(QSqlDatabase db, Partei party, PollingStation station)
 {
-    db.open(); //TO-DO Check
+    if(! db.open())
+        throw VWahlException("Couldn't get votes for party " + party.getDescription() +
+                             " in polling station " + station.getDescription());
+
     QString queryString = VWahl::settings->value("querys/BestimmteStimmenParteiWahllokal").toString();
     QSqlQuery voteQuery = QSqlQuery(db);
     voteQuery.prepare(queryString);
@@ -98,7 +129,10 @@ int Database::getVotesSingleParty(QSqlDatabase db, Partei party, PollingStation 
     voteQuery.bindValue(":w",QVariant(station.getId()));
     voteQuery.exec();
     if(! voteQuery.exec() || !voteQuery.next())
+    {
+        Logger::log << L_ERROR << "Failed to execute query " << voteQuery.executedQuery() << " with error " << db.lastError().text() << "\n";
         throw VWahlException("Failed to execute query " + voteQuery.executedQuery() + " with error " + db.lastError().text());
+     }
     int v = voteQuery.value("2Anzahl").toInt();
     db.close();
     return v;
@@ -119,9 +153,9 @@ int Database::getVotesParty(Partei party, QList<PollingStation> pollingStations)
         for(PollingStation p : pollingStations)
         {
             threads.push_back(std::async(std::launch::async,getVotesSingleParty,
-                                         QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))
+                                         QSqlDatabase::cloneDatabase(db,getConnectionName(type,state,year))
                                          ,party,p));
-            ++connectionCounter;
+
         }
         for(int i = 0; i< threads.size(); ++i)
             votes += threads[i].get();
@@ -202,8 +236,7 @@ int Database::getVotes1Count(QList<PollingStation> ps)
         {
             PollingStation p = ps[i];
             threads.push_back(std::async(std::launch::async, getVote1Count,p,
-                                         QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))));
-            ++connectionCounter;
+                                         QSqlDatabase::cloneDatabase(db,getConnectionName(type,state,year))));
 
         }
         for(int i = 0; i < threads.size(); ++i)
@@ -224,8 +257,7 @@ int Database::getVotes2Count(QList<PollingStation> ps)
         for(PollingStation p : ps)
         {
             threads.push_back(std::async(std::launch::async,getVote1Count,p,
-                                         QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))));
-            ++connectionCounter;
+                                         QSqlDatabase::cloneDatabase(db,getConnectionName(type,state,year))));
         }
         for(int i = 0; i< threads.size(); ++i)
             votes += threads[i].get();
@@ -285,6 +317,11 @@ QString Database::getNamingScheme(QString type, QString state, int year)
     return "_" + VWahl::settings->value("database/databasePrefix").toString() + "_" + type.toUpper() + "_" + state.toUpper() + "_" + QStringLiteral("%1").arg(year);
 }
 
+QString Database::getConnectionName(QString type, QString state, int year)
+{
+    return getNamingScheme(type,state,year) + "_" + getConnectionCounter();
+}
+
 int Database::reloadSettings()
 {
     db.close();
@@ -310,7 +347,7 @@ int Database::initByDatabaseSettings()
     QString password = VWahl::settings->value("database/password").toString();
     QString databaseName = getNamingScheme(type,state,year);
 
-    Logger::log << L_INFO << "Connecting to database " << databaseName << " on host " << hostname << " with user " << user << " and password " << password << "\n";
+    Logger::log << L_INFO << "Connecting " << db.connectionName() << " to database " << databaseName << " on host " << hostname << " with user " << user << " and password " << password << "\n";
     Logger::log << L_INFO << "Ignoring parties with id " << IGNORED_PARTY << "\n";
 
     db.setDatabaseName(databaseName);

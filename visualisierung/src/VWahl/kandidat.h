@@ -26,6 +26,7 @@ public:
     QImage getImage() const;
     void setImage(const QImage &value);
 
+    static QList<RecordObject> convertToRecordList(QList<Kandidat> candidates);
 private:
     /**
      *Things we want to know about a candidate:
