@@ -140,6 +140,9 @@ int shutdown()
 
     delete settings;
 
+    db->close();
+    delete db;
+
     return EXIT_SUCCESS;
 }
 
@@ -147,6 +150,7 @@ int initSettings()
 {
     settings = new QSettings("Evangelische_Schule_Neuruppin", "btw17");
     settings->setIniCodec("UTF-8");
+    Logger::log << L_INFO << "reading config file from " << VWahl::settings->fileName() << "\n";
     settings->sync();
     return EXIT_SUCCESS;
 }

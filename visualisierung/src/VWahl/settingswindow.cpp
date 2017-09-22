@@ -104,8 +104,8 @@ void SettingsWindow::makePlot(QList<Plots> &objects)
         QList<RecordObject> candidatesList;
 
         QList<PollingStation> pollingStations = getSelectedPollingStations();
-        int all2Votes = VWahl::db->getVote2Count(pollingStations);
-        int all1Votes = VWahl::db->getVote1Count(pollingStations);
+        int all2Votes = VWahl::db->getVotes2Count(pollingStations);
+        int all1Votes = VWahl::db->getVotes1Count(pollingStations);
         int year = VWahl::settings->value("database/year").toInt();
         QString description = ui->descriptionEdit->text();
         Plots::DIA_TYPE partiesDiaType;
