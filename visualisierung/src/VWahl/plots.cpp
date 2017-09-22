@@ -86,6 +86,9 @@ void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
     {
 
         QPieSlice *slice = new QPieSlice(ro.getDescription(),ro.getVotes());
+        QFont labelFont = slice->labelFont();
+        labelFont.setPointSize(VWahl::settings->value("gfx/fontSize").toInt());
+        slice->setLabelFont(labelFont);
         slice->setPen(ro.getColor());
         slice->setBrush(ro.getColor().lighter(150));
         slice->setLabelVisible(true);
@@ -157,6 +160,9 @@ void Plots::buildBarChartPlot(QChartView *chartView, Record& record)
     chart->setAxisX(axis,series);
 
     chart->legend()->setVisible(true);
+    QFont legendFont = chart->legend()->font();
+    legendFont.setPointSize(VWahl::settings->value("gfx/fontSize").toInt());
+    chart->legend()->setFont(legendFont);
     chart->legend()->setAlignment(Qt::AlignBottom);
 
     chartView->setChart(chart);
@@ -216,7 +222,9 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
     chart->setAxisX(axisX,series);
     axisX->applyNiceNumbers();
 
-
+    QFont legendFont = chart->legend()->font();
+    legendFont.setPointSize(VWahl::settings->value("gfx/fontSize").toInt());
+    chart->legend()->setFont(legendFont);
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
 
