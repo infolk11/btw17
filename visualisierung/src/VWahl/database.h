@@ -45,9 +45,8 @@ public:
     Kandidat getCandidate(int index);
     Partei getParty(int index);
     PollingStation getPollingStation(int index);
-    int getVote2Count(PollingStation p);
+    static int getVote2Count(PollingStation &p, QSqlDatabase &db);
     int getVote2Count(QList<PollingStation> ps);
-    int getVote1Count(PollingStation p);
     int getVote1Count(QList<PollingStation> ps);
     Kandidat getCandidateForParty(Partei p);
     Partei getPartyForCandidate(Kandidat k);
@@ -74,6 +73,7 @@ public:
     int getIGNORED_PARTY() const;
 
     static int getVotesSingleParty(QSqlDatabase db, Partei party, PollingStation station);
+    static int getVote1Count(PollingStation p, QSqlDatabase db);
     unsigned long connectionCounter = 0;
 private:
 
