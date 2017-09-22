@@ -46,24 +46,39 @@ void Database::close()
     db.close();
 }
 
+int Database::getVotesSingleCandidate(QSqlDatabase db, Kandidat k, PollingStation station)
+{
+    db.open();
+    QString queryString = VWahl::settings->value("querys/BestimmteStimmenDirektkandidatWahllokal").toString();
+    QSqlQuery voteQuery = QSqlQuery(db);
+    voteQuery.prepare(queryString);
+    voteQuery.bindValue(":d",QVariant(k.getId()));
+    voteQuery.bindValue(":w",QVariant(station.getId()));
+    voteQuery.exec();
+    if(! voteQuery.exec() || ! voteQuery.next())
+        throw VWahlException("Failed to execute query " + voteQuery.executedQuery());
+    int v = voteQuery.value("1Anzahl").toInt();
+    db.close();
+    return v;
+}
+
 int Database::getVotesCandidate(Kandidat k, QList<PollingStation> pollingStations)
 {
     int votes = 0;
+
     try
     {
+        QVector<std::shared_future<int>> threads;
         for(PollingStation p : pollingStations)
         {
-            QString queryString = VWahl::settings->value("querys/BestimmteStimmenDirektkandidatWahllokal").toString();
-            QSqlQuery voteQuery = QSqlQuery(db);
-            voteQuery.prepare(queryString);
-            voteQuery.bindValue(":d",QVariant(k.getId()));
-            voteQuery.bindValue(":w",QVariant(p.getId()));
-            voteQuery.exec();
-            if(! voteQuery.exec() || ! voteQuery.next())
-                throw VWahlException("Failed to execute query " + voteQuery.executedQuery());
-            int v = voteQuery.value("1Anzahl").toInt();
-            votes += v;
+            threads.push_back(std::async(std::launch::async,getVotesSingleCandidate,
+                                         QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))
+                                         ,k,p));
+            ++connectionCounter;
         }
+        for(int i = 0; i< threads.size(); ++i)
+            votes += threads[i].get();
+
     }catch(VWahlException e)
     {
         Logger::log << "Error while receiving votes for candidate " << k.getDescription() << " " << e.what() << "\n";
@@ -177,34 +192,48 @@ int Database::getVote1Count(PollingStation p, QSqlDatabase db)
 
 }
 
-int Database::getVote1Count(QList<PollingStation> ps)
+int Database::getVotes1Count(QList<PollingStation> ps)
 {
-    int vc = 0;
-    std::vector<std::shared_future<int>> threads;
-    for(int i = 0; i < ps.size(); ++i)
+    try
     {
-        PollingStation p = ps[i];
-        threads.push_back(std::async(getVote1Count,p,
-                                     QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))));
-        ++connectionCounter;
+        int vc = 0;
+        std::vector<std::shared_future<int>> threads;
+        for(int i = 0; i < ps.size(); ++i)
+        {
+            PollingStation p = ps[i];
+            threads.push_back(std::async(std::launch::async, getVote1Count,p,
+                                         QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))));
+            ++connectionCounter;
 
+        }
+        for(int i = 0; i < threads.size(); ++i)
+            vc += threads[i].get();
+        return vc;
+    }catch(VWahlException e)
+    {
+        throw e;
     }
-    for(int i = 0; i < threads.size(); ++i)
-        vc += threads[i].get();
-    return vc;
 }
 
-int Database::getVote2Count(QList<PollingStation> ps)
+int Database::getVotes2Count(QList<PollingStation> ps)
 {
-    QVector<std::shared_future<int>> threads;
-    for(PollingStation p : ps)
+    try
     {
-        threads.push_back(std::async(std::launch::async,getVote1Count,p,
-                                     QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))));
-        ++connectionCounter;
+        QVector<std::shared_future<int>> threads;
+        int votes = 0;
+        for(PollingStation p : ps)
+        {
+            threads.push_back(std::async(std::launch::async,getVote1Count,p,
+                                         QSqlDatabase::cloneDatabase(db,db.connectionName()+QStringLiteral("%1").arg(connectionCounter))));
+            ++connectionCounter;
+        }
+        for(int i = 0; i< threads.size(); ++i)
+            votes += threads[i].get();
+        return votes;
+    }catch(VWahlException e)
+    {
+        throw e;
     }
-    for(int i = 0; i< threads.size(); ++i)
-        votes += threads[i].get();
 }
 
 Kandidat Database::getCandidateForParty(Partei p)
