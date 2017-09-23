@@ -60,6 +60,8 @@ void PresentationWindow::init()
     }
     ui->welcomeImageLabel->setPixmap(QPixmap::fromImage(welcomeImage));
     ui->welcomeImageLabel->adjustSize();
+    ui->welcomeImageLabel->setStyleSheet("background-color:white;");
+    ui->centralwidget->setStyleSheet("background-color:white;");
 
     //loading screen
     ui->loadingPage->setStyleSheet("background-color:white;");
