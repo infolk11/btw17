@@ -1,0 +1,40 @@
+INSERT INTO `Partei` (`P_ID`, `P_Bezeichnung`,`Farbe`, `Listenplaetze`)
+VALUES ('1', 'CDU','#000000 	', '0'),
+('2', 'SPD', '#cd0000','0'), 
+('3', 'DIE LINKE', '#cd1076', '0'),
+('4', 'AfD', '#00bfff', '0'), 
+('5', 'GRÜNE', '#00cd00 	', '0'),
+('6', 'NPD', '#8b4513', '0'), 
+('7', 'FDP', '#ffff00', '0'), 
+('8', 'FREIE WÄHLER', '#000080', '0'),
+('9', 'MLPD', '#ff0000', '0'), 
+('10', 'BGE', '#00868B', '0'), 
+('11', 'DKP', '#EE0000', '0'),
+('12', 'DM', '#00008B', '0'),
+('13', 'ÖDP', '#FF7F00', '0'), 
+('14', 'Die PARTEI', '#cd0000', '0'),
+('15', 'Tierschutzpartei', '#00b2ee', '0');
+
+INSERT INTO `Direktkandidaten` (`D_ID`, `Vorname`, `Name`, `P_ID`, `Farbe`) VALUES
+(1, 'Sebastian', 'Steineke', 1, '#000000'),
+(2, 'Dagmar', 'Ziegler', 2, '#cd0000'),
+(3, 'Dr. Kirsten', 'Tackmann', 3, '#cd1076'),
+(4, 'Michael', 'Nehls', 4, '#00bfff'),
+(5, 'Martin', 'Wandrey', 5, '#00cd00'),
+(6, 'Andreas ', 'Hoffmann', 7, '#ffff00'),
+(7, 'Karl', 'Engewicht', 8, '#000080'),
+(8, 'Arnold', 'Blum', 9, '#ff0000'),
+(9, 'Corvin', 'Drößler', 14, '#cd0000'),
+(10, 'Mario', 'Borchert', 16, '0');
+
+INSERT INTO `stellt` (`P_ID`, `D_ID`)
+VALUES ('1', '1'),
+('2', '2'), 
+('3', '3'), 
+('4', '4'), 
+('5', '5'),
+('7', '6'),
+('8', '7'),
+('9', '8'), 
+('14', '9'),
+('16', '10');
