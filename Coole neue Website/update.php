@@ -50,7 +50,7 @@ $e ="SELECT P_Bezeichnung, 2Anzahl FROM Partei P, 2stimme S WHERE
 			Sie haben folgende Daten eingegeben (Bitte &uuml;berpr&uuml;fen sie diese nochmal):<br>
 			Sollten Sie aus Versehen Daten vergessen haben, so klicken Sie bitte  
 			<a href='insertauswahl.php' style= 'font-size:17px;'>hier</a>
-			<br><font color='red'>ACHTUNG:</font>Bitte geben sie NUR die Datensätze ein, die Sie vergessen haben!
+			<br>ACHTUNG: Bitte geben sie NUR die Datensätze ein, die Sie vergessen haben!
 				<table>
 				 <tr>
 					<th>Parteien</th>
