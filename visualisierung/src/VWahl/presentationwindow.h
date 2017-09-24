@@ -36,8 +36,7 @@ private:
     void init();
 
     QImage welcomeImage;
-    QMediaPlayer mediaPlayer;
-    QUrl loadingSreenUrl;
+     QMovie* loadingScreenMovie;
 private slots:
     void repeatLoadingScreenLoop();
 

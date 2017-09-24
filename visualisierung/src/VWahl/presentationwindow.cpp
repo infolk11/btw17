@@ -60,29 +60,27 @@ void PresentationWindow::init()
     }
     ui->welcomeImageLabel->setPixmap(QPixmap::fromImage(welcomeImage));
     ui->welcomeImageLabel->adjustSize();
-    ui->welcomeImageLabel->setStyleSheet("background-color:white;");
     ui->centralwidget->setStyleSheet("background-color:white;");
 
     //loading screen
-    ui->loadingPage->setStyleSheet("background-color:white;");
-    loadingSreenUrl=VWahl::settings->value("gfx/loadingScreenPath").toString();
-    mediaPlayer.setVideoOutput(ui->loadingPage);
-    setWindowFilePath(loadingSreenUrl.isLocalFile() ? loadingSreenUrl.toLocalFile() : QString());
-    mediaPlayer.setMedia(loadingSreenUrl);
-    QObject::connect(&mediaPlayer,&QMediaPlayer::stateChanged,this,&PresentationWindow::repeatLoadingScreenLoop);
-    ui->loadingPage->adjustSize();
-    mediaPlayer.play();
+    QString loadingSreenPath = VWahl::settings->value("gfx/loadingScreenPath").toString();
+    loadingScreenMovie = new QMovie(loadingSreenPath);
+    if(!loadingScreenMovie->isValid())
+    {
+        QMessageBox::warning(this,"Fehler!","Der Ladebildschirm konnte nicht gefunden werden.",QMessageBox::Ok);
+        Logger::log << L_ERROR << loadingSreenPath << " couldn't be found.\n";
+    }
+    ui->loadingLabel->setAlignment(Qt::AlignCenter);
+    ui->loadingLabel->setMovie(loadingScreenMovie);
+    ui->loadingLabel->adjustSize();
+    QObject::connect(loadingScreenMovie,&QMovie::finished,this,&PresentationWindow::repeatLoadingScreenLoop);
+    loadingScreenMovie->start();
 
 }
 
 void PresentationWindow::repeatLoadingScreenLoop()
 {
-    switch(mediaPlayer.state())
-    {
-    case QMediaPlayer::StoppedState:
-        mediaPlayer.play();
-        ui->loadingPage->setStyleSheet("background-color:white;");
-    }
+    loadingScreenMovie->start();
 }
 
 void PresentationWindow::closeEvent(QCloseEvent *event)
