@@ -119,6 +119,7 @@ void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
         series->append(others);
     }
     QChart *chart = new QChart();
+    chart->setDropShadowEnabled(VWahl::settings->value("gfx/enableBackgroundShadow").toBool());
     chart->setAnimationOptions(QChart::SeriesAnimations);
     chart->addSeries(series);
     chart->setTitle(record.getElection());
@@ -166,6 +167,7 @@ void Plots::buildBarChartPlot(QChartView *chartView, Record& record)
     }
 
     QChart* chart = new QChart();
+    chart->setDropShadowEnabled(VWahl::settings->value("gfx/enableBackgroundShadow").toBool());
     chart->addSeries(series);
     chart->setTitle(record.getElection());
     chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -178,7 +180,7 @@ void Plots::buildBarChartPlot(QChartView *chartView, Record& record)
     QFont legendFont = chart->legend()->font();
     legendFont.setPointSize(VWahl::settings->value("gfx/fontSize").toInt());
     chart->legend()->setFont(legendFont);
-    chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->legend()->setAlignment(Qt::AlignTop);
 
     chartView->setChart(chart);
     chartView->repaint();
@@ -226,6 +228,7 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
     }
 
     QChart* chart = new QChart();
+    chart->setDropShadowEnabled(VWahl::settings->value("gfx/enableBackgroundShadow").toBool());
     chart->addSeries(series);
     chart->setTitle(record.getElection());
     chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -241,7 +244,7 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
     legendFont.setPointSize(VWahl::settings->value("gfx/fontSize").toInt());
     chart->legend()->setFont(legendFont);
     chart->legend()->setVisible(true);
-    chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->legend()->setAlignment(Qt::AlignTop);
 
     chartView->setChart(chart);
     chartView->repaint();
