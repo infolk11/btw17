@@ -49,6 +49,15 @@ PresentationWindow::~PresentationWindow()
 void PresentationWindow::init()
 {
     //welcome Image
+    initWelcomeImage();
+
+    //loading screen
+    initSplashScreen();
+}
+
+void PresentationWindow::initWelcomeImage()
+{
+    //welcome Image
     QString welcomeImagepath = VWahl::settings->value("gfx/welcomeImagePath").toString();
     QImageReader reader(welcomeImagepath);
     reader.setAutoTransform(true);
@@ -57,18 +66,24 @@ void PresentationWindow::init()
     {
         QMessageBox::warning(this,"Fehler!","Das Willkommensbild konnte nicht gefunden werden.",QMessageBox::Ok);
         Logger::log << L_ERROR << welcomeImagepath << " couldn't be found.\n";
+        return;
     }
     ui->welcomeImageLabel->setPixmap(QPixmap::fromImage(welcomeImage));
     ui->welcomeImageLabel->adjustSize();
     ui->centralwidget->setStyleSheet("background-color:white;");
+}
 
-    //loading screen
+void PresentationWindow::initSplashScreen()
+{
     QString loadingSreenPath = VWahl::settings->value("gfx/loadingScreenPath").toString();
     loadingScreenMovie = new QMovie(loadingSreenPath);
+
     if(!loadingScreenMovie->isValid())
     {
         QMessageBox::warning(this,"Fehler!","Der Ladebildschirm konnte nicht gefunden werden.",QMessageBox::Ok);
         Logger::log << L_ERROR << loadingSreenPath << " couldn't be found.\n";
+        ui->loadingLabel->setText("Die Daten werden geladen...");
+        return;
     }
     ui->loadingLabel->setAlignment(Qt::AlignCenter);
     ui->loadingLabel->setMovie(loadingScreenMovie);

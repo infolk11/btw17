@@ -34,6 +34,8 @@ public:
 private:
     Ui::PresentationWindow *ui;
     void init();
+    void initWelcomeImage();
+    void initSplashScreen();
 
     QImage welcomeImage;
      QMovie* loadingScreenMovie;
