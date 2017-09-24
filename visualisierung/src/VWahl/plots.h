@@ -45,7 +45,7 @@ private:
     void buildHorizontalBarChartPlot(QChartView *chartView);
     static void buildHorizontalBarChartPlot(QChartView *chartView,Record& record);
 
-    static void filterObjects(QList<RecordObject>& full, QList<RecordObject>& filtered, int minPercent, int minInFull, int &ignoredVotes);
+    static void filterObjects(QList<RecordObject>& full, QList<RecordObject>& filtered, int minPercent, int minInFull, double &ignoredVotes);
 
     Record record;
     DIA_TYPE type;

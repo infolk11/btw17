@@ -74,7 +74,7 @@ void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
     QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
     int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
     int minInFull = VWahl::settings->value("gfx/minChosenRecords").toInt();
-    int ignoredVotes = 0;
+    double ignoredVotes = 0;
     QList<RecordObject> ignoredParties,selectedParties;
     selectedParties = record.recordsAsOneList();
     filterObjects(selectedParties,ignoredParties,minPercent,minInFull,ignoredVotes);
@@ -85,21 +85,36 @@ void Plots::buildPieChartPlot(QChartView *chartView,Record& record)
     for(RecordObject ro : selectedParties)
     {
 
-        QPieSlice *slice = new QPieSlice(ro.getDescription(),ro.getVotes());
+        QPieSlice *slice = new QPieSlice(ro.getDescription() + " (" + QString::number(ro.getVotes(),'f',2) + "%)",ro.getVotes());
+
+        //font
         QFont labelFont = slice->labelFont();
         labelFont.setPointSize(VWahl::settings->value("gfx/fontSize").toInt());
         slice->setLabelFont(labelFont);
+
+        //color
         slice->setPen(ro.getColor());
         slice->setBrush(ro.getColor().lighter(150));
+
+        //config
         slice->setLabelVisible(true);
         series->append(slice);
     }
 
     if(ignoredVotes>0)
     {
-        QPieSlice *others = new QPieSlice("Andere",ignoredVotes);
+        QPieSlice *others = new QPieSlice("Andere (" + QString::number(ignoredVotes,'f',2) + "%)",ignoredVotes);
+
+        //font
+        QFont labelFont = others->labelFont();
+        labelFont.setPointSize(VWahl::settings->value("gfx/fontSize").toInt());
+        others->setLabelFont(labelFont);
+
+        //color
         others->setPen(othersColor);
         others->setBrush(othersColor.lighter(BRUSH_LIGHTING));
+
+        //config
         others->setLabelVisible(true);
         series->append(others);
     }
@@ -123,7 +138,7 @@ void Plots::buildBarChartPlot(QChartView *chartView, Record& record)
     QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
     int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
     int minInFull = VWahl::settings->value("gfx/minChosenRecords").toInt();
-    int ignoredVotes = 0;
+    double ignoredVotes = 0;
     QList<RecordObject> ignoredParties,selectedParties;
     selectedParties = record.recordsAsOneList();
     filterObjects(selectedParties,ignoredParties,minPercent,minInFull,ignoredVotes);
@@ -184,7 +199,7 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
     QColor othersColor = VWahl::settings->value("gfx/othersColor").value<QColor>();
     int minPercent = VWahl::settings->value("gfx/minPercent").toInt();
     int minInFull = VWahl::settings->value("gfx/minChosenRecords").toInt();
-    int ignoredVotes = 0;
+    double ignoredVotes = 0;
     QList<RecordObject> ignoredParties,selectedParties;
     selectedParties = record.recordsAsOneList();
     filterObjects(selectedParties,ignoredParties,minPercent,minInFull,ignoredVotes);
@@ -233,7 +248,7 @@ void Plots::buildHorizontalBarChartPlot(QChartView *chartView,Record& record)
     Logger::log << L_DEBUG << "Creation successfull.\n";
 }
 
-void Plots::filterObjects(QList<RecordObject> &full, QList<RecordObject> &filtered, int minPercent, int minInFull, int& ignoredVotes)
+void Plots::filterObjects(QList<RecordObject> &full, QList<RecordObject> &filtered, int minPercent, int minInFull, double& ignoredVotes)
 {
     Logger::log << L_INFO << "Filtering recordObject...\n";
     Logger::log << L_DEBUG << "Min percent: " << minPercent << "\n";
