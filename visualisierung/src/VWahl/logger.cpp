@@ -77,8 +77,7 @@ void Logger::init(int LoggerLevel) {
 Logger &operator << (Logger &l, const char * a)
 {
     QString str;
-
-    str.sprintf("%s",a);
+    QTextStream(&str) << a;
 
     l.send(str);
 
