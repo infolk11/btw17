@@ -30,7 +30,7 @@ Database::Database(const Database &other)
 Database::~Database()
 {
     db.close();
-    Logger::log << L_INFO << "closed Database" << databaseName().toStdString()<< "\n";
+    Logger::log << L_INFO << "closed Database" << db.connectionName()<< "\n";
 }
 
 //connects class-object to database

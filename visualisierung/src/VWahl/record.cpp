@@ -5,7 +5,7 @@ QString RecordObject::getDescription() const
     return description;
 }
 
-int RecordObject::getVotes() const
+double RecordObject::getVotes() const
 {
     return votes;
 }
@@ -15,7 +15,7 @@ QColor RecordObject::getColor() const
     return color;
 }
 
-void RecordObject::setVotes(int value)
+void RecordObject::setVotes(double value)
 {
     votes = value;
 }

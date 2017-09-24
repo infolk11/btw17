@@ -14,19 +14,19 @@ public:
     RecordObject() = default;
     RecordObject(QString desc) : description(desc) {}
     RecordObject(QString desc, QColor col) : description(desc),color(col) {}
-    RecordObject(QString desc, int v, QColor col) : description(desc), votes(v), color(col) {}
+    RecordObject(QString desc, double v, QColor col) : description(desc), votes(v), color(col) {}
 
     QString getDescription() const;
-    int getVotes() const;
+    double getVotes() const;
     QColor getColor() const;
 
-    void setVotes(int value);
+    void setVotes(double value);
 
     bool operator==(const RecordObject l);
 
 private:
     QString description;
-    int votes;
+    double votes;
     QColor color;
 };
 

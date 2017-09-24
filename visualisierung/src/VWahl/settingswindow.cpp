@@ -23,44 +23,51 @@ SettingsWindow::~SettingsWindow()
  */
 void SettingsWindow::showPlot()
 {
-    Logger::log << L_INFO << "Plot changed" << "\n";
-
-    QList<Partei> partiesList;
-    QList<Kandidat> candidatesList;
-
-    QList<PollingStation> pollingStations = getSelectedPollingStations();
-    QString description = ui->descriptionEdit->text();
-    bool showOtherAlso = false;
-    Plots::DIA_TYPE partiesDiaType;
-    Plots::DIA_TYPE candidatesDiaType;
-    Database db(*VWahl::db);
-
-    switch(ui->tabWidget->currentIndex())
+    try
     {
-    case 0: //Parteien
-        partiesList= getSelectedParties();
-        partiesDiaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
-        candidatesDiaType = Plots::getDiaType(ui->candidatesAlsoShownPlotType->currentText());
-        showOtherAlso = ui->showCandidatesAlso->isChecked();
-        break;
-    case 1: //Kandidaten
-        candidatesList = getSelectedCandidates();
-        partiesDiaType = Plots::getDiaType(ui->partiesAlsoShownPlotTypeComboBox->currentText());
-        candidatesDiaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
-        ui->showPartiesAlso->isChecked();
-        break;
-    default:
-        Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
-        return;
+        Logger::log << L_INFO << "Plot changed" << "\n";
+
+        QList<Partei> partiesList;
+        QList<Kandidat> candidatesList;
+
+        QList<PollingStation> pollingStations = getSelectedPollingStations();
+        QString description = ui->descriptionEdit->text();
+        bool showOtherAlso = false;
+        Plots::DIA_TYPE partiesDiaType;
+        Plots::DIA_TYPE candidatesDiaType;
+        Database db(*VWahl::db);
+
+        switch(ui->tabWidget->currentIndex())
+        {
+        case 0: //Parteien
+            partiesList= getSelectedParties();
+            partiesDiaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
+            candidatesDiaType = Plots::getDiaType(ui->candidatesAlsoShownPlotType->currentText());
+            showOtherAlso = ui->showCandidatesAlso->isChecked();
+            break;
+        case 1: //Kandidaten
+            candidatesList = getSelectedCandidates();
+            partiesDiaType = Plots::getDiaType(ui->partiesAlsoShownPlotTypeComboBox->currentText());
+            candidatesDiaType = Plots::getDiaType(ui->plotTypeCombo->currentText());
+            ui->showPartiesAlso->isChecked();
+            break;
+        default:
+            Logger::log << L_ERROR << "Unknown tab: " << ui->tabWidget->currentIndex() << "\n";
+            return;
+        }
+
+        plottingThread = new PlottingThread(partiesList,candidatesList,pollingStations,
+                                            partiesDiaType,candidatesDiaType,ui->tabWidget->currentIndex(),
+                                            description,showOtherAlso,db,this);
+        QObject::connect(plottingThread,SIGNAL(resultReady(QList<Plots>)),this,SLOT(finishedPlotting(QList<Plots>)));
+
+        presentationWindow->showLoadingScreen();
+        plottingThread->start();
+    }catch(VWahlException e)
+    {
+        Logger::log << L_ERROR << "Error while making new plot: " << e.what() << "\n";
+        QMessageBox::warning(this,"Fehler!",e.what(),QMessageBox::Ok);
     }
-
-    plottingThread = new PlottingThread(partiesList,candidatesList,pollingStations,
-                          partiesDiaType,candidatesDiaType,ui->tabWidget->currentIndex(),
-                          description,showOtherAlso,db,this);
-    QObject::connect(plottingThread,SIGNAL(resultReady(QList<Plots>)),this,SLOT(finishedPlotting(QList<Plots>)));
-
-    presentationWindow->showLoadingScreen();
-    plottingThread->start();
 
 }
 
@@ -73,7 +80,6 @@ QList<Partei> SettingsWindow::getSelectedParties()
     for(QListWidgetItem *item : ui->partyList->selectedItems())
     {
         int index = QString(item->text().split(",").at(0)).toInt();
-        Logger::log << L_DEBUG << "Selected party: " << index << "\n";
 
         if(index == VWahl::db->getIGNORED_PARTY())
             continue;
@@ -117,6 +123,9 @@ void SettingsWindow::finishedPlotting(QList<Plots> plots)
 
 QList<PollingStation> SettingsWindow::getSelectedPollingStations()
 {
+    if(ui->pollingStationList->selectedItems().size() <= 0)
+        throw VWahlException(QString("No polling stations selected!"));
+
     QList<PollingStation> pollingStations;
     for(QListWidgetItem* item : ui->pollingStationList->selectedItems())
     {
@@ -301,16 +310,17 @@ void PlottingThread::makeCandidatePlot(QList<Partei> &partiesList, QList<Kandida
     try
     {
 
-        for(Kandidat k : candidatesList)
+        for(int i = 0; i < candidatesList.size(); ++i)
         {
+            Kandidat k = candidatesList[i];
 
             Logger::log  << L_DEBUG << "Description: " << k.getDescription() << "\n";
 
             //Votes
             double rawVotes = db.getVotesCandidate(k,pollingStations);
-            int votes = (rawVotes/ all1votes) *100;
+            double votes = (rawVotes/ (double)all1votes) *100.0;
             Logger::log << L_DEBUG << "Votes: " << votes << "\n";
-            k.setVotes(votes);
+            candidatesList[i].setVotes(votes);
 
             //Party
             if(showOtherAlso)
@@ -320,7 +330,7 @@ void PlottingThread::makeCandidatePlot(QList<Partei> &partiesList, QList<Kandida
                 catch(VWahlException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
                 double p_rawVotes = db.getVotesParty(p,pollingStations);
-                int p_votes = (p_rawVotes / all2votes) * 100;
+                double p_votes = (p_rawVotes / (double)all2votes) * 100.0;
                 p.setVotes(p_votes);
                 partiesList.push_back(p);
             }
@@ -349,7 +359,7 @@ void PlottingThread::makePartyPlot(QList<Partei>& partiesList,QList<Kandidat>&ca
 
             //Votes
             double rawVotes = db.getVotesParty(p,pollingStations);
-            int votes = (rawVotes / all2votes * 1.0) * 100;
+            double votes = (rawVotes / (double)all2votes) * 100.0;
             Logger::log << L_DEBUG << "Votes: " << votes << "\n";
             partiesList[i].setVotes(votes);
 
@@ -360,8 +370,8 @@ void PlottingThread::makePartyPlot(QList<Partei>& partiesList,QList<Kandidat>&ca
                 try { k = db.getCandidateForParty(p); }
                 catch(VWahlException e){Logger::log << L_WARN << e.what() << "\n";continue;}
 
-                double k_rawVotes = db.getVotesCandidate(k,pollingStations);
-                int k_votes = (k_rawVotes / all1votes) *100;
+                int k_rawVotes = db.getVotesCandidate(k,pollingStations);
+                double k_votes = ( (double)k_rawVotes / all1votes) *100.0;
                 k.setVotes(k_votes);
                 Logger::log << L_DEBUG << "Also showing candidate " << k.getDescription() << " with " << k_votes << " votes.\n";
                 candidatesList.push_back(k);
