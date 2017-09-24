@@ -10,6 +10,8 @@
 #include <QColor>
 #include <QList>
 
+#include <mutex>
+
 
 #include "vwahlexception.h"
 #include "logger.h"
@@ -35,6 +37,7 @@ public:
 
     Database(const QString& ty, const QString& st, const int y);
     Database() = default;
+    Database(const Database& other);
     ~Database();
     auto connect() -> int;
     auto exec(const QString queryString) -> QSqlQuery;
@@ -58,6 +61,7 @@ public:
     //Static functions
     static auto closeAllDatabases() -> void;
     static auto getNamingScheme(QString type, QString state, int year) -> QString;
+    static auto getConnectionName(QString type,QString state, int year) -> QString;
 
     auto reloadSettings() -> int;
     auto initByDatabaseSettings() -> int;
@@ -76,9 +80,14 @@ public:
     int getIGNORED_PARTY() const;
 
     static int getVotesSingleParty(QSqlDatabase db, Partei party, PollingStation station);
-    unsigned long connectionCounter = 0;
     static int getVotesSingleCandidate(QSqlDatabase db, Kandidat k, PollingStation station);
+    static unsigned long getRawConnectionCounter();
+
+    static QString getConnectionCounter();
 private:
+
+    static unsigned long connectionCounter;
+    static std::mutex connectionCounterMutex;
 
     int IGNORED_PARTY;
     //auto getSize(QSqlQuery &quey) -> int;

@@ -26,7 +26,7 @@ public:
     enum DIA_TYPE{ PIE_CHART, BAR_GRAPH, BAR_CHART, ONE_PLOT};
 
     Plots() = default;
-    Plots(Record& rec, PresentationWindow* pw, DIA_TYPE tp) : record(rec), type(tp) {}
+    Plots(Record& rec, DIA_TYPE tp) : record(rec), type(tp) {}
 
     static void buildPlot(QChartView *chart, DIA_TYPE type, Record& record);
     void buildPlot(QChartView *chart);

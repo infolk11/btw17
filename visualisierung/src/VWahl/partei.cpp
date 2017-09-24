@@ -20,3 +20,11 @@ void Partei::setListenplaetze(int value)
 {
     listenplaetze = value;
 }
+
+QList<RecordObject> Partei::convertToRecordList(QList<Partei> parties)
+{
+    QList<RecordObject> result;
+    for(Partei p : parties)
+            result.push_back(p);
+    return result;
+}

@@ -41,3 +41,12 @@ void Kandidat::setImage(const QImage &value)
 {
     image = value;
 }
+
+
+QList<RecordObject> Kandidat::convertToRecordList(QList<Kandidat> candidates)
+{
+    QList<RecordObject> result;
+    for(Kandidat k : candidates)
+            result.push_back(k);
+    return result;
+}

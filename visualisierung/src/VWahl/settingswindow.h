@@ -18,6 +18,7 @@
 #include <QKeySequence>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QThread>
 
 class Database;
 class DatabaseDialog;
@@ -30,6 +31,7 @@ class SettingsWindow;
 class PresentationWindow;
 class Plots;
 class Record;
+class PlottingThread;
 class SettingsWindow : public QMainWindow
 {
     Q_OBJECT
@@ -40,7 +42,9 @@ public:
 public slots:
     void showPlot();
     void refreshSlot();
+    void finishedPlotting(QList<Plots> plots);
 private:
+    PlottingThread *plottingThread;
     Ui::SettingsWindow *ui;
     PresentationWindow *presentationWindow;
     DatabaseDialog *dbDialog;
@@ -71,20 +75,44 @@ private:
      */
     void refreshData(Database *db);
 
-    void makePartyPlot(QList<RecordObject>& partiesList, QList<RecordObject>&candidatesList, QList<PollingStation> &pollingStations,
-                       Plots::DIA_TYPE& partiesDiaType, Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
-    void makeCandidatePlot(QList<RecordObject>& partiesList, QList<RecordObject>&candidatesList, QList<PollingStation> &pollingStations,
-                           Plots::DIA_TYPE& partiesDiaType, Plots::DIA_TYPE& candidatesDiaType, int all2votes, int all1votes);
-
-    void makePlot(QList<Plots> &objects);
-
     QList<PollingStation> getSelectedPollingStations();
 
 
+    QList<Partei> getSelectedParties();
+    QList<Kandidat> getSelectedCandidates();
 protected:
     void closeEvent(QCloseEvent *event);
 
 
 };
+
+class PlottingThread : public QThread
+{
+    Q_OBJECT
+
+public:
+    explicit PlottingThread(QList<Partei>& pL,QList<Kandidat>&cL,QList<PollingStation>& polL,
+                   Plots::DIA_TYPE& pdt,Plots::DIA_TYPE& cdt, int ptm, QString desc, bool soa, Database d,QObject* parent) : partiesList(pL),candidatesList(cL),
+        pollingStations(polL),partiesDiaType(pdt),candidatesDiaType(cdt),plotToMake(ptm),description(desc),showOtherAlso(soa),
+      db(d),QThread(parent) {}
+    void run();
+    ~PlottingThread();
+
+signals:
+    void resultReady(QList<Plots> plots);
+private:
+    Database db;
+    QList<Partei> partiesList;
+    QList<Kandidat> candidatesList;
+    QList<PollingStation> pollingStations;
+    Plots::DIA_TYPE partiesDiaType;
+    Plots::DIA_TYPE candidatesDiaType;
+    int plotToMake;
+    QString description;
+    bool showOtherAlso;
+    void makeCandidatePlot(QList<Partei> &partiesList, QList<Kandidat> &candidatesList, QList<PollingStation> &pollingStations, Plots::DIA_TYPE &partiesDiaType, Plots::DIA_TYPE &candidatesDiaType, int all2votes, int all1votes);
+    void makePartyPlot(QList<Partei> &partiesList, QList<Kandidat> &candidatesList, QList<PollingStation> &pollingStations, Plots::DIA_TYPE &partiesDiaType, Plots::DIA_TYPE &candidatesDiaType, int all2votes, int all1votes);
+};
+
 
 #endif // SETTINGSWINDOW_H

@@ -115,6 +115,7 @@ int init()
     } else
          Logger::log << L_INFO << "opened Database!" << "\n";
 
+    qRegisterMetaType<QList<Plots>>("QList<Plots>");
 
     Logger::log << L_INFO << "Initialized the program." << "\n";
     return EXIT_SUCCESS;
