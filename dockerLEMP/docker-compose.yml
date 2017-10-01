@@ -1,0 +1,29 @@
+version: '3'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+  php-apache:
+    build: ./php-apache
+    environment:
+      - VIRTUAL_HOST=localhost
+    volumes:
+      - ./php-apache/src:/var/www/html
+      - ./php-apache/config:/usr/local/etc/php
+  db:
+    image: mariadb:latest
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - VIRTUAL_HOST=admin.localhost
+    
